@@ -4,6 +4,7 @@
 
 // overrides based on the actual software node type
 const identityNodes: Record<string, string> = [
+  ['airalab-robonomics', 'substrate'],
   ['centrifuge chain', 'polkadot'],
   ['edgeware-node', 'substrate'],
   ['joystream-node', 'beachball'],

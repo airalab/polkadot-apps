@@ -4,6 +4,7 @@
 
 // anything for a specific chain, most would probably fit into the node category (but allow for chain-specific)
 import chainKusama from './chains/kusama-128.gif';
+import chainDaoIpci from './chains/dao-ipci-114.png';
 
 // defaults for the node type, assuming we don't have a specific chain, but rather match on the implementation
 import nodeCentrifuge from './nodes/centrifuge.png';
@@ -11,6 +12,7 @@ import nodeEdgeware from './nodes/edgeware-circle.svg';
 import nodeNodle from './nodes/nodle.svg';
 import nodePolkadot from './nodes/polkadot-circle.svg';
 import nodePolkadotJs from './nodes/polkadot-js.svg';
+import nodeRobonomics from './nodes/robonomics.svg';
 import nodeSubstrate from './nodes/substrate-hexagon.svg';
 
 // extensions
@@ -21,6 +23,7 @@ import emptyLogo from './empty.svg';
 
 // overrides based on the actual matched chain name
 const chainLogos: Record<string, any> = [
+  ['DAO IPCI', chainDaoIpci],
   ['Kusama', chainKusama], // new name after CC3
   ['Kusama CC1', chainKusama],
   ['Kusama CC2', chainKusama],
@@ -32,6 +35,7 @@ const chainLogos: Record<string, any> = [
 
 // overrides based on the actual software node type (all '-' converted to ' ')
 const nodeLogos: Record<string, any> = [
+  ['airalab-robonomics', nodeRobonomics],
   ['centrifuge chain', nodeCentrifuge],
   ['Edgeware Node', nodeEdgeware],
   ['kulupu', nodeSubstrate],
@@ -51,9 +55,11 @@ const namedLogos: Record<string, any> = {
   centrifuge: nodeCentrifuge,
   edgeware: nodeEdgeware,
   empty: emptyLogo,
+  ipci: chainDaoIpci,
   kusama: chainKusama,
   nodle: nodeNodle,
   polkadot: nodePolkadot,
+  robonomics: nodeRobonomics,
   substrate: nodeSubstrate,
   westend: nodePolkadot
 };

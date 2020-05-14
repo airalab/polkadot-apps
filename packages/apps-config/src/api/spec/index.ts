@@ -7,11 +7,14 @@ import edgeware from './edgeware';
 import encointerNode from './encointer-node';
 import kulupu from './kulupu';
 import nodeTemplate from './node-template';
+import robonomics from './robonomics';
 
 export default {
   'centrifuge-chain': centrifugeChain,
   edgeware,
   'encointer-node': encointerNode,
+  ipci: robonomics,
   kulupu,
-  'node-template': nodeTemplate
+  'node-template': nodeTemplate,
+  'robonomics-parachain': robonomics
 };

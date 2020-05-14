@@ -163,7 +163,7 @@ function createWebpack ({ alias = {}, context, name = 'index' }) {
         }
       }),
       new HtmlWebpackPlugin({
-        PAGE_TITLE: 'Polkadot/Substrate Portal',
+        PAGE_TITLE: 'Robonomics Portal',
         inject: true,
         template: path.join(context, `${hasPublic ? 'public/' : ''}${name}.html`)
       }),

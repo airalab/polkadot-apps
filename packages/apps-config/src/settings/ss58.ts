@@ -36,6 +36,11 @@ export default function create (t: (key: string, text: string, options: { ns: st
       value: 7
     },
     {
+      info: 'robonomics',
+      text: t('ss58.robonomics', 'Robonomics Network', { ns: 'apps-config' }),
+      value: 32
+    },
+    {
       info: 'centrifuge',
       text: t('ss58.centrifuge', 'Centrifuge (live)', { ns: 'apps-config' }),
       value: 36
