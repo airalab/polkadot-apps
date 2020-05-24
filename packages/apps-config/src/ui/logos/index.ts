@@ -4,7 +4,7 @@
 
 // anything for a specific chain, most would probably fit into the node category (but allow for chain-specific)
 import chainKusama from './chains/kusama-128.gif';
-import chainDaoIpci from './chains/dao-ipci-114.png';
+import chainDaoIpci from './chains/ipci.svg';
 
 // defaults for the node type, assuming we don't have a specific chain, but rather match on the implementation
 import nodeCentrifuge from './nodes/centrifuge.png';
