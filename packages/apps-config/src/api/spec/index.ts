@@ -16,5 +16,6 @@ export default {
   ipci: robonomics,
   kulupu,
   'node-template': nodeTemplate,
-  'robonomics-parachain': robonomics
+  'robonomics-parachain': robonomics,
+  robonomics
 };

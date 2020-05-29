@@ -35,6 +35,11 @@ function createTest (t: <T= string> (key: string, text: string, options: { ns: s
       info: 'polkadot-local',
       text: t<string>('rpc.polkadot-local', 'Local Polkadot Testnet (hosted by Airalab)', { ns: 'apps-config' }),
       value: 'wss://rpc.polkadot-local.robonomics.network'
+    },
+    {
+      info: 'robonomics-testnet',
+      text: t<string>('rpc.robonomics-testnet', 'Robonomics Testnet (hosted by Airalab)', { ns: 'apps-config' }),
+      value: 'wss://rpc.testnet.robonomics.network'
     }
   ];
 }
