@@ -4,36 +4,36 @@
 
 import { Option } from './types';
 
-function createDev (t: (key: string, text: string, options: { ns: string }) => string): Option[] {
+function createDev (t: <T= string> (key: string, text: string, options: { ns: string }) => T): Option[] {
   return [
     {
       info: 'local',
-      text: t('rpc.local', 'Local Node (Own, 127.0.0.1:9944)', { ns: 'apps-config' }),
+      text: t<string>('rpc.local', 'Local Node (Own, 127.0.0.1:9944)', { ns: 'apps-config' }),
       value: 'ws://127.0.0.1:9944/'
     }
   ];
 }
 
-function createLive (t: (key: string, text: string, options: { ns: string }) => string): Option[] {
+function createLive (t: <T= string> (key: string, text: string, options: { ns: string }) => T): Option[] {
   return [
     {
       info: 'robonomics',
-      text: t('rpc.robonomics', 'Robonomics Parachain (hosted by Airalab)', { ns: 'apps-config' }),
+      text: t<string>('rpc.robonomics', 'Robonomics Parachain (hosted by Airalab)', { ns: 'apps-config' }),
       value: 'wss://rpc.parachain.robonomics.network'
     },
     {
       info: 'ipci',
-      text: t('rpc.ipci', 'DAO IPCI Network (hosted by Airalab)', { ns: 'apps-config' }),
+      text: t<string>('rpc.ipci', 'DAO IPCI Network (hosted by Airalab)', { ns: 'apps-config' }),
       value: 'wss://substrate.ipci.io'
     },
   ];
 }
 
-function createTest (t: (key: string, text: string, options: { ns: string }) => string): Option[] {
+function createTest (t: <T= string> (key: string, text: string, options: { ns: string }) => T): Option[] {
   return [
     {
       info: 'polkadot-local',
-      text: t('rpc.polkadot-local', 'Local Polkadot Testnet (hosted by Airalab)', { ns: 'apps-config' }),
+      text: t<string>('rpc.polkadot-local', 'Local Polkadot Testnet (hosted by Airalab)', { ns: 'apps-config' }),
       value: 'wss://rpc.polkadot-local.robonomics.network'
     }
   ];
@@ -44,14 +44,15 @@ function createTest (t: (key: string, text: string, options: { ns: string }) => 
 //   info: The chain logo name as defined in ../logos, specifically in namedLogos
 //   text: The text to display on teh dropdown
 //   value: The actual hosted secure websocket endpoint
-export default function create (t: (key: string, text: string, options: { ns: string }) => string): Option[] {
+export default function create (t: <T= string> (key: string, text: string, options: { ns: string }) => T): Option[] {
   const ENV: Option[] = [];
-  const WS_URL = process.env.WS_URL || (window as any).process_env?.WS_URL;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+  const WS_URL = process.env.WS_URL || (window as any).process_env?.WS_URL as string;
 
   if (WS_URL) {
     ENV.push({
       info: 'WS_URL',
-      text: 'WS_URL: ' + WS_URL,
+      text: `WS_URL: ${WS_URL}`,
       value: WS_URL
     });
   }
@@ -59,19 +60,19 @@ export default function create (t: (key: string, text: string, options: { ns: st
   let endpoints = [
     {
       isHeader: true,
-      text: t('rpc.header.live', 'Live networks', { ns: 'apps-config' }),
+      text: t<string>('rpc.header.live', 'Live networks', { ns: 'apps-config' }),
       value: ''
     },
     ...createLive(t),
     {
       isHeader: true,
-      text: t('rpc.header.test', 'Test networks', { ns: 'apps-config' }),
+      text: t<string>('rpc.header.test', 'Test networks', { ns: 'apps-config' }),
       value: ''
     },
     ...createTest(t),
     {
       isHeader: true,
-      text: t('rpc.header.dev', 'Development', { ns: 'apps-config' }),
+      text: t<string>('rpc.header.dev', 'Development', { ns: 'apps-config' }),
       value: ''
     },
     ...createDev(t)
@@ -81,7 +82,7 @@ export default function create (t: (key: string, text: string, options: { ns: st
     endpoints = [
       {
         isHeader: true,
-        text: t('rpc.custom', 'Custom environment', { ns: 'apps-config' }),
+        text: t<string>('rpc.custom', 'Custom environment', { ns: 'apps-config' }),
         value: ''
       },
       ...ENV
