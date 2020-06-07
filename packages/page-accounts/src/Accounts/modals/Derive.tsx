@@ -27,6 +27,11 @@ interface DeriveAddress {
   deriveError: string | null;
 }
 
+interface LockState {
+  isLocked: boolean;
+  lockedError: string | null;
+}
+
 function deriveValidate (suri: string, pairType: KeypairType): string | null {
   try {
     const { path } = keyExtractPath(suri);
@@ -59,6 +64,7 @@ function createAccount (source: KeyringPair, suri: string, name: string, passwor
     status.message = success;
 
     downloadAccount(result);
+    InputAddress.setLastValue('account', address);
   } catch (error) {
     status.status = 'error';
     status.message = (error as Error).message;
@@ -73,7 +79,7 @@ function Derive ({ className = '', from, onClose }: Props): React.ReactElement {
   const [source] = useState(keyring.getPair(from));
   const [{ address, deriveError }, setDerive] = useState<DeriveAddress>({ address: null, deriveError: null });
   const [isConfirmationOpen, toggleConfirmation] = useToggle();
-  const [isLocked, setIsLocked] = useState(source.isLocked);
+  const [{ isLocked, lockedError }, setIsLocked] = useState<LockState>({ isLocked: source.isLocked, lockedError: null });
   const [{ isNameValid, name }, setName] = useState({ isNameValid: false, name: '' });
   const [{ isPassValid, password }, setPassword] = useState({ isPassValid: false, password: '' });
   const [{ isPass2Valid, password2 }, setPassword2] = useState({ isPass2Valid: false, password2: '' });
@@ -83,7 +89,7 @@ function Derive ({ className = '', from, onClose }: Props): React.ReactElement {
   const isValid = !!address && !deriveError && isNameValid && isPassValid && isPass2Valid;
 
   useEffect((): void => {
-    setIsLocked(source.isLocked);
+    setIsLocked({ isLocked: source.isLocked, lockedError: null });
   }, [source]);
 
   useEffect((): void => {
@@ -120,11 +126,11 @@ function Derive ({ className = '', from, onClose }: Props): React.ReactElement {
     (): void => {
       try {
         source.decodePkcs8(rootPass);
+        setIsLocked({ isLocked: source.isLocked, lockedError: null });
       } catch (error) {
         console.error(error);
+        setIsLocked({ isLocked: true, lockedError: (error as Error).message });
       }
-
-      setIsLocked(source.isLocked);
     },
     [rootPass, source]
   );
@@ -173,6 +179,7 @@ function Derive ({ className = '', from, onClose }: Props): React.ReactElement {
             <Password
               autoFocus
               help={t<string>('The password to unlock the selected account.')}
+              isError={!!lockedError}
               label={t<string>('password')}
               onChange={setRootPass}
               value={rootPass}

@@ -4,7 +4,11 @@
 
 import { Option } from './types';
 
-function createDev (t: <T= string> (key: string, text: string, options: { ns: string }) => T): Option[] {
+interface LinkOption extends Option {
+  dnslink?: string;
+}
+
+function createDev (t: <T= string> (key: string, text: string, options: { ns: string }) => T): LinkOption[] {
   return [
     {
       info: 'local',
@@ -14,29 +18,39 @@ function createDev (t: <T= string> (key: string, text: string, options: { ns: st
   ];
 }
 
-function createLive (t: <T= string> (key: string, text: string, options: { ns: string }) => T): Option[] {
+function createLive (t: <T= string> (key: string, text: string, options: { ns: string }) => T): LinkOption[] {
   return [
     {
+      dnslink: 'robonomics',
       info: 'robonomics',
       text: t<string>('rpc.robonomics', 'Robonomics Parachain (hosted by Airalab)', { ns: 'apps-config' }),
       value: 'wss://rpc.parachain.robonomics.network'
     },
     {
+      dnslink: 'ipci',
       info: 'ipci',
       text: t<string>('rpc.ipci', 'DAO IPCI Network (hosted by Airalab)', { ns: 'apps-config' }),
       value: 'wss://substrate.ipci.io'
     },
+    {
+      dnslink: 'kusama',
+      info: 'kusama',
+      text: t<string>('rpc.kusama.parity', 'Kusama (Polkadot Canary, hosted by Parity)', { ns: 'apps-config' }),
+      value: 'wss://kusama-rpc.polkadot.io/'
+    },
   ];
 }
 
-function createTest (t: <T= string> (key: string, text: string, options: { ns: string }) => T): Option[] {
+function createTest (t: <T= string> (key: string, text: string, options: { ns: string }) => T): LinkOption[] {
   return [
     {
+      dnslink: 'polkadot-local',
       info: 'polkadot-local',
       text: t<string>('rpc.polkadot-local', 'Local Polkadot Testnet (hosted by Airalab)', { ns: 'apps-config' }),
       value: 'wss://rpc.polkadot-local.robonomics.network'
     },
     {
+      dnslink: 'robonomics-testnet',
       info: 'robonomics-testnet',
       text: t<string>('rpc.robonomics-testnet', 'Robonomics Testnet (hosted by Airalab)', { ns: 'apps-config' }),
       value: 'wss://rpc.testnet.robonomics.network'
@@ -49,8 +63,8 @@ function createTest (t: <T= string> (key: string, text: string, options: { ns: s
 //   info: The chain logo name as defined in ../logos, specifically in namedLogos
 //   text: The text to display on teh dropdown
 //   value: The actual hosted secure websocket endpoint
-export default function create (t: <T= string> (key: string, text: string, options: { ns: string }) => T): Option[] {
-  const ENV: Option[] = [];
+export default function create (t: <T= string> (key: string, text: string, options: { ns: string }) => T): LinkOption[] {
+  const ENV: LinkOption[] = [];
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
   const WS_URL = process.env.WS_URL || (window as any).process_env?.WS_URL as string;
 
