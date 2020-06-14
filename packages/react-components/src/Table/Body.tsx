@@ -125,11 +125,15 @@ export default React.memo(styled(Body)`
     }
 
     &.mini {
-      max-width: 4rem;
-      min-width: 4rem;
-      padding: 0 0.75rem 0 0;
-      width: 4rem;
+      padding: 0 !important;
+      width: fit-content;
       white-space: normal;
+
+      > div {
+        margin-right: 0.75rem;
+        max-width: 3.8rem;
+        min-width: 3.8rem;
+      }
     }
 
     &.favorite i.icon.isSelected {
@@ -139,7 +143,7 @@ export default React.memo(styled(Body)`
 
   tr {
     &:nth-child(even) {
-      background: #f7f8f9;
+      background: #f9f8f7;
     }
 
     // &.isHighlight {
@@ -180,7 +184,7 @@ export default React.memo(styled(Body)`
       }
     }
 
-    .ui.button:not(.isIcon):not(.disabled):not(:hover) {
+    .ui.button:not(.isIcon):not(:hover) {
       color: #555 !important;
 
       &:not(.basic) {

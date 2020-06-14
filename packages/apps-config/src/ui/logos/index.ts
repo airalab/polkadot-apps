@@ -40,6 +40,7 @@ const chainLogos: Record<string, any> = [
 const nodeLogos: Record<string, any> = [
   ['airalab-robonomics', nodeRobonomics],
   ['centrifuge chain', nodeCentrifuge],
+  ['Centrifuge Chain Node', nodeCentrifuge],
   ['Edgeware Node', nodeEdgeware],
   ['Encointer Node', nodeEncointer],
   ['kulupu', nodeSubstrate],

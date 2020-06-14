@@ -8,6 +8,7 @@ import encointerNode from './encointer-node';
 import kulupu from './kulupu';
 import nodeTemplate from './node-template';
 import robonomics from './robonomics';
+import stablePoc from './stable-poc';
 
 export default {
   'centrifuge-chain': centrifugeChain,
@@ -17,5 +18,7 @@ export default {
   kulupu,
   'node-template': nodeTemplate,
   'robonomics-parachain': robonomics,
-  robonomics
+  robonomics,
+  'stable-poc': stablePoc,
+  stable_poc: stablePoc
 };
