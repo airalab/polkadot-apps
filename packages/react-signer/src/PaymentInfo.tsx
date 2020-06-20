@@ -9,7 +9,7 @@ import BN from 'bn.js';
 import React, { useState, useEffect } from 'react';
 import { Trans } from 'react-i18next';
 import { Expander } from '@polkadot/react-components';
-import { useApi } from '@polkadot/react-hooks';
+import { useApi, useIsMountedRef } from '@polkadot/react-hooks';
 import { formatBalance, isFunction } from '@polkadot/util';
 
 interface Props {
@@ -21,18 +21,25 @@ interface Props {
   tip?: BN;
 }
 
-function Checks ({ accountId, className = '', extrinsic }: Props): React.ReactElement<Props> | null {
+function PaymentInfo ({ accountId, className = '', extrinsic }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
   const [dispatchInfo, setDispatchInfo] = useState<RuntimeDispatchInfo | null>(null);
+  const mountedRef = useIsMountedRef();
 
   useEffect((): void => {
-    accountId && extrinsic && isFunction(api.rpc.payment?.queryInfo) &&
-      Promise.resolve(
-        extrinsic
-          .paymentInfo(accountId)
-          .then(setDispatchInfo)
-      ).catch(console.error);
-  }, [api, accountId, extrinsic]);
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    accountId && extrinsic && isFunction(extrinsic.paymentInfo) && isFunction(api.rpc.payment?.queryInfo) &&
+      setImmediate((): void => {
+        try {
+          extrinsic
+            .paymentInfo(accountId)
+            .then((info) => mountedRef.current && setDispatchInfo(info))
+            .catch(console.error);
+        } catch (error) {
+          console.error((error as Error).message);
+        }
+      });
+  }, [api, accountId, extrinsic, mountedRef]);
 
   if (!dispatchInfo) {
     return null;
@@ -51,4 +58,4 @@ function Checks ({ accountId, className = '', extrinsic }: Props): React.ReactEl
   );
 }
 
-export default React.memo(Checks);
+export default React.memo(PaymentInfo);

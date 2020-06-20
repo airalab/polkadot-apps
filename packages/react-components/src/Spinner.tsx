@@ -36,6 +36,7 @@ function Spinner ({ className = '', label, variant = 'app' }: Props): React.Reac
 
 export default React.memo(styled(Spinner)`
   .text {
+    color: inherit !important;
     margin: 0 auto 1.5rem auto;
     opacity: 0.6;
     text-align: center;
