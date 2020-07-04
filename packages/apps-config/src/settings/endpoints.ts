@@ -56,7 +56,7 @@ function createTest (t: TFn): LinkOption[] {
     {
       dnslink: 'polkadot',
       info: 'polkadot',
-      text: t<string>('rpc.westend', 'Robonomics Westend Testnet (hosted by Airalab)', { ns: 'apps-config' }),
+      text: t<string>('rpc.robonomics-westend', 'Robonomics Westend Testnet (hosted by Airalab)', { ns: 'apps-config' }),
       value: 'wss://rpc.westend.robonomics.network'
     }
   ];
