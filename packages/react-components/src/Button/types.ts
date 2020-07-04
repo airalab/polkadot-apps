@@ -2,14 +2,17 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { ButtonProps as SUIButtonProps } from 'semantic-ui-react/dist/commonjs/elements/Button/Button';
 import { BareProps } from '../types';
 
 export type Button$Callback = () => void | Promise<void>;
 
-export interface ButtonProps extends BareProps {
+export interface ButtonProps {
+  children?: React.ReactNode;
+  className?: string;
   floated?: 'left' | 'right';
-  icon?: string;
+  icon?: IconName;
   isAnimated?: SUIButtonProps['animated'];
   isBasic?: boolean;
   isCircular?: boolean;
@@ -33,14 +36,15 @@ export interface ButtonProps extends BareProps {
 
 export type DividerProps = BareProps;
 
-export interface ContentProps extends BareProps {
+export interface ContentProps {
   children?: React.ReactNode;
   hidden?: boolean;
   visible?: boolean;
 }
 
-export interface GroupProps extends BareProps {
+export interface GroupProps {
   children?: React.ReactNode;
+  className?: string;
   isBasic?: boolean;
   isCentered?: boolean;
 }

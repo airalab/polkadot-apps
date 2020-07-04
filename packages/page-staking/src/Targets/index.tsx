@@ -9,8 +9,9 @@ import { SortedTargets, TargetSortBy, ValidatorInfo } from '../types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Button, Icon, InputBalance, Table, Toggle } from '@polkadot/react-components';
-import { useApi } from '@polkadot/react-hooks';
 
+import ElectionBanner from '../ElectionBanner';
+import Filtering from '../Filtering';
 import { MAX_NOMINATIONS } from '../constants';
 import { useTranslation } from '../translate';
 import Nominate from './Nominate';
@@ -20,10 +21,12 @@ import useOwnNominators from './useOwnNominators';
 
 interface Props {
   className?: string;
+  isInElection: boolean;
   next?: string[];
   ownStashes?: StakerState[];
   stakingOverview?: DeriveStakingOverview;
   targets: SortedTargets;
+  toggleFavorite: (address: string) => void;
 }
 
 interface SortState {
@@ -45,13 +48,14 @@ function sort (sortBy: TargetSortBy, sortFromMax: boolean, validators: Validator
     );
 }
 
-function Targets ({ className = '', ownStashes, targets: { calcWith, lastReward, nominators, setCalcWith, toggleFavorite, totalStaked, validators } }: Props): React.ReactElement<Props> {
+function Targets ({ className = '', isInElection, ownStashes, targets: { calcWith, lastReward, nominators, setCalcWith, totalStaked, validators }, toggleFavorite }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { api } = useApi();
   const ownNominators = useOwnNominators(ownStashes);
   const [selected, setSelected] = useState<string[]>([]);
   const [sorted, setSorted] = useState<number[] | undefined>();
-  const [withoutName, setWithoutName] = useState(true);
+  const [nameFilter, setNameFilter] = useState<string>('');
+  const [withElected, setWithElected] = useState(false);
+  const [withIdentity, setWithIdentity] = useState(false);
   const [{ sortBy, sortFromMax }, setSortBy] = useState<SortState>({ sortBy: 'rankOverall', sortFromMax: true });
 
   useEffect((): void => {
@@ -81,15 +85,15 @@ function Targets ({ className = '', ownStashes, targets: { calcWith, lastReward,
 
   const _selectProfitable = useCallback(
     () => setSelected(
-      (validators || []).reduce((result: string[], { hasIdentity, key, rewardPayout }): string[] => {
-        if ((result.length < MAX_NOMINATIONS) && (withoutName || hasIdentity) && !rewardPayout.isZero()) {
+      (validators || []).reduce((result: string[], { hasIdentity, isElected, isFavorite, key, rewardPayout }): string[] => {
+        if ((result.length < MAX_NOMINATIONS) && (hasIdentity || !withIdentity) && (isElected || isFavorite) && !rewardPayout.isZero()) {
           result.push(key);
         }
 
         return result;
       }, [])
     ),
-    [validators, withoutName]
+    [validators, withIdentity]
   );
 
   const labels = useMemo(
@@ -104,16 +108,24 @@ function Targets ({ className = '', ownStashes, targets: { calcWith, lastReward,
     [t]
   );
 
+  const classes = useMemo(
+    (): Record<string, string> => ({
+      rankBondOther: 'ui--media-1600',
+      rankNumNominators: 'ui--media-1200'
+    }),
+    []
+  );
+
   const header = useMemo(() => [
     [t('validators'), 'start', 4],
     ...['rankNumNominators', 'rankComm', 'rankBondTotal', 'rankBondOwn', 'rankBondOther', 'rankOverall'].map((header) => [
-      <>{labels[header]}<Icon name={sortBy === header ? (sortFromMax ? 'chevron down' : 'chevron up') : 'minus'} /></>,
-      sorted ? `isClickable ${sortBy === header ? 'ui--highlight--border' : ''} number` : 'number',
+      <>{labels[header]}<Icon icon={sortBy === header ? (sortFromMax ? 'chevron-down' : 'chevron-up') : 'minus'} /></>,
+      `${sorted ? `isClickable ${sortBy === header ? 'ui--highlight--border' : ''} number` : 'number'} ${classes[header] || ''}`,
       1,
       (): void => _sort(header as 'rankComm')
     ]),
     []
-  ], [_sort, labels, sortBy, sorted, sortFromMax, t]);
+  ], [_sort, classes, labels, sortBy, sorted, sortFromMax, t]);
 
   const filter = useMemo(() => (
     sorted && (
@@ -127,23 +139,22 @@ function Targets ({ className = '', ownStashes, targets: { calcWith, lastReward,
           onChange={setCalcWith}
           value={calcWith}
         />
-        <div className='staking--optionsBar'>
-          {api.query.identity && (
-            <Toggle
-              className='staking--buttonToggle'
-              label={
-                withoutName
-                  ? t<string>('with/without identity')
-                  : t<string>('only with an identity')
-              }
-              onChange={setWithoutName}
-              value={withoutName}
-            />
-          )}
-        </div>
+        <Filtering
+          nameFilter={nameFilter}
+          setNameFilter={setNameFilter}
+          setWithIdentity={setWithIdentity}
+          withIdentity={withIdentity}
+        >
+          <Toggle
+            className='staking--buttonToggle'
+            label={t<string>('limit to elected')}
+            onChange={setWithElected}
+            value={withElected}
+          />
+        </Filtering>
       </div>
     )
-  ), [api, calcWith, setCalcWith, sorted, t, withoutName]);
+  ), [calcWith, setCalcWith, nameFilter, sorted, t, withElected, withIdentity]);
 
   return (
     <div className={className}>
@@ -161,10 +172,12 @@ function Targets ({ className = '', ownStashes, targets: { calcWith, lastReward,
           onClick={_selectProfitable}
         />
         <Nominate
+          isDisabled={isInElection}
           ownNominators={ownNominators}
           targets={selected}
         />
       </Button.Group>
+      <ElectionBanner isInElection={isInElection} />
       <Table
         empty={sorted && t<string>('No active validators to check')}
         filter={filter}
@@ -173,12 +186,14 @@ function Targets ({ className = '', ownStashes, targets: { calcWith, lastReward,
         {validators && sorted && (validators.length === sorted.length) && sorted.map((index): React.ReactNode =>
           <Validator
             canSelect={selected.length < MAX_NOMINATIONS}
+            filterName={nameFilter}
             info={validators[index]}
             isSelected={selected.includes(validators[index].key)}
             key={validators[index].key}
             toggleFavorite={toggleFavorite}
             toggleSelected={_toggleSelected}
-            withoutName={withoutName}
+            withElected={withElected}
+            withIdentity={withIdentity}
           />
         )}
       </Table>
@@ -190,7 +205,7 @@ export default React.memo(styled(Targets)`
   text-align: center;
 
   th {
-    i.icon {
+    .ui--Icon {
       margin-left: 0.5rem;
     }
   }

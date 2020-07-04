@@ -2,19 +2,21 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { IconProps } from 'semantic-ui-react/dist/commonjs/elements/Icon/Icon';
-import { BareProps, VoidFn } from './types';
+import { IconName } from '@fortawesome/fontawesome-svg-core';
+import { VoidFn } from './types';
 
 import React from 'react';
-
-import Button from './Button';
 import styled from 'styled-components';
 
-interface Props extends BareProps {
+import { colorLink } from './styles/theme';
+import Icon from './Icon';
+
+interface Props {
   children?: React.ReactNode;
-  icon?: string;
+  className?: string;
+  icon?: IconName;
   onClick: VoidFn;
-  size?: IconProps['size'];
+  size?: 'mini' | 'tiny' | 'small' | 'large' | 'big' | 'huge' | 'massive';
 }
 
 function EditButton ({ children, className, icon = 'edit', onClick, size = 'small' }: Props): React.ReactElement<Props> {
@@ -25,8 +27,8 @@ function EditButton ({ children, className, icon = 'edit', onClick, size = 'smal
     >
       {children}
       <span className='editSpan'>
-        <Button
-          className='icon-button show-on-hover'
+        <Icon
+          className='icon-button'
           icon={icon}
           isPrimary
           size={size}
@@ -39,8 +41,10 @@ function EditButton ({ children, className, icon = 'edit', onClick, size = 'smal
 export default React.memo(styled(EditButton)`
   cursor: pointer;
 
-  button.ui.icon.primary.button.icon-button {
+  .ui--Icon.icon-button {
+    color: ${colorLink};
     cursor: pointer;
+    margin: 0 0 0 0.5rem;
   }
 
   .editSpan {

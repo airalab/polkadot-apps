@@ -2,8 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { BareProps } from '@polkadot/react-api/types';
-
 import BN from 'bn.js';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -12,8 +10,9 @@ import { formatBalance } from '@polkadot/util';
 
 import { useTranslation } from './translate';
 
-interface Props extends BareProps {
+interface Props {
   children?: React.ReactNode;
+  className?: string;
   isShort?: boolean;
   label?: React.ReactNode;
   labelPost?: React.ReactNode;
@@ -90,5 +89,14 @@ export default React.memo(styled(FormatBalance)`
       opacity: 0.75;
       vertical-align: baseline;
     }
+  }
+
+  .ui--Icon {
+    margin-top: 0.25rem;
+    margin-bottom: -0.25rem;
+  }
+
+  .ui--Icon+.ui--FormatBalance-value {
+    margin-left: 0.375rem;
   }
 `);

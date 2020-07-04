@@ -2,8 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { BareProps } from '@polkadot/react-components/types';
-
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAccountInfo, useToggle } from '@polkadot/react-hooks';
@@ -17,8 +15,9 @@ import Flags from './Flags';
 import Identity from './Identity';
 import Multisig from './Multisig';
 
-interface Props extends BareProps {
+interface Props {
   address: string;
+  className?: string;
   onClose: () => void;
   onUpdateName: () => void;
 }
@@ -49,7 +48,7 @@ function Sidebar ({ address, className = '', onClose, onUpdateName }: Props): Re
     <div className={className}>
       <Button
         className='ui--AddressMenu-close'
-        icon='close'
+        icon='times'
         isBasic
         isCircular
         onClick={onClose}
@@ -86,7 +85,7 @@ function Sidebar ({ address, className = '', onClose, onUpdateName }: Props): Re
           {(!isEditingName && flags.isEditable) && (
             <Icon
               className='inline-icon'
-              name='edit'
+              icon='edit'
             />
           )}
         </AccountName>
@@ -105,7 +104,7 @@ function Sidebar ({ address, className = '', onClose, onUpdateName }: Props): Re
         <div className='ui-AddressMenu--button'>
           <Button.Group>
             <Button
-              icon='send'
+              icon='paper-plane'
               label={t<string>('Deposit')}
               onClick={toggleIsTransferOpen}
             />
@@ -122,7 +121,7 @@ function Sidebar ({ address, className = '', onClose, onUpdateName }: Props): Re
             )}
             {!flags.isOwned && !flags.isInContacts && (
               <Button
-                icon='add'
+                icon='plus'
                 isPositive
                 label={t<string>('Save')}
                 onClick={_onUpdateName}
@@ -143,12 +142,12 @@ function Sidebar ({ address, className = '', onClose, onUpdateName }: Props): Re
                 size='tiny'
               >
                 <Button.Content visible>
-                  <Icon name='check' />
+                  <Icon icon='check' />
                   &nbsp;
                   {t<string>('Saved')}
                 </Button.Content>
                 <Button.Content hidden>
-                  <Icon name='ban' />
+                  <Icon icon='ban' />
                   &nbsp;
                   {t<string>('Remove')}
                 </Button.Content>
@@ -164,11 +163,11 @@ function Sidebar ({ address, className = '', onClose, onUpdateName }: Props): Re
           )}
         </div>
       </div>
+      <Balances address={address} />
       <Identity
         address={address}
         identity={identity}
       />
-      <Balances address={address} />
       <Multisig
         isMultisig={flags.isMultisig}
         meta={meta}
@@ -328,7 +327,7 @@ export default React.memo(styled(Sidebar)`
 
   .inline-icon {
     cursor: pointer;
-    margin: 0 0 0 0.6rem;
+    margin: 0 0 0 0.5rem;
     color:  ${colorLink};
   }
 

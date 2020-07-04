@@ -2,8 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { IconProps } from 'semantic-ui-react/dist/commonjs/elements/Icon/Icon';
-import { BareProps } from './types';
+import { IconName } from '@fortawesome/fontawesome-svg-core';
 
 import React, { useCallback, useContext } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -13,12 +12,12 @@ import Button from './Button';
 import { useTranslation } from './translate';
 import styled from 'styled-components';
 
-interface Props extends BareProps {
+interface Props {
   children?: React.ReactNode;
   className?: string;
-  icon?: string;
+  icon?: IconName;
   isAddress?: boolean;
-  size?: IconProps['size'];
+  size?: 'large' | 'small';
   value: string;
 }
 
@@ -63,7 +62,7 @@ function CopyButton ({ children, className, icon = 'copy', isAddress = false, si
 export default React.memo(styled(CopyButton)`
   cursor: copy;
 
-  button.ui.icon.primary.button.icon-button {
+  button.u.ui--Icon.primary.button.icon-button {
     cursor: copy;
   }
 

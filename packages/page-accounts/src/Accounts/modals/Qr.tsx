@@ -2,13 +2,13 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { ActionStatus } from '@polkadot/react-components/Status/types';
 import { ModalProps } from '../../types';
 
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { AddressRow, Button, Input, InputAddress, Modal } from '@polkadot/react-components';
+import { AddressRow, Button, Input, InputAddress, Modal, QrScanAddress } from '@polkadot/react-components';
 import { useIpfs } from '@polkadot/react-hooks';
-import { QrScanAddress } from '@polkadot/react-qr';
 import keyring from '@polkadot/ui-keyring';
 
 import PasswordInput from '../PasswordInput';
@@ -23,6 +23,8 @@ interface Scanned {
 
 interface Props extends ModalProps {
   className?: string;
+  onClose: () => void;
+  onStatusChange: (status: ActionStatus) => void;
 }
 
 function QrModal ({ className = '', onClose, onStatusChange }: Props): React.ReactElement<Props> {
@@ -157,7 +159,7 @@ function QrModal ({ className = '', onClose, onStatusChange }: Props): React.Rea
       </Modal.Content>
       <Modal.Actions onCancel={onClose}>
         <Button
-          icon='sign-in'
+          icon='sign-in-alt'
           isDisabled={!scanned || !isValid || (isAddress && isIpfs)}
           isPrimary
           label={t<string>('Create')}

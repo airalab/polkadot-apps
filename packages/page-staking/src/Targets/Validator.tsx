@@ -7,7 +7,7 @@ import { ValidatorInfo } from '../types';
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { ApiPromise } from '@polkadot/api';
-import { AddressSmall, Icon, Toggle } from '@polkadot/react-components';
+import { AddressSmall, Badge, Icon, Toggle } from '@polkadot/react-components';
 import { FormatBalance } from '@polkadot/react-query';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { formatNumber } from '@polkadot/util';
@@ -15,49 +15,50 @@ import keyring from '@polkadot/ui-keyring';
 
 import MaxBadge from '../MaxBadge';
 import Favorite from '../Overview/Address/Favorite';
+import { checkVisibility } from '../util';
 
 interface Props {
   canSelect: boolean;
+  filterName: string;
   info: ValidatorInfo;
   isSelected: boolean;
   toggleFavorite: (accountId: string) => void;
   toggleSelected: (accountId: string) => void;
-  withoutName: boolean;
+  withElected: boolean;
+  withIdentity: boolean;
 }
 
-function checkVisibility (api: ApiPromise, accountInfo: DeriveAccountInfo): boolean {
-  let isVisible = false;
+function checkIdentity (api: ApiPromise, accountInfo: DeriveAccountInfo): boolean {
+  let hasIdentity = false;
 
   const { accountId, identity, nickname } = accountInfo;
 
   if (api.query.identity && api.query.identity.identityOf) {
-    isVisible = !!(identity?.display && identity.display.toString());
+    hasIdentity = !!(identity?.display && identity.display.toString());
   } else if (nickname) {
-    isVisible = !!nickname.toString();
+    hasIdentity = !!nickname.toString();
   }
 
-  if (!isVisible && accountId) {
+  if (!hasIdentity && accountId) {
     const account = keyring.getAddress(accountId.toString());
 
-    isVisible = !!account?.meta?.name;
+    hasIdentity = !!account?.meta?.name;
   }
 
-  return isVisible;
+  return hasIdentity;
 }
 
-function Validator ({ canSelect, info, isSelected, toggleFavorite, toggleSelected, withoutName }: Props): React.ReactElement<Props> | null {
+function Validator ({ canSelect, filterName, info, isSelected, toggleFavorite, toggleSelected, withElected, withIdentity }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
   const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, [info.accountId]);
-  const [hasName, setHasName] = useState(true);
+  const [isVisible, setVisibility] = useState(true);
 
   useEffect((): void => {
     if (accountInfo) {
-      const hasIdentity = checkVisibility(api, accountInfo);
-
-      info.hasIdentity = hasIdentity;
-      setHasName(hasIdentity);
+      info.hasIdentity = checkIdentity(api, accountInfo);
+      setVisibility(checkVisibility(api, info.key, filterName, withIdentity, accountInfo));
     }
-  }, [accountInfo, api, info]);
+  }, [accountInfo, api, filterName, info, withIdentity]);
 
   const _onQueryStats = useCallback(
     (): void => {
@@ -71,11 +72,11 @@ function Validator ({ canSelect, info, isSelected, toggleFavorite, toggleSelecte
     [info.key, toggleSelected]
   );
 
-  if (!hasName && !withoutName) {
+  if (!isVisible || (withElected && !info.isElected)) {
     return null;
   }
 
-  const { accountId, bondOther, bondOwn, bondTotal, commissionPer, isCommission, isFavorite, isNominating, key, numNominators, rankOverall, rewardPayout, validatorPayment } = info;
+  const { accountId, bondOther, bondOwn, bondTotal, commissionPer, isCommission, isElected, isFavorite, isNominating, key, numNominators, rankOverall, rewardPayout, validatorPayment } = info;
 
   return (
     <tr className={`${isNominating ? 'isHighlight' : ''}`}>
@@ -84,14 +85,21 @@ function Validator ({ canSelect, info, isSelected, toggleFavorite, toggleSelecte
         isFavorite={isFavorite}
         toggleFavorite={toggleFavorite}
       />
-      <td className='badge'>
+      <td className='badge together'>
+        {isElected && (
+          <Badge
+            color='blue'
+            info={<Icon icon='chevron-right' />}
+            isInline
+          />
+        )}
         <MaxBadge numNominators={numNominators} />
       </td>
       <td className='number'>{formatNumber(rankOverall)}</td>
       <td className='address all'>
         <AddressSmall value={accountId} />
       </td>
-      <td className='number'>{numNominators || ''}</td>
+      <td className='number ui--media-1200'>{numNominators || ''}</td>
       <td className='number'>
         {
           isCommission
@@ -99,14 +107,9 @@ function Validator ({ canSelect, info, isSelected, toggleFavorite, toggleSelecte
             : <FormatBalance value={validatorPayment} />
         }
       </td>
-      <td className='number together'><FormatBalance value={bondTotal} /></td>
-      <td className='number together'><FormatBalance value={bondOwn} /></td>
-      <td className='number together'>
-        <FormatBalance
-          labelPost={` (${numNominators})`}
-          value={bondOther}
-        />
-      </td>
+      <td className='number together'>{!bondTotal.isZero() && <FormatBalance value={bondTotal} />}</td>
+      <td className='number together'>{!bondOwn.isZero() && <FormatBalance value={bondOwn} />}</td>
+      <td className='number together ui--media-1600'>{!bondOther.isZero() && <FormatBalance value={bondOther} />}</td>
       <td className='number together'>{!rewardPayout.isZero() && <FormatBalance value={rewardPayout} />}</td>
       <td>
         {(canSelect || isSelected) && (
@@ -120,7 +123,7 @@ function Validator ({ canSelect, info, isSelected, toggleFavorite, toggleSelecte
       <td>
         <Icon
           className='staking--stats'
-          name='line graph'
+          icon='chart-line'
           onClick={_onQueryStats}
         />
       </td>

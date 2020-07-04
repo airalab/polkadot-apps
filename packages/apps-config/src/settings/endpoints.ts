@@ -4,6 +4,8 @@
 
 import { Option } from './types';
 
+type TFn = <T= string> (key: string, text: string, options: { ns: string, replace?: Record<string, string> }) => T;
+
 interface LinkOption extends Option {
   dnslink?: string;
 }
@@ -15,7 +17,7 @@ interface EnvWindow {
   }
 }
 
-function createDev (t: <T= string> (key: string, text: string, options: { ns: string }) => T): LinkOption[] {
+function createDev (t: TFn): LinkOption[] {
   return [
     {
       dnslink: 'local',
@@ -26,14 +28,8 @@ function createDev (t: <T= string> (key: string, text: string, options: { ns: st
   ];
 }
 
-function createLive (t: <T= string> (key: string, text: string, options: { ns: string }) => T): LinkOption[] {
+function createLive (t: TFn): LinkOption[] {
   return [
-    {
-      dnslink: 'robonomics',
-      info: 'robonomics',
-      text: t<string>('rpc.robonomics', 'Robonomics Parachain (hosted by Airalab)', { ns: 'apps-config' }),
-      value: 'wss://rpc.parachain.robonomics.network'
-    },
     {
       dnslink: 'ipci',
       info: 'ipci',
@@ -49,21 +45,43 @@ function createLive (t: <T= string> (key: string, text: string, options: { ns: s
   ];
 }
 
-function createTest (t: <T= string> (key: string, text: string, options: { ns: string }) => T): LinkOption[] {
+function createTest (t: TFn): LinkOption[] {
   return [
     {
-      dnslink: 'polkadot-local',
-      info: 'polkadot-local',
-      text: t<string>('rpc.polkadot-local', 'Local Polkadot Testnet (hosted by Airalab)', { ns: 'apps-config' }),
-      value: 'wss://rpc.polkadot-local.robonomics.network'
+      dnslink: 'robonomics',
+      info: 'robonomics',
+      text: t<string>('rpc.robonomics', 'Robonomics Parachain (hosted by Airalab)', { ns: 'apps-config' }),
+      value: 'wss://rpc.parachain.robonomics.network'
     },
     {
-      dnslink: 'robonomics-testnet',
-      info: 'robonomics-testnet',
-      text: t<string>('rpc.robonomics-testnet', 'Robonomics Testnet (hosted by Airalab)', { ns: 'apps-config' }),
-      value: 'wss://rpc.testnet.robonomics.network'
+      dnslink: 'polkadot',
+      info: 'polkadot',
+      text: t<string>('rpc.westend', 'Robonomics Westend Testnet (hosted by Airalab)', { ns: 'apps-config' }),
+      value: 'wss://rpc.westend.robonomics.network'
     }
   ];
+}
+
+function createCustom (t: TFn): LinkOption[] {
+  const WS_URL = (
+    (typeof process !== 'undefined' ? process.env?.WS_URL : undefined) ||
+    (typeof window !== 'undefined' ? (window as EnvWindow).process_env?.WS_URL : undefined)
+  );
+
+  return WS_URL
+    ? [
+      {
+        isHeader: true,
+        text: t<string>('rpc.custom', 'Custom environment', { ns: 'apps-config' }),
+        value: ''
+      },
+      {
+        info: 'WS_URL',
+        text: t<string>('rpc.custom.entry', 'Custom {{WS_URL}}', { ns: 'apps-config', replace: { WS_URL } }),
+        value: WS_URL
+      }
+    ]
+    : [];
 }
 
 // The available endpoints that will show in the dropdown. For the most part (with the exception of
@@ -71,12 +89,9 @@ function createTest (t: <T= string> (key: string, text: string, options: { ns: s
 //   info: The chain logo name as defined in ../logos, specifically in namedLogos
 //   text: The text to display on teh dropdown
 //   value: The actual hosted secure websocket endpoint
-export default function create (t: <T= string> (key: string, text: string, options: { ns: string, replace?: Record<string, string> }) => T): LinkOption[] {
-  const WS_URL = (
-    (typeof process !== 'undefined' ? process.env?.WS_URL : undefined) ||
-    (typeof window !== 'undefined' ? (window as EnvWindow).process_env?.WS_URL : undefined)
-  );
-  const endpoints = [
+export default function create (t: TFn): LinkOption[] {
+  return [
+    ...createCustom(t),
     {
       isHeader: true,
       text: t<string>('rpc.header.live', 'Live networks', { ns: 'apps-config' }),
@@ -95,20 +110,5 @@ export default function create (t: <T= string> (key: string, text: string, optio
       value: ''
     },
     ...createDev(t)
-  ];
-
-  return WS_URL
-    ? ([
-      {
-        isHeader: true,
-        text: t<string>('rpc.custom', 'Custom environment', { ns: 'apps-config' }),
-        value: ''
-      },
-      {
-        info: 'WS_URL',
-        text: t<string>('rpc.custom.entry', 'Custom {{WS_URL}}', { ns: 'apps-config', replace: { WS_URL } }),
-        value: WS_URL
-      }
-    ] as LinkOption[]).concat(endpoints)
-    : endpoints;
+  ].filter(({ isDisabled }) => !isDisabled);
 }

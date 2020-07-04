@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AccountId, AccountIndex, Address } from '@polkadot/types/interfaces';
-import { BareProps } from './types';
 
 import BN from 'bn.js';
 import React from 'react';
@@ -17,10 +16,11 @@ import BondedDisplay from './Bonded';
 import IdentityIcon from './IdentityIcon';
 import LockedVote from './LockedVote';
 
-interface Props extends BareProps {
+interface Props {
   balance?: BN | BN[];
   bonded?: BN | BN[];
   children?: React.ReactNode;
+  className?: string;
   iconInfo?: React.ReactNode;
   isHighlight?: boolean;
   isPadded?: boolean;
@@ -118,11 +118,41 @@ export default React.memo(styled(AddressMini)`
   }
 
   .ui--AddressMini-address {
-    max-width: 9rem;
-    min-width: 9rem;
+    max-width: 12rem;
+    min-width: 12rem;
     overflow: hidden;
     text-align: left;
     text-overflow: ellipsis;
+
+    @media only screen and (max-width: 1800px) {
+      max-width: 11.5rem;
+      min-width: 11.5rem;
+    }
+
+    @media only screen and (max-width: 1700px) {
+      max-width: 11rem;
+      min-width: 11rem;
+    }
+
+    @media only screen and (max-width: 1600px) {
+      max-width: 10.5rem;
+      min-width: 10.5rem;
+    }
+
+    @media only screen and (max-width: 1500px) {
+      max-width: 10rem;
+      min-width: 10rem;
+    }
+
+    @media only screen and (max-width: 1400px) {
+      max-width: 9.5rem;
+      min-width: 9.5rem;
+    }
+
+    @media only screen and (max-width: 1300px) {
+      max-width: 9rem;
+      min-width: 9rem;
+    }
 
     > div {
       overflow: hidden;

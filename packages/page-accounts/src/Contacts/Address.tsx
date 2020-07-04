@@ -5,7 +5,6 @@
 import { DeriveAccountInfo, DeriveBalancesAll } from '@polkadot/api-derive/types';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import { ActionStatus } from '@polkadot/react-components/Status/types';
-import { BareProps } from '@polkadot/react-components/types';
 
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -17,8 +16,9 @@ import { BN_ZERO, formatNumber } from '@polkadot/util';
 import Transfer from '../Accounts/modals/Transfer';
 import { useTranslation } from '../translate';
 
-interface Props extends BareProps {
+interface Props {
   address: string;
+  className?: string;
   filter: string;
   isFavorite: boolean;
   toggleFavorite: (address: string) => void;
@@ -150,8 +150,8 @@ function Address ({ address, className = '', filter, isFavorite, toggleFavorite 
     <tr className={className}>
       <td className='favorite'>
         <Icon
-          className={`${isFavorite ? 'isSelected isColorHighlight' : ''}`}
-          name={isFavorite ? 'star' : 'star outline'}
+          color={isFavorite ? 'orange' : 'gray'}
+          icon='star'
           onClick={_onFavorite}
         />
       </td>
@@ -196,7 +196,7 @@ function Address ({ address, className = '', filter, isFavorite, toggleFavorite 
       </td>
       <td className='button'>
         <Button
-          icon='paper plane'
+          icon='paper-plane'
           key='deposit'
           label={t<string>('deposit')}
           onClick={_toggleTransfer}
@@ -207,7 +207,7 @@ function Address ({ address, className = '', filter, isFavorite, toggleFavorite 
           onClose={_toggleSettingPopup}
           trigger={
             <Button
-              icon='ellipsis vertical'
+              icon='ellipsis-v'
               onClick={_toggleSettingPopup}
             />
           }
@@ -223,17 +223,13 @@ function Address ({ address, className = '', filter, isFavorite, toggleFavorite 
             >
               {t<string>('Forget this address')}
             </Menu.Item>
-            {!api.isDevelopment && (
-              <>
-                <Menu.Divider />
-                <ChainLock
-                  className='addresses--network-toggle'
-                  genesisHash={genesisHash}
-                  isDisabled={!isEditable}
-                  onChange={_onGenesisChange}
-                />
-              </>
-            )}
+            <Menu.Divider />
+            <ChainLock
+              className='addresses--network-toggle'
+              genesisHash={genesisHash}
+              isDisabled={!isEditable || api.isDevelopment}
+              onChange={_onGenesisChange}
+            />
           </Menu>
         </Popup>
       </td>
