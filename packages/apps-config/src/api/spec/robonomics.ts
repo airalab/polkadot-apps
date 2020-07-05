@@ -11,5 +11,10 @@ export default {
   TechnicalReport: 'Vec<u8>',
   EconomicalParam: '{}',
   ProofParam: 'MultiSignature',
-  LiabilityIndex: 'u64'
+  LiabilityIndex: 'u64',
+  ValidationFunctionParams: {
+    max_code_size: 'u32',
+    relay_chain_height: 'u32',
+    code_upgrade_allowed: 'Option<u32>'
+  }
 };
