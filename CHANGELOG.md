@@ -1,10 +1,33 @@
 # CHANGELOG
 
-## 0.48.0-beta.x
+## 0.49.0-beta.x
 
+- Activate Electron update feature by default (Thanks to https://github.com/EthWorks)
+- Add testing around Electron features (Thanks to https://github.com/EthWorks)
+- Support democracy account delegation (Thanks to https://github.com/Tbaut)
+- Allow input & display of OpaqueCall type from multisig
+- Indicate own nominees on targets page (re-added with badges)
+- Re-add indicator for own nominators in staking targets
+- Add `?filter=<string>` query param support on staking URLs
+- Add generator for Kusama society designs
+- Handle OpaqueCall in inputs and well as displays (multisig)
+- Small layout adjustments for address display components
+
+## 0.48.1 Jul 6, 2020
+
+- Fix for electron package build (Thanks to https://github.com/EthWorks)
+- Allow for setting of sub identities via account action
+- Adjust known account icons (Society & Treasury)
+- Add Westend chain to Subscan link generator
+- Display a warning with extensions and no injected accounts
+- Retrieve all tips at once and sort by closing
 - Fix identity set dialogs to never pass empty fields
-- Optimize favorites retrieval & selection for staking (shared)
+- Optimize favorites retrieval & selection for staking (shared between)
 - Support new registrar ProxyType in the signer
+- Hide funds unbonding when non bonded
+- Add withdraw action to staking menu (as available)
+- Fix InputAddress component with state change warnings
+- Bump to latest API and utilities
 
 ## 0.47.1 Jul 1, 2020
 

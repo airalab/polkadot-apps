@@ -32,7 +32,6 @@ export default createGlobalStyle<Props>`
   }
 
   .ui--highlight--border {
-    /* .theme--default .ui.menu.tabular > .item.active */
     border-color: ${getHighlight} !important;
   }
 
@@ -59,8 +58,8 @@ export default createGlobalStyle<Props>`
   }
 
   .theme--default {
-    .ui.menu.tabular .item.active {
-      border-color: ${getHighlight} !important;
+    .ui--Tabs-Tab.tabLinkActive {
+      border-bottom-color: ${getHighlight};
     }
 
     .ui.blue.progress > .bar {
@@ -112,13 +111,7 @@ export default createGlobalStyle<Props>`
     position: relative;
     text-align: left;
 
-    &:hover {
-      /* box-shadow: 0 4px 8px rgba(0,0,0,0.1); */
-      /* box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-      border-color: transparent; */
-    }
-
-    &:not(:hover) {
+    &:not(:hover):not(.keepAlive) {
       .ui.button:not(.disabled) {
         background: #eee !important;
         color: #555 !important;
