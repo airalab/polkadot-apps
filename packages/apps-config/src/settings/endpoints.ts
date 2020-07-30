@@ -22,7 +22,7 @@ function createDev (t: TFunction): LinkOption[] {
       dnslink: 'local',
       info: 'local',
       text: t<string>('rpc.local', 'Local Node (Own, 127.0.0.1:9944)', { ns: 'apps-config' }),
-      value: 'ws://127.0.0.1:9944/'
+      value: 'ws://127.0.0.1:9944'
     }
   ];
 }
@@ -39,7 +39,7 @@ function createLive (t: TFunction): LinkOption[] {
       dnslink: 'kusama',
       info: 'kusama',
       text: t<string>('rpc.kusama.parity', 'Kusama (Polkadot Canary, hosted by Parity)', { ns: 'apps-config' }),
-      value: 'wss://kusama-rpc.polkadot.io/'
+      value: 'wss://kusama-rpc.polkadot.io'
     }
   ];
 }

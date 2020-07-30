@@ -40,9 +40,7 @@ function Outcome ({ className = '', onClear, outcome: { isSuccess, message, orig
         <Button
           className='icon-button clear-btn'
           icon='times'
-          isPrimary
           onClick={onClear}
-          size='mini'
         />
       </div>
       <Output

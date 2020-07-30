@@ -241,7 +241,7 @@ function renderBalances (props: Props, allAccounts: string[], t: <T = string> (k
           <Label label={t<string>('total')} />
           <FormatBalance
             className='result'
-            value={balancesAll.votingBalance}
+            value={balancesAll.freeBalance.add(balancesAll.reservedBalance)}
           />
         </>
       )}
@@ -361,7 +361,7 @@ function renderBalances (props: Props, allAccounts: string[], t: <T = string> (k
   if (withBalanceToggle) {
     return (
       <>
-        <Expander summary={<FormatBalance value={balancesAll?.votingBalance} />}>
+        <Expander summary={<FormatBalance value={balancesAll && balancesAll.freeBalance.add(balancesAll.reservedBalance)} />}>
           <div className='body column'>
             {allItems}
           </div>
@@ -383,8 +383,8 @@ function AddressInfo (props: Props): React.ReactElement<Props> {
   const { children, className = '', extraInfo, withBalanceToggle, withHexSessionId } = props;
 
   return (
-    <div className={`ui--AddressInfo ${className} ${withBalanceToggle ? 'ui--AddressInfo-expander' : ''}`}>
-      <div className={`column ${withBalanceToggle ? 'column--expander' : ''}`}>
+    <div className={`ui--AddressInfo${className}${withBalanceToggle ? ' ui--AddressInfo-expander' : ''}`}>
+      <div className={`column${withBalanceToggle ? ' column--expander' : ''}`}>
         {renderBalances(props, allAccounts, t)}
         {withHexSessionId && withHexSessionId[0] && (
           <>

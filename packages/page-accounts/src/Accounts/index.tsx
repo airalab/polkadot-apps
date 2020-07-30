@@ -123,23 +123,26 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
 
   const header = useMemo(() => [
     [t('accounts'), 'start', 3],
-    [t('parent'), 'address'],
-    api.query.democracy?.votingOf && [t('delegation'), 'address ui--media-1500'],
+    [t('parent'), 'address ui--media-1400'],
     [t('type')],
     [t('tags'), 'start'],
     [t('transactions'), 'ui--media-1500'],
     [t('balances')],
     [],
     [undefined, 'mini ui--media-1400']
-  ], [api, t]);
+  ], [t]);
 
   const footer = useMemo(() => (
     <tr>
-      <td colSpan={7} />
+      <td colSpan={3} />
+      <td className='ui--media-1400' />
+      <td colSpan={2} />
+      <td className='ui--media-1500' />
       <td className='number'>
         {balanceTotal && <FormatBalance value={balanceTotal} />}
       </td>
-      <td colSpan={2} />
+      <td />
+      <td className='ui--media-1400' />
     </tr>
   ), [balanceTotal]);
 
@@ -218,7 +221,7 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
         )}
         <Button
           icon='plus'
-          isDisabled={!api.tx.multisig && api.tx.utility}
+          isDisabled={!(api.tx.multisig || api.tx.utility)}
           label={t<string>('Multisig')}
           onClick={toggleMultisig}
         />

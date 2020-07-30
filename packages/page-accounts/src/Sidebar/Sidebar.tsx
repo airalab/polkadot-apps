@@ -6,7 +6,7 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAccountInfo, useToggle } from '@polkadot/react-hooks';
 import { colorLink } from '@polkadot/react-components/styles/theme';
-import { AccountName, Button, Icon, IdentityIcon, Input, LinkExternal, Tags } from '@polkadot/react-components';
+import { AccountName, Button, Icon, IdentityIcon, Input, LinkExternal, Sidebar, Tags } from '@polkadot/react-components';
 
 import Transfer from '../Accounts/modals/Transfer';
 import { useTranslation } from '../translate';
@@ -22,10 +22,9 @@ interface Props {
   onUpdateName: () => void;
 }
 
-function Sidebar ({ address, className = '', onClose, onUpdateName }: Props): React.ReactElement<Props> {
+function FullSidebar ({ address, className = '', onClose, onUpdateName }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { accountIndex, flags, identity, isEditingName, isEditingTags, meta, name, onForgetAddress, onSaveName, onSaveTags, setName, setTags, tags, toggleIsEditingName, toggleIsEditingTags } = useAccountInfo(address);
-  const [isHoveringButton, toggleIsHoveringButton] = useToggle();
   const [isTransferOpen, toggleIsTransferOpen] = useToggle();
 
   const _onForgetAddress = useCallback(
@@ -45,14 +44,11 @@ function Sidebar ({ address, className = '', onClose, onUpdateName }: Props): Re
   );
 
   return (
-    <div className={className}>
-      <Button
-        className='ui--AddressMenu-close'
-        icon='times'
-        isBasic
-        isCircular
-        onClick={onClose}
-      />
+    <Sidebar
+      className={className}
+      onClose={onClose}
+      position='right'
+    >
       <div className='ui--AddressMenu-header'>
         <IdentityIcon
           size={80}
@@ -110,53 +106,30 @@ function Sidebar ({ address, className = '', onClose, onUpdateName }: Props): Re
           <Button.Group>
             <Button
               icon='paper-plane'
-              label={t<string>('Deposit')}
+              label={t<string>('Send')}
               onClick={toggleIsTransferOpen}
             />
             {flags.isOwned && (
               <Button
-                className='basic'
                 icon='check'
-                isPrimary
+                isBasic
                 label={t<string>('Owned')}
-                onMouseEnter={toggleIsHoveringButton}
-                onMouseLeave={toggleIsHoveringButton}
-                size='tiny'
               />
             )}
             {!flags.isOwned && !flags.isInContacts && (
               <Button
                 icon='plus'
-                isPositive
                 label={t<string>('Save')}
                 onClick={_onUpdateName}
-                onMouseEnter={toggleIsHoveringButton}
-                onMouseLeave={toggleIsHoveringButton}
-                size='tiny'
               />
             )}
             {!flags.isOwned && flags.isInContacts && (
               <Button
-                className={`ui--AddressMenu-button icon ${isHoveringButton ? '' : 'basic'}`}
-                isAnimated
-                isNegative={isHoveringButton}
-                isPositive={!isHoveringButton}
+                className='ui--AddressMenu-button'
+                icon='ban'
+                label={t<string>('Remove')}
                 onClick={_onForgetAddress}
-                onMouseEnter={toggleIsHoveringButton}
-                onMouseLeave={toggleIsHoveringButton}
-                size='tiny'
-              >
-                <Button.Content visible>
-                  <Icon icon='check' />
-                  &nbsp;
-                  {t<string>('Saved')}
-                </Button.Content>
-                <Button.Content hidden>
-                  <Icon icon='ban' />
-                  &nbsp;
-                  {t<string>('Remove')}
-                </Button.Content>
-              </Button>
+              />
             )}
           </Button.Group>
           {isTransferOpen && (
@@ -183,32 +156,13 @@ function Sidebar ({ address, className = '', onClose, onUpdateName }: Props): Re
           type='address'
         />
       </section>
-    </div>
+    </Sidebar>
   );
 }
 
-export default React.memo(styled(Sidebar)`
-  bottom: 0;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  max-width: 24rem;
-  background: #f5f4f3;
-  padding: 1rem;
-  box-shadow: -6px 0px 20px 0px rgba(0,0,0,0.2);
-  z-index: 999;
-
+export default React.memo(styled(FullSidebar)`
   input {
     width: auto !important;
-  }
-
-  .ui--AddressMenu-close {
-    position: absolute;
-    right: 0.5rem;
-    top: 0.5rem;
-    font-size: 1.2rem;
-    padding: 0.6rem !important;
   }
 
   .ui--AddressMenu-header {
@@ -220,18 +174,6 @@ export default React.memo(styled(Sidebar)`
     justify-content: center;
     margin: -1rem -1rem 1rem -1rem;
     padding: 1rem;
-
-    .ui.button {
-      transition: 0.5s all;
-
-      &.secondary {
-        background-color: #666;
-      }
-    }
-
-    .ui.button+.ui.button {
-      margin-left: 0.5rem !important;
-    }
   }
 
   .ui--AddressMenu-addr {

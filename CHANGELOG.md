@@ -1,10 +1,60 @@
 # CHANGELOG
 
-## 0.49.0-beta.x
+## 0.51.1 Jul 27, 2020
 
+- Support for Acala chain and types (Thanks to https://github.com/aniiantt)
+- First batch of i18n for Arabic (Thanks to https://github.com/nightwolf3)
+- Update for Polkadot council thresholds
+- Council motion adjustment to cater for current and previous generations
+- Adjust imminent proposals to not need own type adjustments
+- Cleanup voting totals to only take free into account
+- Support JSON v3 formats with kdf
+- Always display time left in countdowns, not blocks
+- Adjust progress component to be circular
+- Rename "Deposit" button to "Send" button (less confusion)
+- Ensure new generation tip cancel works for council & users
+- Split council votes in backing & number of votes
+- Adjust council motions to have the correct max display for nay votes
+- Adjust payout toggles with increasing day increments
+- Adjust button formats & layouts
+- Adjust council slashing params to cater for current generation
+- Fixed for keyboard locale detection
+- Don't allow display in an iframe
+
+## 0.50.1 Jul 20, 2020
+
+- Adjust CSPs for Electron (Thanks to https://github.com/EthWorks)
+- Move delegation column to badge (Thanks to https://github.com/Tbaut)
+- Display costs for preimage calls
+- Add buttons for bid/unbid on Society
+- Allow tip endorsements while in countdown
+- Flatten events to group by same-kind in the same block
+- Adjust identity validation to check for whitespacing
+- Allow the use of VecFixed params with type detection/inputs
+- Adjust controller changing to filter when stash === controller (no error, but warn)
+- Allow the poll module via Governance proxy
+- Expand proxy detection to deep-inspect batched calls
+- Ensure various APIs are available (filtering) before attempting to render
+- Ensure tooltips are correctly displayed on account hovers
+- Cleanup council display for candidates
+- Cleanup and simplify QR import logic (& always set genesisHash, even when not supplied)
+- Always set genesisHash when accounts are derived
+- Adjust breakpoints for `AccountName` via `AddressShort`
+- Cleanup SUI dependencies with unused components, Progress, Responsive, Toggle
+- Adjust module bundling splits, remove unused libraries & fonts
+- Remove unmaintained page-123code (& references)
+- Don't display finalized blocks when grandpa is not available
+
+## 0.49.1 Jul 13, 2020
+
+- Update Subscan links with supported chains (https://github.com/carumusan)
+- Enhance Electron desktop with CSP & best practices (Thanks to https://github.com/EthWorks)
 - Activate Electron update feature by default (Thanks to https://github.com/EthWorks)
+- Use external browser for embedded links in Electron (Thanks to https://github.com/EthWorks)
 - Add testing around Electron features (Thanks to https://github.com/EthWorks)
 - Support democracy account delegation (Thanks to https://github.com/Tbaut)
+- Don't filter selected on multi account selector (Thanks to https://github.com/Tbaut)
+- Add support for Polkadot denomination poll
 - Allow input & display of OpaqueCall type from multisig
 - Indicate own nominees on targets page (re-added with badges)
 - Re-add indicator for own nominators in staking targets
@@ -12,6 +62,10 @@
 - Add generator for Kusama society designs
 - Handle OpaqueCall in inputs and well as displays (multisig)
 - Small layout adjustments for address display components
+- Performance improvements on wrapped styles, component libraries
+- Add support for display detected ASCII bytes as text
+- Adjust type injection to override on-connect API defaults
+- Adjust attestation display with no-balance filters
 
 ## 0.48.1 Jul 6, 2020
 

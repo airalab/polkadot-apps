@@ -190,8 +190,8 @@ function Status ({ className = '' }: Props): React.ReactElement<Props> | null {
         <div className='dismiss'>
           <Button
             icon='times'
-            isFluid
-            isPrimary
+            isBasic
+            isFull
             label={t<string>('Dismiss all notifications')}
             onClick={_onDismiss}
           />

@@ -7,12 +7,13 @@ import { BitLength } from './types';
 
 import BN from 'bn.js';
 import React, { useCallback, useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { BN_ZERO, BN_TEN, formatBalance, isBn } from '@polkadot/util';
 
 import { classes } from './util';
 import { BitLengthOption } from './constants';
 import Dropdown from './Dropdown';
-import Input, { KEYS, KEYS_PRE } from './Input';
+import Input, { KEYS_PRE } from './Input';
 import { useTranslation } from './translate';
 
 interface Props {
@@ -58,9 +59,11 @@ function getGlobalMaxValue (bitLength?: number): BN {
 }
 
 function getRegex (isDecimal: boolean): RegExp {
+  const decimal = '.';
+
   return new RegExp(
     isDecimal
-      ? `^(0|[1-9]\\d*)(\\${KEYS.DECIMAL}\\d*)?$`
+      ? `^(0|[1-9]\\d*)(\\${decimal}\\d*)?$`
       : '^(0|[1-9]\\d*)$'
   );
 }
@@ -245,7 +248,7 @@ function InputNumber ({ autoFocus, bitLength = DEFAULT_BITLENGTH, children, clas
   return (
     <Input
       autoFocus={autoFocus}
-      className={classes('ui--InputNumber', className)}
+      className={classes('ui--InputNumber', isDisabled && 'isDisabled', className)}
       help={help}
       isAction={isSi}
       isDisabled={isDisabled}
@@ -279,4 +282,18 @@ function InputNumber ({ autoFocus, bitLength = DEFAULT_BITLENGTH, children, clas
   );
 }
 
-export default React.memo(InputNumber);
+export default React.memo(styled(InputNumber)`
+  &.isDisabled {
+    .ui--SiDropdown {
+      background: transparent;
+      border-color: rgba(34, 36, 38, .15) !important;
+      border-style: dashed;
+      color: #666 !important;
+      cursor: default !important;
+
+      .dropdown.icon {
+        display: none;
+      }
+    }
+  }
+`);

@@ -53,7 +53,7 @@ function BondExtra ({ controllerId, onClose, stakingInfo, stashId }: Props): Rea
       header= {t<string>('Bond more funds')}
       size='large'
     >
-      <Modal.Content className='ui--signer-Signer-Content'>
+      <Modal.Content>
         <Modal.Columns>
           <Modal.Column>
             <InputAddress
@@ -103,7 +103,6 @@ function BondExtra ({ controllerId, onClose, stakingInfo, stashId }: Props): Rea
           accountId={stashId}
           icon='sign-in-alt'
           isDisabled={!maxAdditional?.gt(BN_ZERO) || !!amountError?.error}
-          isPrimary
           label={t<string>('Bond more')}
           onStart={onClose}
           params={[maxAdditional]}

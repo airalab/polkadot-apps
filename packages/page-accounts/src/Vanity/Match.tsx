@@ -53,15 +53,11 @@ function Match ({ address, className = '', count, offset, onCreateToggle, onRemo
       <td className='button'>
         <Button
           icon='plus'
-          isPrimary
           onClick={_onCreate}
-          size='tiny'
         />
         <Button
           icon='times'
-          isNegative
           onClick={_onRemove}
-          size='tiny'
         />
       </td>
     </tr>

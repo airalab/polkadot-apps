@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { IconName } from '@fortawesome/fontawesome-svg-core';
-import { ButtonProps as SUIButtonProps } from 'semantic-ui-react/dist/commonjs/elements/Button/Button';
 import { BareProps } from '../types';
 
 export type Button$Callback = () => void | Promise<void>;
@@ -11,46 +10,30 @@ export type Button$Callback = () => void | Promise<void>;
 export interface ButtonProps {
   children?: React.ReactNode;
   className?: string;
-  floated?: 'left' | 'right';
-  icon?: IconName;
-  isAnimated?: SUIButtonProps['animated'];
+  icon: IconName;
   isBasic?: boolean;
+  isBusy?: boolean;
   isCircular?: boolean;
   isDisabled?: boolean;
-  isFluid?: boolean;
+  isFull?: boolean;
   isIcon?: boolean;
-  isLoading?: boolean;
-  isNegative?: boolean;
-  isPositive?: boolean;
-  isPrimary?: boolean;
+  isSelected?: boolean;
   label?: React.ReactNode;
-  labelPosition?: 'left' | 'right';
   onClick?: Button$Callback;
   onMouseEnter?: Button$Callback;
   onMouseLeave?: Button$Callback;
-  ref?: any;
-  size?: SUIButtonProps['size'];
   tabIndex?: number;
   tooltip?: React.ReactNode;
 }
 
 export type DividerProps = BareProps;
 
-export interface ContentProps {
-  children?: React.ReactNode;
-  hidden?: boolean;
-  visible?: boolean;
-}
-
 export interface GroupProps {
   children?: React.ReactNode;
   className?: string;
-  isBasic?: boolean;
   isCentered?: boolean;
 }
 
 export type ButtonType = React.ComponentType<ButtonProps> & {
-  Content: React.ComponentType<ContentProps>;
   Group: React.ComponentType<GroupProps>;
-  Or: React.ComponentType<BareProps>;
 };
