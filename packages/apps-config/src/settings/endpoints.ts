@@ -5,8 +5,9 @@
 import { TFunction } from 'i18next';
 import { Option } from './types';
 
-interface LinkOption extends Option {
+export interface LinkOption extends Option {
   dnslink?: string;
+  isChild?: boolean;
 }
 
 interface EnvWindow {
@@ -29,6 +30,7 @@ function createDev (t: TFunction): LinkOption[] {
 
 function createLive (t: TFunction): LinkOption[] {
   return [
+    // fixed, polkadot
     {
       dnslink: 'ipci',
       info: 'ipci',
@@ -47,16 +49,16 @@ function createLive (t: TFunction): LinkOption[] {
 function createTest (t: TFunction): LinkOption[] {
   return [
     {
-      dnslink: 'robonomics',
-      info: 'robonomics',
-      text: t<string>('rpc.robonomics', 'Robonomics Parachain (hosted by Airalab)', { ns: 'apps-config' }),
-      value: 'wss://rpc.parachain.robonomics.network'
+      dnslink: 'rococo',
+      info: 'rococo',
+      text: t<string>('rpc.rococo', 'Robonomics Local Rococo (Polkadot Testnet, hosted by Airalab)', { ns: 'apps-config' }),
+      value: 'wss://rpc.rococo.robonomics.network'
     },
     {
-      dnslink: 'polkadot',
-      info: 'polkadot',
-      text: t<string>('rpc.robonomics-westend', 'Robonomics Westend Testnet (hosted by Airalab)', { ns: 'apps-config' }),
-      value: 'wss://rpc.westend.robonomics.network'
+      info: 'rococoTrack',
+      isChild: true,
+      text: t<string>('rpc.rococo.robonomics', 'Robonomics (Rococo parachain, hosted by Airalab)', { ns: 'apps-config' }),
+      value: 'wss://rpc.parachain.robonomics.network'
     }
   ];
 }

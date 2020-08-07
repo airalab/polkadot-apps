@@ -7,6 +7,10 @@
 // anything for a specific chain, most would probably fit into the node category (but allow for chain-specific)
 import chainKusama from './chains/kusama-128.gif';
 import chainDaoIpci from './chains/ipci.svg';
+import chainRococo from './chains/rococo.svg';
+import chainRococoTick from './chains/rococo-tick.svg';
+import chainRococoTrack from './chains/rococo-track.svg';
+import chainRococoTrick from './chains/rococo-trick.svg';
 
 // defaults for the node type, assuming we don't have a specific chain, but rather match on the implementation
 import nodeAcala from './nodes/acala-circle.svg';
@@ -32,7 +36,11 @@ const chainLogos: Record<string, any> = [
   ['Kusama', chainKusama], // new name after CC3
   ['Kusama CC1', chainKusama],
   ['Kusama CC2', chainKusama],
-  ['Kusama CC3', chainKusama]
+  ['Kusama CC3', chainKusama],
+  ['Rococo', chainRococo],
+  ['Tick', chainRococoTick],
+  ['Track', chainRococoTrack],
+  ['Trick', chainRococoTrick]
 ].reduce((logos, [chain, logo]): Record<string, any> => ({
   ...logos,
   [(chain as string).toLowerCase()]: logo
@@ -70,6 +78,10 @@ const namedLogos: Record<string, any> = {
   nodle: nodeNodle,
   polkadot: nodePolkadot,
   robonomics: nodeRobonomics,
+  rococo: chainRococo,
+  rococoTick: chainRococoTick,
+  rococoTrack: chainRococoTrack,
+  rococoTrick: chainRococoTrick,
   substrate: nodeSubstrate,
   westend: nodePolkadot
 };
