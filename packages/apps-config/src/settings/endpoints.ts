@@ -81,7 +81,7 @@ function createTest (t: TFunction): LinkOption[] {
       info: 'rococoRobonomics',
       isChild: true,
       text: t<string>('rpc.rococo.robonomics', 'Robonomics (Rococo parachain, hosted by Airalab)', { ns: 'apps-config' }),
-      value: 'wss://rpc.parachain.robonomics.network'
+      value: 'wss://vladivostok-rpc.robonomics.network'
     }
   ];
 }
