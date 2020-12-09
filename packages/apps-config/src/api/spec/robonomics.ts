@@ -11,9 +11,22 @@ export default {
   EconomicalParam: '{}',
   ProofParam: 'MultiSignature',
   LiabilityIndex: 'u64',
-  ValidationFunctionParams: {
-    max_code_size: 'u32',
-    relay_chain_height: 'u32',
-    code_upgrade_allowed: 'Option<u32>'
-  }
+  PersistedValidationData: {
+      parent_head: 'Vec<u8>',
+      block_number: 'u32',
+      hrmp_mqc_heads: 'Vec<(u32, Hash)>',
+      dmq_mqc_head: 'Hash',
+      max_pov_size: 'u32',
+  },
+  TransientValidationData: {
+      max_code_size: 'u32',
+      max_head_data_size: 'u32',
+      balance: 'Balance',
+      code_upgrade_allowed: 'Option<u32>',
+      dmq_length: 'u32',
+  },
+  ValidationData: {
+      persistent: 'PersistedValidationData',
+      transient: 'TransientValidationData',
+  },
 };

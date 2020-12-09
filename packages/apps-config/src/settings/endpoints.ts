@@ -84,14 +84,21 @@ function createTestNetworks (t: TFunction): LinkOption[] {
       info: 'rococo',
       text: t('rpc.rococo', 'Airalab Rococo', { ns: 'apps-config' }),
       textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'Airalab' } }),
-      value: 'wss://local-rococo.parachain.robonomics.network'
+      value: 'wss://rococo-local.rpc.robonomics.network'
     },
     {
       info: 'rococoEarth',
       isChild: true,
       text: t('rpc.rococo.earth', 'Earth', { ns: 'apps-config' }),
       textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'Airalab' } }),
-      value: 'wss://rpc.parachain.robonomics.network'
+      value: 'wss://earth.rpc.robonomics.network'
+    },
+    {
+      info: 'rococoMars',
+      isChild: true,
+      text: t('rpc.rococo.mars', 'Mars', { ns: 'apps-config' }),
+      textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'Airalab' } }),
+      value: 'wss://mars.rpc.robonomics.network'
     }
   ];
 }

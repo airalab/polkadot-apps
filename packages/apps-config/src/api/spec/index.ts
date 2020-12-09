@@ -19,7 +19,6 @@ import hanonycash from './hanonycash';
 import kilt from './kilt';
 import kulupu from './kulupu';
 import nodeTemplate from './node-template';
-import robonomics from './robonomics';
 import nodle from './nodle';
 import phala from './phala';
 import plasm from './plasm';
