@@ -1,9 +1,9 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import queryString from 'query-string';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
+
 import { Input, Toggle } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { isString } from '@polkadot/util';
@@ -14,7 +14,7 @@ interface Props {
   children?: React.ReactNode;
   className?: string;
   nameFilter: string;
-  setNameFilter: (value: string) => void;
+  setNameFilter: (value: string, isQuery: boolean) => void;
   setWithIdentity: (value: boolean) => void;
   withIdentity: boolean;
 }
@@ -28,10 +28,15 @@ function Filtering ({ children, className, nameFilter, setNameFilter, setWithIde
     const queryFilter = queryString.parse(location.href.split('?')[1]).filter;
 
     if (isString(queryFilter)) {
-      setNameFilter(queryFilter);
+      setNameFilter(queryFilter, true);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const _setNameFilter = useCallback(
+    (value: string) => setNameFilter(value, false),
+    [setNameFilter]
+  );
 
   return (
     <div className={className}>
@@ -39,7 +44,7 @@ function Filtering ({ children, className, nameFilter, setNameFilter, setWithIde
         autoFocus
         isFull
         label={t<string>('filter by name, address or index')}
-        onChange={setNameFilter}
+        onChange={_setNameFilter}
         value={nameFilter}
       />
       <div className='staking--optionsBar'>

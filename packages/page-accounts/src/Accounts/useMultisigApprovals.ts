@@ -1,13 +1,13 @@
 // Copyright 2017-2020 @polkadot/app-accounts authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { H256, Multisig } from '@polkadot/types/interfaces';
+import type { Option, StorageKey } from '@polkadot/types';
+import type { H256, Multisig } from '@polkadot/types/interfaces';
 
 import { useContext, useEffect, useState } from 'react';
+
 import { useApi, useIncrement, useIsMountedRef } from '@polkadot/react-hooks';
 import { EventsContext } from '@polkadot/react-query';
-import { Option, StorageKey } from '@polkadot/types';
 
 export default function useMultisigApprovals (address: string): [H256, Multisig][] {
   const events = useContext(EventsContext);

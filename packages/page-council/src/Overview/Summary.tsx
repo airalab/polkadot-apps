@@ -1,13 +1,13 @@
 // Copyright 2017-2020 @polkadot/app-democracy authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { DeriveElectionsInfo } from '@polkadot/api-derive/types';
-import { BlockNumber } from '@polkadot/types/interfaces';
-import { ComponentProps } from './types';
+import type { DeriveElectionsInfo } from '@polkadot/api-derive/types';
+import type { BlockNumber } from '@polkadot/types/interfaces';
+import type { ComponentProps } from './types';
 
 import React from 'react';
-import { SummaryBox, CardSummary } from '@polkadot/react-components';
+
+import { CardSummary, SummaryBox } from '@polkadot/react-components';
 import { formatNumber } from '@polkadot/util';
 
 import { useTranslation } from '../translate';

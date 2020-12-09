@@ -1,13 +1,13 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { EraIndex } from '@polkadot/types/interfaces';
+import type { Option } from '@polkadot/types';
+import type { EraIndex } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
 import { useMemo } from 'react';
+
 import { useApi, useCall } from '@polkadot/react-hooks';
-import { Option } from '@polkadot/types';
 import { isFunction } from '@polkadot/util';
 
 export default function useStakerPayouts (): BN {

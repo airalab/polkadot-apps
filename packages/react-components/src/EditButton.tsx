@@ -1,9 +1,8 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { IconName } from '@fortawesome/fontawesome-svg-core';
-import { VoidFn } from './types';
+import type { IconName } from '@fortawesome/fontawesome-svg-core';
+import type { VoidFn } from './types';
 
 import React from 'react';
 import styled from 'styled-components';

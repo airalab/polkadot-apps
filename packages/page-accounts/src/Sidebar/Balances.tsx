@@ -1,9 +1,9 @@
 // Copyright 2017-2020 @polkadot/app-accounts authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
 import styled from 'styled-components';
+
 import { AddressInfo, Icon } from '@polkadot/react-components';
 
 import { useTranslation } from '../translate';
@@ -46,7 +46,7 @@ export default React.memo(styled(Balances)`
       label {
         color: inherit;
         font-size: 0.93rem;
-        font-weight: bold;
+        font-weight: 400;
       }
 
       .ui--Expander-content .ui--FormatBalance-value {

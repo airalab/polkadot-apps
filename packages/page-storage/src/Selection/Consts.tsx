@@ -1,12 +1,12 @@
 // Copyright 2017-2020 @polkadot/app-storage authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { ConstantCodec } from '@polkadot/metadata/Decorated/types';
-import { ConstValue } from '@polkadot/react-components/InputConsts/types';
-import { ComponentProps as Props } from '../types';
+import type { ConstantCodec } from '@polkadot/metadata/decorate/types';
+import type { ConstValue } from '@polkadot/react-components/InputConsts/types';
+import type { ComponentProps as Props } from '../types';
 
 import React, { useCallback, useState } from 'react';
+
 import { Button, InputConsts } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 

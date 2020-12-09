@@ -1,18 +1,18 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { PayoutValidator } from './types';
+import type { PayoutValidator } from './types';
 
 import BN from 'bn.js';
 import React, { useMemo } from 'react';
+
 import { AddressMini, AddressSmall, Expander } from '@polkadot/react-components';
 import { BlockToTime, FormatBalance } from '@polkadot/react-query';
 
 import { useTranslation } from '../translate';
 import PayButton from './PayButton';
-import { createErasString } from './util';
 import useEraBlocks from './useEraBlocks';
+import { createErasString } from './util';
 
 interface Props {
   className?: string;
@@ -68,7 +68,7 @@ function Validator ({ className = '', isDisabled, payout }: Props): React.ReactE
       <td className='number'><FormatBalance value={payout.available} /></td>
       <td className='number'>{eraBlocks && <BlockToTime blocks={eraBlocks} />}</td>
       <td
-        className='start'
+        className='expand'
         colSpan={2}
       >
         <Expander summary={t<string>('{{count}} own stashes', { replace: { count: numNominators } })}>

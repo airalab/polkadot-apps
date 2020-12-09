@@ -1,12 +1,12 @@
 // Copyright 2017-2020 @polkadot/app-claims authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { EthereumAddress, EcdsaSignature, StatementKind } from '@polkadot/types/interfaces';
+import type { EcdsaSignature, EthereumAddress, StatementKind } from '@polkadot/types/interfaces';
 
 import secp256k1 from 'secp256k1/elliptic';
-import { registry } from '@polkadot/react-api';
-import { assert, hexToU8a, stringToU8a, u8aToBuffer, u8aConcat } from '@polkadot/util';
+
+import registry from '@polkadot/react-api/typeRegistry';
+import { assert, hexToU8a, stringToU8a, u8aConcat, u8aToBuffer } from '@polkadot/util';
 import { keccakAsHex, keccakAsU8a } from '@polkadot/util-crypto';
 
 interface RecoveredSignature {

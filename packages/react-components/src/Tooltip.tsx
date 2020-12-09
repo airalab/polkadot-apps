@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
@@ -87,14 +86,22 @@ export default React.memo(styled(Tooltip)`
     margin-top: 0.75rem;
   }
 
+  > div+div {
+    margin-top: 0.5rem;
+  }
+
   .faded {
-    margin-top: -0.25rem;
+    margin-top: 0;
     opacity: 0.75 !important;
     font-size: 0.85em !important;
+
+    .faded {
+      font-size: 1em !important;
+    }
   }
 
   .faded+.faded {
-    margin-top: -0.5rem;
+    margin-top: 0;
   }
 
   .row+.row {

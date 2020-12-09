@@ -1,16 +1,16 @@
 // Copyright 2017-2020 @polkadot/app-democracy authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { DeriveProposalExternal } from '@polkadot/api-derive/types';
+import type { DeriveProposalExternal } from '@polkadot/api-derive/types';
 
 import React from 'react';
+
 import { AddressMini, Button } from '@polkadot/react-components';
 import { FormatBalance } from '@polkadot/react-query';
 
+import Fasttrack from './Fasttrack';
 import PreImageButton from './PreImageButton';
 import ProposalCell from './ProposalCell';
-import Fasttrack from './Fasttrack';
 
 interface Props {
   className?: string;

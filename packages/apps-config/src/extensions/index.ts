@@ -1,8 +1,7 @@
 // Copyright 2017-2020 @polkadot/apps-config authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-// it would have been really good to import this from detect, however... not exported
+// it would have been really good to import this from detect-browser, however... not exported
 type Browser = 'chrome' | 'firefox';
 
 interface Extension {
@@ -11,7 +10,10 @@ interface Extension {
   name: string;
 }
 
-const availableExtensions: Record<Browser, Extension[]> = [
+// The list of known extensions including the links to tem on the store. This is used when
+// no extensions are actually available, promoting the user to install one or more
+
+export const availableExtensions: Record<Browser, Extension[]> = [
   {
     browsers: {
       chrome: 'https://chrome.google.com/webstore/detail/polkadot%7Bjs%7D-extension/mopnmbcafieddcagagdcbnhejhlodfdd',
@@ -27,5 +29,3 @@ const availableExtensions: Record<Browser, Extension[]> = [
 
   return available;
 }, { chrome: [], firefox: [] });
-
-export { availableExtensions };

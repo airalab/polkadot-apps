@@ -1,8 +1,7 @@
 // Copyright 2017-2020 @polkadot/app-js authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { Snippet } from '@polkadot/app-js/types';
+import type { Snippet } from '@polkadot/app-js/types';
 
 // We must fix this :(
 /* eslint-disable sort-keys */

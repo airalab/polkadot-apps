@@ -1,15 +1,14 @@
 // Copyright 2017-2020 @polkadot/app-storage authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { ComponentProps as Props } from '../types';
+import type { ComponentProps as Props } from '../types';
 
 import React, { useCallback, useState } from 'react';
+
 import { Button, Input } from '@polkadot/react-components';
+import { compactAddLength, u8aToU8a } from '@polkadot/util';
 
 import { useTranslation } from '../translate';
-import { u8aToU8a } from '@polkadot/util';
-import { Compact } from '@polkadot/types';
 
 function Raw ({ onAdd }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
@@ -28,7 +27,7 @@ function Raw ({ onAdd }: Props): React.ReactElement<Props> {
 
       setValue({
         isValid: u8a.length !== 0,
-        key: Compact.addLengthPrefix(u8a)
+        key: compactAddLength(u8a)
       });
     },
     []

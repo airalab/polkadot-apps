@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/apps authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import { BrowserWindow, screen } from 'electron';
 import path from 'path';
@@ -23,7 +22,7 @@ export function createWindow (environment: string): Promise<unknown> {
   if (environment === 'development') {
     win.webContents.openDevTools();
 
-    return win.loadURL('http://0.0.0.0:3000/');
+    return win.loadURL('http://127.0.0.1:3000/');
   }
 
   const mainFilePath = path.resolve(__dirname, 'index.html');

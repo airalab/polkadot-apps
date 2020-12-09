@@ -1,10 +1,10 @@
 // Copyright 2017-2020 @polkadot/app-democracy authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import BN from 'bn.js';
 import React from 'react';
-import { SummaryBox, CardSummary } from '@polkadot/react-components';
+
+import { CardSummary, SummaryBox } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { formatNumber } from '@polkadot/util';
 
@@ -41,7 +41,7 @@ function Summary ({ referendumCount }: Props): React.ReactElement<Props> {
         </CardSummary>
       </section>
       {bestNumber && (
-        <section className='ui--media-medium'>
+        <section className='media--1100'>
           <CardSummary
             label={t<string>('launch period')}
             progress={{

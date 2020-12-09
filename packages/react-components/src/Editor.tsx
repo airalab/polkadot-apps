@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 // Something is seriously going wrong here...
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
@@ -11,7 +10,6 @@
 import CodeFlask from 'codeflask';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { classes } from '@polkadot/react-components/util';
 
 interface Props {
   className?: string;
@@ -64,7 +62,7 @@ function Editor ({ className = '', code, isValid, onEdit }: Props): React.ReactE
 
   return (
     <div
-      className={classes('ui-Editor', className, isValid === false ? 'invalid' : '')}
+      className={`ui-Editor ${className}${isValid === false ? ' invalid' : ''}`}
       id={editorId}
     />
   );

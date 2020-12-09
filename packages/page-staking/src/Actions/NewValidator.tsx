@@ -1,10 +1,10 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { BondInfo, SessionInfo, ValidateInfo } from './partials/types';
+import type { BondInfo, SessionInfo, ValidateInfo } from './partials/types';
 
 import React, { useCallback, useState } from 'react';
+
 import { Button, Modal, TxButton } from '@polkadot/react-components';
 import { useApi, useToggle } from '@polkadot/react-hooks';
 import { isFunction } from '@polkadot/util';
@@ -109,7 +109,11 @@ function NewValidator ({ isInElection }: Props): React.ReactElement<Props> {
                       ? [bondTx, sessionTx, validateTx]
                       : [bondOwnTx, sessionTx, validateTx, controllerTx]
                   ]}
-                  tx='utility.batch'
+                  tx={
+                    isFunction(api.tx.utility.batchAll)
+                      ? 'utility.batchAll'
+                      : 'utility.batch'
+                  }
                 />
               )
               : (

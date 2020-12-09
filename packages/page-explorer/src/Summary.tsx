@@ -1,10 +1,10 @@
 // Copyright 2017-2020 @polkadot/app-explorer authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+
+import { CardSummary, SummaryBox } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
-import { SummaryBox, CardSummary } from '@polkadot/react-components';
 import { BestFinalized, BestNumber, BlockToTime, TimeNow, TotalIssuance } from '@polkadot/react-query';
 import { BN_ONE } from '@polkadot/util';
 
@@ -22,21 +22,21 @@ function Summary (): React.ReactElement {
           <TimeNow />
         </CardSummary>
         <CardSummary
-          className='ui--media-small'
+          className='media--800'
           label={t<string>('target')}
         >
           <BlockToTime blocks={BN_ONE} />
         </CardSummary>
         {api.query.balances && (
           <CardSummary
-            className='ui--media-small'
+            className='media--800'
             label={t<string>('total issuance')}
           >
             <TotalIssuance />
           </CardSummary>
         )}
       </section>
-      <section className='ui--media-large'>
+      <section className='media--1200'>
         <SummarySession withEra={false} />
       </section>
       <section>

@@ -1,14 +1,13 @@
 // Copyright 2017-2020 @polkadot/app-democracy authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+
 import { useToggle } from '@polkadot/react-hooks';
 
 import Icon from './Icon';
-import { classes } from './util';
 
 export interface InsetProps {
   className?: string;
@@ -39,18 +38,7 @@ function Inset ({ children, className = '', header, href, isCollapsible, isError
 
   return (
     <div
-      className={
-        classes(
-          'ui--Inset',
-          href && 'as-link',
-          isCollapsible && 'collapsible',
-          (isError && !isSuccess) && 'error',
-          (!isError && isSuccess) && 'success',
-          withBottomMargin && 'bottom-margin',
-          withTopMargin && 'top-margin',
-          className
-        )
-      }
+      className={`ui--Inset ${href ? ' as-link' : ''}${isCollapsible ? ' collapsible' : ''}${(isError && !isSuccess) ? ' error' : ''}${(!isError && isSuccess) ? ' success' : ''}${withBottomMargin ? ' bottom-margin' : ''}${withTopMargin ? ' top-margin' : ''} ${className}`}
     >
       {isCollapsible && (
         <div
@@ -59,13 +47,13 @@ function Inset ({ children, className = '', header, href, isCollapsible, isError
         >
           <h3>{header}</h3>
           <Icon
-            className={classes(isCollapsed && 'collapsed')}
+            className={isCollapsed ? 'collapsed' : ''}
             icon='angle-up'
           />
         </div>
       )}
       <div
-        className={classes('children', (isCollapsible && isCollapsed) && 'collapsed')}
+        className={`children${(isCollapsible && isCollapsed) ? ' collapsed' : ''}`}
         onClick={_onClick}
       >
         {children}

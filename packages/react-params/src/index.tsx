@@ -1,11 +1,13 @@
 // Copyright 2017-2020 @polkadot/react-params authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { I18nProps } from '@polkadot/react-components/types';
-import { ComponentMap, ParamDef, RawParam, RawParams, RawParamOnChangeValue } from './types';
+import type { I18nProps } from '@polkadot/react-components/types';
+import type { Registry } from '@polkadot/types/types';
+import type { ComponentMap, ParamDef, RawParam, RawParamOnChangeValue, RawParams } from './types';
 
 import React from 'react';
+
+import { registry as defaultRegistry } from '@polkadot/react-api';
 import { ErrorBoundary } from '@polkadot/react-components';
 
 import Holder from './Holder';
@@ -22,6 +24,7 @@ interface Props extends I18nProps {
   onEscape?: () => void;
   overrides?: ComponentMap;
   params: ParamDef[];
+  registry?: Registry;
   values?: RawParams | null;
   withBorder?: boolean;
 }
@@ -38,7 +41,7 @@ class Params extends React.PureComponent<Props, State> {
     params: null
   };
 
-  public static getDerivedStateFromProps ({ isDisabled, params, values }: Props, prevState: State): Pick<State, never> | null {
+  public static getDerivedStateFromProps ({ isDisabled, params, registry = defaultRegistry, values }: Props, prevState: State): Pick<State, never> | null {
     const isSame = JSON.stringify(prevState.params) === JSON.stringify(params);
 
     if (isDisabled || isSame) {
@@ -52,7 +55,7 @@ class Params extends React.PureComponent<Props, State> {
           ...result,
           values && values[index]
             ? values[index]
-            : createValue(param)
+            : createValue(registry, param)
         ],
         []
       )
@@ -76,7 +79,7 @@ class Params extends React.PureComponent<Props, State> {
   }
 
   public render (): React.ReactNode {
-    const { children, className = '', isDisabled, onEnter, onEscape, overrides, params, withBorder = true } = this.props;
+    const { children, className = '', isDisabled, onEnter, onEscape, overrides, params, registry = defaultRegistry, withBorder = true } = this.props;
     const { values = this.props.values } = this.state;
 
     if (!values || !values.length) {
@@ -101,11 +104,12 @@ class Params extends React.PureComponent<Props, State> {
                 onEnter={onEnter}
                 onEscape={onEscape}
                 overrides={overrides}
+                registry={registry}
                 type={type}
               />
             ))}
+            {children}
           </div>
-          {children}
         </ErrorBoundary>
       </Holder>
     );

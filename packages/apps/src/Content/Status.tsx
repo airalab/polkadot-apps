@@ -1,12 +1,12 @@
 // Copyright 2017-2020 @polkadot/apps authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { EventRecord } from '@polkadot/types/interfaces';
-import { KeyringOptions } from '@polkadot/ui-keyring/options/types';
-import { ActionStatus } from '@polkadot/react-components/Status/types';
+import type { ActionStatus } from '@polkadot/react-components/Status/types';
+import type { EventRecord } from '@polkadot/types/interfaces';
+import type { KeyringOptions } from '@polkadot/ui-keyring/options/types';
 
 import React, { useContext, useEffect } from 'react';
+
 import { Status as StatusDisplay, StatusContext } from '@polkadot/react-components';
 import { useAccounts, useApi, useCall } from '@polkadot/react-hooks';
 import { stringToU8a } from '@polkadot/util';

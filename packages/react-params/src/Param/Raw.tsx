@@ -1,11 +1,11 @@
 // Copyright 2017-2020 @polkadot/react-params authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { Codec } from '@polkadot/types/types';
-import { Props } from '../types';
+import type { Codec } from '@polkadot/types/types';
+import type { Props } from '../types';
 
 import React, { useCallback, useState } from 'react';
+
 import { Input } from '@polkadot/react-components';
 
 import Bare from './Bare';

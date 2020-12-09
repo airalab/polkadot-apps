@@ -1,15 +1,14 @@
 // Copyright 2017-2020 @polkadot/react-hooks authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { RegistrarInfo } from '@polkadot/types/interfaces';
+import type { Option } from '@polkadot/types';
+import type { RegistrarInfo } from '@polkadot/types/interfaces';
 
-import { useEffect, useState } from 'react';
-import { Option } from '@polkadot/types';
+import { useMemo } from 'react';
 
-import useAccounts from './useAccounts';
-import useApi from './useApi';
-import useCall from './useCall';
+import { useAccounts } from './useAccounts';
+import { useApi } from './useApi';
+import { useCall } from './useCall';
 
 interface RegistrarNull {
   address: string | null;
@@ -27,16 +26,15 @@ interface State {
   skipQuery?: boolean;
 }
 
-export default function useRegistrars (skipQuery?: boolean): State {
+export function useRegistrars (skipQuery?: boolean): State {
   const { api } = useApi();
   const { allAccounts, hasAccounts } = useAccounts();
   const query = useCall<Option<RegistrarInfo>[]>(!skipQuery && hasAccounts && api.query.identity?.registrars);
-  const [state, setState] = useState<State>({ isRegistrar: false, registrars: [] });
 
   // determine if we have a registrar or not - registrars are allowed to approve
-  useEffect((): void => {
-    if (allAccounts && query) {
-      const registrars = query
+  return useMemo(
+    (): State => {
+      const registrars = (query || [])
         .map((registrar, index): RegistrarNull => ({
           address: registrar.isSome
             ? registrar.unwrap().account.toString()
@@ -45,12 +43,11 @@ export default function useRegistrars (skipQuery?: boolean): State {
         }))
         .filter((registrar): registrar is Registrar => !!registrar.address);
 
-      setState({
+      return {
         isRegistrar: registrars.some(({ address }) => allAccounts.includes(address)),
         registrars
-      });
-    }
-  }, [allAccounts, query]);
-
-  return state;
+      };
+    },
+    [allAccounts, query]
+  );
 }

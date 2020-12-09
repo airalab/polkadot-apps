@@ -1,8 +1,8 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { TabItem } from './types';
+import type { ThemeProps } from '../types';
+import type { TabItem } from './types';
 
 import React from 'react';
 import { NavLink } from 'react-router-dom';
@@ -32,7 +32,7 @@ function Tab ({ basePath, className = '', count, hasParams, index, isExact, isRo
   return (
     <NavLink
       activeClassName='tabLinkActive'
-      className={`ui--Tabs-Tab ${className}`}
+      className={`ui--Tab ${className}`}
       exact={tabIsExact}
       strict={tabIsExact}
       to={to}
@@ -54,9 +54,10 @@ function Tab ({ basePath, className = '', count, hasParams, index, isExact, isRo
   );
 }
 
-export default React.memo(styled(Tab)`
+export default React.memo(styled(Tab)(({ theme }: ThemeProps) => `
   border-bottom: 2px solid transparent;
-  color: #4e4e4e !important;
+  color: ${theme.color} !important;
+  margin-bottom: -3px;
   padding: 0.5rem 1.5rem 0.75rem;
 
   &.tabLinkActive {
@@ -64,7 +65,7 @@ export default React.memo(styled(Tab)`
   }
 
   &:hover {
-    color: inherit !important;
+    filter: highlight(120%);
 
     &:not(.tabLinkActive) {
       border-bottom-color: #e6e6e6;
@@ -72,10 +73,10 @@ export default React.memo(styled(Tab)`
   }
 
   .tabCounter {
-    margin: -1rem 0 -1rem 0.5rem;
+    margin: -1rem 0 -1rem 0.75rem;
   }
 
   .tabIcon {
     margin-left: 0.75rem;
   }
-`);
+`));

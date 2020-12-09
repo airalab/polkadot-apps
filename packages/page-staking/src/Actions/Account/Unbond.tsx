@@ -1,12 +1,12 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { AccountId, StakingLedger } from '@polkadot/types/interfaces';
+import type { AccountId, StakingLedger } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+
 import { InputAddress, InputBalance, Modal, Static, Toggle, TxButton } from '@polkadot/react-components';
 import { BlockToTime } from '@polkadot/react-query';
 

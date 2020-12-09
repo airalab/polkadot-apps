@@ -1,10 +1,10 @@
 // Copyright 2017-2020 @polkadot/react-params authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { ParamDef, Props, RawParam } from '../types';
+import type { ParamDef, Props, RawParam } from '../types';
 
 import React, { useEffect, useState } from 'react';
+
 import { isUndefined } from '@polkadot/util';
 
 import getInitValue from '../initValue';
@@ -19,8 +19,8 @@ function generateParam ([{ name, type }]: ParamDef[], index: number): ParamDef {
   };
 }
 
-function VectorFixed ({ className = '', defaultValue, isDisabled = false, label, onChange, overrides, type, withLabel }: Props): React.ReactElement<Props> | null {
-  const inputParams = useParamDefs(type);
+function VectorFixed ({ className = '', defaultValue, isDisabled = false, label, onChange, overrides, registry, type, withLabel }: Props): React.ReactElement<Props> | null {
+  const inputParams = useParamDefs(registry, type);
   const [params, setParams] = useState<ParamDef[]>([]);
   const [values, setValues] = useState<RawParam[]>([]);
 
@@ -50,14 +50,14 @@ function VectorFixed ({ className = '', defaultValue, isDisabled = false, label,
         }
 
         while (values.length < count) {
-          const value = getInitValue(inputParams[0].type);
+          const value = getInitValue(registry, inputParams[0].type);
 
           values.push({ isValid: !isUndefined(value), value });
         }
 
         return values.slice(0, count);
       });
-  }, [inputParams, isDisabled]);
+  }, [inputParams, isDisabled, registry]);
 
   // when isDisabled, set the values based on the defaultValue input
   useEffect((): void => {
@@ -91,6 +91,7 @@ function VectorFixed ({ className = '', defaultValue, isDisabled = false, label,
         onChange={setValues}
         overrides={overrides}
         params={params}
+        registry={registry}
         values={values}
       />
     </Base>

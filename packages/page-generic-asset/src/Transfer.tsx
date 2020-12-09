@@ -1,16 +1,16 @@
 // Copyright 2019 @polkadot/app-generic-asset authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { SubmittableExtrinsic } from '@polkadot/api/promise/types';
+import type { SubmittableExtrinsic } from '@polkadot/api/promise/types';
 
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Button, InputAddress, InputBalance, TxButton, Dropdown } from '@polkadot/react-components';
+
+import { withMulti, withObservable } from '@polkadot/react-api/hoc';
+import { Button, Dropdown, InputAddress, InputBalance, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { Available } from '@polkadot/react-query';
-import { withMulti, withObservable } from '@polkadot/react-api/hoc';
 import { BN_ZERO } from '@polkadot/util';
 
 import assetRegistry, { AssetsSubjectInfo } from './assetsRegistry';

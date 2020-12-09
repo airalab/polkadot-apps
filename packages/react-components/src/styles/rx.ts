@@ -1,10 +1,7 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { css } from 'styled-components';
-
-export default css`
+export default `
   .rx--updated {
     background: #ffffe0 !important;
     transition: all 0.7s ease-out;

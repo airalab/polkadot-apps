@@ -1,13 +1,13 @@
 // Copyright 2017-2020 @polkadot/app-contracts authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { ContractInfo } from '@polkadot/types/interfaces';
+import type { Option } from '@polkadot/types';
+import type { ContractInfo } from '@polkadot/types/interfaces';
 
 import React, { useEffect, useState } from 'react';
-import { Option } from '@polkadot/types';
-import { useApi, useCall } from '@polkadot/react-hooks';
+
 import { InfoForInput } from '@polkadot/react-components';
+import { useApi, useCall } from '@polkadot/react-hooks';
 import keyring from '@polkadot/ui-keyring';
 
 import { useTranslation } from '../translate';
@@ -35,7 +35,7 @@ function ValidateAddr ({ address, onChange }: Props): React.ReactElement<Props> 
 
   useEffect((): void => {
     setIsStored(!!contractInfo?.isSome);
-  }, [contractInfo?.isSome]);
+  }, [contractInfo]);
 
   useEffect((): void => {
     onChange(isAddress && isStored);

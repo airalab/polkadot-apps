@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
 import styled from 'styled-components';
@@ -51,7 +50,14 @@ export default React.memo(styled(Labelled)`
     display: block;
     position: relative;
 
+    .ui--CopyButton {
+      position: absolute;
+      top: 0.9rem;
+      right: 0.5rem;
+    }
+
     .withEllipsis {
+      display: inline;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -95,7 +101,7 @@ export default React.memo(styled(Labelled)`
 
       .labelExtra {
         color: rgba(78, 78, 78, .85);
-        font-weight: 100;
+        font-weight: 400;
         right: 1.75rem;
         text-align: right;
       }

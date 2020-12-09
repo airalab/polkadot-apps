@@ -1,11 +1,12 @@
 // Copyright 2017-2020 @polkadot/apps authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { Group } from './types';
+import type { ThemeProps } from '@polkadot/react-components/types';
+import type { Group } from './types';
 
 import React from 'react';
 import styled from 'styled-components';
+
 import { Icon } from '@polkadot/react-components';
 
 import Item from './Item';
@@ -21,7 +22,7 @@ function Grouping ({ className = '', name, routes }: Props): React.ReactElement<
   if (routes.length === 1) {
     return (
       <Item
-        className='topLevel'
+        isToplevel
         route={routes[0]}
       />
     );
@@ -29,11 +30,11 @@ function Grouping ({ className = '', name, routes }: Props): React.ReactElement<
 
   return (
     <li className={className}>
-      <div className='groupHdr'>
+      <div className='groupHdr highlight--color-contrast'>
         <span>{name}</span>
         <Icon icon='caret-down' />
       </div>
-      <ul className='groupMenu menuBg ui--highlight--before'>
+      <ul className='groupMenu highlight--bg-light'>
         {routes.map((route): React.ReactNode => (
           <Item
             key={route.name}
@@ -45,7 +46,7 @@ function Grouping ({ className = '', name, routes }: Props): React.ReactElement<
   );
 }
 
-export default React.memo(styled(Grouping)`
+export default React.memo(styled(Grouping)(({ theme }: ThemeProps) => `
   cursor: pointer;
   position: relative;
 
@@ -60,7 +61,7 @@ export default React.memo(styled(Grouping)`
 
   .groupMenu {
     border-radius: 0 0 0.25rem 0.25rem;
-    box-shadow: 0 ${SHA_OFF} ${SHA_OFF} -${SHA_OFF} , ${SHA_OFF} 0 ${SHA_OFF} -${SHA_OFF} ${SHA_COL}, -${SHA_OFF} 0 ${SHA_OFF} -${SHA_OFF} ${SHA_COL};
+    box-shadow: 0 ${SHA_OFF} ${SHA_OFF} -${SHA_OFF} ${SHA_COL}, ${SHA_OFF} 0 ${SHA_OFF} -${SHA_OFF} ${SHA_COL}, -${SHA_OFF} 0 ${SHA_OFF} -${SHA_OFF} ${SHA_COL};
     display: none;
     margin: 0;
     overflow: hidden;
@@ -80,7 +81,8 @@ export default React.memo(styled(Grouping)`
   &:hover {
     .groupHdr,
     .groupMenu li {
-      background: rgba(254, 252, 250, 0.95);
+      background: ${theme.bgMenu};
+      color: ${theme.color};
     }
 
     .groupHdr {
@@ -91,8 +93,8 @@ export default React.memo(styled(Grouping)`
       display: block;
 
       > li:hover {
-        background: transparent;
+        background: ${theme.bgMenuHover};
       }
     }
   }
-`);
+`));

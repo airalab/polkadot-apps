@@ -1,15 +1,13 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { AccountId, AccountIndex, Address } from '@polkadot/types/interfaces';
+import type { AccountId, AccountIndex, Address } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
 import React from 'react';
+
 import { Balance, FormatBalance } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
-
-import { classes } from './util';
 
 export interface RenderProps {
   className?: string;
@@ -44,7 +42,7 @@ export function renderProvided ({ className = '', label, value }: RenderProps): 
 
   return (
     <FormatBalance
-      className={classes('ui--Balance', className)}
+      className={`ui--Balance ${className}`}
       label={label}
       value={Array.isArray(value) ? value[0] : value}
     >
@@ -66,7 +64,7 @@ function BalanceDisplay (props: Props): React.ReactElement<Props> | null {
     ? <>{renderProvided({ className, label, value: balance })}</>
     : (
       <Balance
-        className={classes('ui--Balance', className)}
+        className={`ui--Balance ${className}`}
         label={label}
         params={params}
       />

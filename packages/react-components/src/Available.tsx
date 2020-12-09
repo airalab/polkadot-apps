@@ -1,13 +1,11 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { AccountId, AccountIndex, Address } from '@polkadot/types/interfaces';
+import type { AccountId, AccountIndex, Address } from '@polkadot/types/interfaces';
 
 import React from 'react';
-import { Available } from '@polkadot/react-query';
 
-import { classes } from './util';
+import { Available } from '@polkadot/react-query';
 
 export interface Props {
   className?: string;
@@ -22,7 +20,7 @@ function AvailableDisplay ({ className = '', label, params }: Props): React.Reac
 
   return (
     <Available
-      className={classes('ui--Available', className)}
+      className={`ui--Available ${className}`}
       label={label}
       params={params}
     />

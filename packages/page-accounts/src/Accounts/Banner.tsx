@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/app-accounts authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
 import styled from 'styled-components';
@@ -13,7 +12,7 @@ interface Props {
 
 function Banner ({ children, className = '', type }: Props): React.ReactElement<Props> | null {
   return (
-    <article className={`${className} ${type}`}>
+    <article className={`${className} ${type} centered`}>
       <div className='box'>
         {children}
       </div>
@@ -22,13 +21,6 @@ function Banner ({ children, className = '', type }: Props): React.ReactElement<
 }
 
 export default React.memo(styled(Banner)`
-  max-width: 75rem;
-  margin: 0.5rem auto !important;
-
-  &+.ui--Button-Group {
-    margin-top: 2rem;
-  }
-
   .box {
     padding: 0 0.5rem;
   }

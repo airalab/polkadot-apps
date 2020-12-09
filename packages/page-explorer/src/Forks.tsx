@@ -1,12 +1,13 @@
 // Copyright 2017-2020 @polkadot/app-explorer authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { ApiProps } from '@polkadot/react-api/types';
-import { Header } from '@polkadot/types/interfaces';
+import type { ApiProps } from '@polkadot/react-api/types';
+import type { ThemeProps } from '@polkadot/react-components/types';
+import type { Header } from '@polkadot/types/interfaces';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+
 import { CardSummary, IdentityIcon, SummaryBox } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { formatNumber } from '@polkadot/util';
@@ -24,8 +25,9 @@ interface LinkHeader {
   width: number;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface,no-use-before-define
 interface LinkArray extends Array<Link> {}
+
 interface Link {
   arr: LinkArray;
   hdr: LinkHeader;
@@ -390,13 +392,13 @@ function Forks ({ className }: Props): React.ReactElement<Props> | null {
   );
 }
 
-export default React.memo(styled(Forks)`
+export default React.memo(styled(Forks)(({ theme }: ThemeProps) => `
   margin-bottom: 1.5rem;
 
   table {
     border-collapse: separate;
     border-spacing: 0.25rem;
-    font-family: monospace;
+    font: ${theme.fontMono};
 
     td {
       padding: 0.25rem 0.5rem;
@@ -459,4 +461,4 @@ export default React.memo(styled(Forks)`
       }
     }
   }
-`);
+`));

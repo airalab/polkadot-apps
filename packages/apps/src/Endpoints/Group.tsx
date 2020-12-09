@@ -1,16 +1,18 @@
 // Copyright 2017-2020 @polkadot/apps authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { Group } from './types';
+import type { ThemeProps } from '@polkadot/react-components/types';
+import type { Group } from './types';
 
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
+
 import { Icon } from '@polkadot/react-components';
 
 import Network from './Network';
 
 interface Props {
+  affinities: Record<string, string>;
   apiUrl: string;
   children?: React.ReactNode;
   className?: string;
@@ -21,7 +23,7 @@ interface Props {
   value: Group;
 }
 
-function GroupDisplay ({ apiUrl, children, className = '', index, isSelected, setApiUrl, setGroup, value: { header, networks } }: Props): React.ReactElement<Props> {
+function GroupDisplay ({ affinities, apiUrl, children, className = '', index, isSelected, setApiUrl, setGroup, value: { header, networks } }: Props): React.ReactElement<Props> {
   const _setGroup = useCallback(
     () => setGroup(isSelected ? -1 : index),
     [index, isSelected, setGroup]
@@ -41,6 +43,7 @@ function GroupDisplay ({ apiUrl, children, className = '', index, isSelected, se
           <div className='groupNetworks'>
             {networks.map((network, index): React.ReactNode => (
               <Network
+                affinity={affinities[network.name]}
                 apiUrl={apiUrl}
                 key={index}
                 setApiUrl={setApiUrl}
@@ -55,7 +58,7 @@ function GroupDisplay ({ apiUrl, children, className = '', index, isSelected, se
   );
 }
 
-export default React.memo(styled(GroupDisplay)`
+export default React.memo(styled(GroupDisplay)(({ theme }: ThemeProps) => `
   .groupHeader {
     border-radius: 0.25rem;
     cursor: pointer;
@@ -65,7 +68,7 @@ export default React.memo(styled(GroupDisplay)`
     text-transform: uppercase;
 
     &:hover {
-      background: white;
+      background: ${theme.bgTable};
     }
 
     .ui--Icon {
@@ -76,4 +79,4 @@ export default React.memo(styled(GroupDisplay)`
   .groupNetworks {
     padding: 0.25rem 0 0.5rem 1rem;
   }
-`);
+`));

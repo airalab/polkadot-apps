@@ -1,14 +1,14 @@
 // Copyright 2017-2020 @polkadot/app-accounts authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
+
 import { useApi } from '@polkadot/react-hooks';
 import chains from '@polkadot/ui-settings/defaults/chains';
 
-import { useTranslation } from './translate';
 import Toggle from './Toggle';
+import { useTranslation } from './translate';
 
 interface Props {
   className?: string;

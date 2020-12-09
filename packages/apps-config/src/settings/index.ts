@@ -1,15 +1,8 @@
 // Copyright 2017-2020 @polkadot/apps-config authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import createEndpoints from './endpoints';
-import createLanguages from './languages';
-import createSs58 from './ss58';
-import { CUSTOM_ENDPOINT_KEY } from './constants';
-
-export {
-  createEndpoints,
-  createLanguages,
-  createSs58,
-  CUSTOM_ENDPOINT_KEY
-};
+export * from './constants';
+export * from './endpoints';
+export * from './ethereumNetworks';
+export * from './languages';
+export * from './ss58';

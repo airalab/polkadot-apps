@@ -1,11 +1,12 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { DeriveStakingOverview } from '@polkadot/api-derive/types';
+import type { DeriveStakingOverview } from '@polkadot/api-derive/types';
+import type { SortedTargets } from '../types';
 
 import React, { useContext } from 'react';
 import styled from 'styled-components';
+
 import SummarySession from '@polkadot/app-explorer/SummarySession';
 import { CardSummary, IdentityIcon, SummaryBox } from '@polkadot/react-components';
 import { BlockAuthorsContext } from '@polkadot/react-query';
@@ -15,12 +16,12 @@ import { useTranslation } from '../translate';
 interface Props {
   className?: string;
   isVisible: boolean;
-  next?: string[];
   nominators?: string[];
   stakingOverview?: DeriveStakingOverview;
+  targets: SortedTargets;
 }
 
-function Summary ({ className = '', isVisible, next, nominators, stakingOverview }: Props): React.ReactElement<Props> {
+function Summary ({ className = '', isVisible, stakingOverview, targets: { inflation: { inflation }, nominators, waitingIds } }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { lastBlockAuthors, lastBlockNumber } = useContext(BlockAuthorsContext);
 
@@ -32,14 +33,28 @@ function Summary ({ className = '', isVisible, next, nominators, stakingOverview
             {stakingOverview.validators.length}&nbsp;/&nbsp;{stakingOverview.validatorCount.toString()}
           </CardSummary>
         )}
-        {!!next?.length && (
-          <CardSummary label={t<string>('waiting')}>
-            {next.length}
+        {!!waitingIds?.length && (
+          <CardSummary
+            className='media--1000'
+            label={t<string>('waiting')}
+          >
+            {waitingIds.length}
           </CardSummary>
         )}
         {!!nominators?.length && (
-          <CardSummary label={t<string>('nominators')}>
+          <CardSummary
+            className='media--1100'
+            label={t<string>('nominators')}
+          >
             {nominators.length}
+          </CardSummary>
+        )}
+        {(inflation > 0) && (
+          <CardSummary
+            className='media--1200'
+            label={t<string>('inflation')}
+          >
+            {inflation.toFixed(1)}%
           </CardSummary>
         )}
       </section>

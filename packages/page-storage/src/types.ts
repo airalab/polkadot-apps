@@ -1,10 +1,9 @@
 // Copyright 2017-2020 @polkadot/app-storage authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { QueryableStorageEntry } from '@polkadot/api/types';
-import { ConstValue } from '@polkadot/react-components/InputConsts/types';
-import { RawParams } from '@polkadot/react-params/types';
+import type { QueryableStorageEntry } from '@polkadot/api/types';
+import type { ConstValue } from '@polkadot/react-components/InputConsts/types';
+import type { RawParams } from '@polkadot/react-params/types';
 
 interface Base {
   isConst: boolean;

@@ -1,23 +1,20 @@
 // Copyright 2017-2020 @polkadot/app-democracy authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { DeriveReferendumExt } from '@polkadot/api-derive/types';
+import type { DeriveReferendumExt } from '@polkadot/api-derive/types';
 
 import React from 'react';
-import styled from 'styled-components';
+
 import { Button } from '@polkadot/react-components';
 import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
 
 import { useTranslation } from '../translate';
-import DispatchQueue from './DispatchQueue';
 import Externals from './Externals';
-import Proposals from './Proposals';
-import Referendums from './Referendums';
-import Scheduler from './Scheduler';
-import Summary from './Summary';
 import PreImage from './PreImage';
+import Proposals from './Proposals';
 import Propose from './Propose';
+import Referendums from './Referendums';
+import Summary from './Summary';
 
 interface Props {
   className?: string;
@@ -53,17 +50,9 @@ function Overview ({ className }: Props): React.ReactElement<Props> {
       )}
       <Referendums referendums={referendums} />
       <Proposals />
-      <DispatchQueue />
       <Externals />
-      {api.query.scheduler && (
-        <Scheduler />
-      )}
     </div>
   );
 }
 
-export default React.memo(styled(Overview)`
-  .proposalSection {
-    margin-bottom: 1.5rem;
-  }
-`);
+export default React.memo(Overview);

@@ -1,16 +1,18 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+
+import type { UInt } from '@polkadot/types';
+import type { ThemeProps } from './types';
 
 import BN from 'bn.js';
 import React from 'react';
 import styled from 'styled-components';
-import { UInt } from '@polkadot/types';
+
+import { BlockToTime } from '@polkadot/react-query';
 import { formatNumber, isUndefined } from '@polkadot/util';
 
-import Progress from './Progress';
 import Labelled from './Labelled';
-import { BlockToTime } from '@polkadot/react-query';
+import Progress from './Progress';
 
 interface ProgressProps {
   hideValue?: boolean;
@@ -92,17 +94,17 @@ function CardSummary ({ children, className = '', help, label, progress }: Props
   );
 }
 
-export default React.memo(styled(CardSummary)`
+export default React.memo(styled(CardSummary)(({ theme }: ThemeProps) => `
   align-items: center;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  color: rgba(0, 0, 0, 0.6);
+  color: ${theme.colorSummary};
   display: flex;
   flex: 0 1 auto;
   flex-flow: row wrap;
   justify-content: flex-end;
-  padding: 0rem 1.5rem 0.5rem 1.5rem;
+  padding: 0 1.5rem;
 
   .ui--FormatBalance .balance-postfix {
     opacity: 1;
@@ -114,7 +116,7 @@ export default React.memo(styled(CardSummary)`
 
   > .ui--Labelled {
     font-size: 1.75rem;
-    font-weight: 100;
+    font-weight: ${theme.fontWeightLight};
     position: relative;
     line-height: 1;
     text-align: right;
@@ -137,7 +139,7 @@ export default React.memo(styled(CardSummary)`
 
     .isSecondary {
       font-size: 1rem;
-      font-weight: 100;
+      font-weight: 400;
 
       .timer {
         min-width: 8rem;
@@ -153,4 +155,4 @@ export default React.memo(styled(CardSummary)`
       font-size: 1.4rem;
     }
   }
-`);
+`));

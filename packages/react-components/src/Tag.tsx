@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -46,7 +45,7 @@ export default React.memo(styled(Tag)`
   color: #fff;
   display: inline-block;
   font-size: 0.78571429rem;
-  font-weight: normal;
+  font-weight: 400;
   line-height: 1;
   margin: 0.125rem;
   padding: 0.5833em 0.833em;

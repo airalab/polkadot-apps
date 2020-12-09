@@ -1,14 +1,13 @@
 // Copyright 2017-2020 @polkadot/react-params authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { Keys, ValidatorId } from '@polkadot/types/interfaces';
-import { Codec } from '@polkadot/types/types';
+import type { Keys, ValidatorId } from '@polkadot/types/interfaces';
+import type { Codec } from '@polkadot/types/types';
 
 import React from 'react';
-import { classes } from '@polkadot/react-components/util';
-import { isFunction, isNull, isUndefined, u8aToHex } from '@polkadot/util';
+
 import { Option, Raw } from '@polkadot/types';
+import { isFunction, isNull, isUndefined, u8aToHex } from '@polkadot/util';
 
 interface DivProps {
   className?: string;
@@ -18,7 +17,7 @@ interface DivProps {
 function div ({ className = '', key }: DivProps, ...values: React.ReactNode[]): React.ReactNode {
   return (
     <div
-      className={classes('ui--Param-text', className)}
+      className={`ui--Param-text ${className}`}
       key={key}
     >
       {values}

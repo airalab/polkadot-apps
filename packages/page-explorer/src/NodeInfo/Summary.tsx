@@ -1,11 +1,11 @@
 // Copyright 2017-2020 @polkadot/app-nodeinfo authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { Info } from './types';
+import type { Info } from './types';
 
-import React, { useState, useEffect } from 'react';
-import { SummaryBox, CardSummary } from '@polkadot/react-components';
+import React, { useEffect, useState } from 'react';
+
+import { CardSummary, SummaryBox } from '@polkadot/react-components';
 import { BestNumber, Elapsed } from '@polkadot/react-query';
 import { BN_ZERO, formatNumber } from '@polkadot/util';
 
@@ -43,13 +43,13 @@ function Summary ({ info: { extrinsics, health, peers } = EMPTY_INFO, nextRefres
         {health && (
           <>
             <CardSummary
-              className='ui--media-small'
+              className='media--800'
               label={t<string>('total peers')}
             >
               {formatNumber(health.peers)}
             </CardSummary>
             <CardSummary
-              className='ui--media-small'
+              className='media--800'
               label={t<string>('syncing')}
             >
               {health.isSyncing.valueOf()
@@ -61,7 +61,7 @@ function Summary ({ info: { extrinsics, health, peers } = EMPTY_INFO, nextRefres
         )}
       </section>
       {extrinsics && (extrinsics.length > 0) && (
-        <section className='ui--media-large'>
+        <section className='media--1200'>
           <CardSummary label={t<string>('queued tx')}>
             {extrinsics.length}
           </CardSummary>

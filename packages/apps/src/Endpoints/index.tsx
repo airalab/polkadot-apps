@@ -1,16 +1,18 @@
 // Copyright 2017-2020 @polkadot/apps authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import type { LinkOption } from '@polkadot/apps-config/settings/endpoints';
-import { Group } from './types';
+import type { LinkOption } from '@polkadot/apps-config/settings/types';
+import type { ThemeProps } from '@polkadot/react-components/types';
+import type { Group } from './types';
 
-import React, { useCallback, useMemo, useState } from 'react';
 // ok, this seems to be an eslint bug, this _is_ a package import
 /* eslint-disable-next-line node/no-deprecated-api */
 import punycode from 'punycode';
+import React, { useCallback, useMemo, useState } from 'react';
+import store from 'store';
 import styled from 'styled-components';
-import { createEndpoints, CUSTOM_ENDPOINT_KEY } from '@polkadot/apps-config/settings';
+
+import { createWsEndpoints, CUSTOM_ENDPOINT_KEY } from '@polkadot/apps-config';
 import { Button, Input, Sidebar } from '@polkadot/react-components';
 import uiSettings from '@polkadot/ui-settings';
 import { isAscii } from '@polkadot/util';
@@ -31,12 +33,7 @@ interface UrlState {
   isUrlValid: boolean;
 }
 
-function textToParts (text: string): [string, string, string] {
-  const [first, remainder] = text.replace(')', '').split(' (');
-  const [middle, last] = remainder.split(', ');
-
-  return [first, middle, last];
-}
+const STORAGE_AFFINITIES = 'network:affinities';
 
 function isValidUrl (url: string): boolean {
   return (
@@ -52,17 +49,16 @@ function combineEndpoints (endpoints: LinkOption[]): Group[] {
     if (e.isHeader) {
       result.push({ header: e.text, isDevelopment: e.isDevelopment, networks: [] });
     } else {
-      const [name, , providerName] = textToParts(e.text as string);
       const prev = result[result.length - 1];
-      const prov = { name: providerName, url: e.value as string };
+      const prov = { name: e.textBy, url: e.value as string };
 
-      if (prev.networks[prev.networks.length - 1] && name === prev.networks[prev.networks.length - 1].name) {
+      if (prev.networks[prev.networks.length - 1] && e.text === prev.networks[prev.networks.length - 1].name) {
         prev.networks[prev.networks.length - 1].providers.push(prov);
       } else {
         prev.networks.push({
           icon: e.info,
           isChild: e.isChild,
-          name,
+          name: e.text as string,
           providers: [prov]
         });
       }
@@ -106,12 +102,30 @@ function extractUrlState (apiUrl: string, groups: Group[]): UrlState {
   };
 }
 
+function loadAffinities (groups: Group[]): Record<string, string> {
+  return Object
+    .entries<string>(store.get(STORAGE_AFFINITIES) || {})
+    .filter(([network, apiUrl]) =>
+      groups.some(({ networks }) =>
+        networks.some(({ name, providers }) =>
+          name === network && providers.some(({ url }) => url === apiUrl)
+        )
+      )
+    )
+    .reduce((result: Record<string, string>, [network, apiUrl]): Record<string, string> => ({
+      ...result,
+      [network]: apiUrl
+    }), {});
+}
+
 function Endpoints ({ className = '', offset, onClose }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const linkOptions = createEndpoints(t);
+  const linkOptions = createWsEndpoints(t);
   const [groups, setGroups] = useState(combineEndpoints(linkOptions));
   const [{ apiUrl, groupIndex, hasUrlChanged, isUrlValid }, setApiUrl] = useState<UrlState>(extractUrlState(uiSettings.get().apiUrl, groups));
   const [storedCustomEndpoints, setStoredCustomEndpoints] = useState<string[]>(getCustomEndpoints());
+  const [affinities, setAffinities] = useState(loadAffinities(groups));
+
   const isKnownUrl = useMemo(() => {
     let result = false;
 
@@ -166,7 +180,7 @@ function Endpoints ({ className = '', offset, onClose }: Props): React.ReactElem
 
     try {
       localStorage.setItem(CUSTOM_ENDPOINT_KEY, JSON.stringify(newStoredCurstomEndpoints));
-      setGroups(combineEndpoints(createEndpoints(t)));
+      setGroups(combineEndpoints(createWsEndpoints(t)));
       setStoredCustomEndpoints(getCustomEndpoints());
     } catch (e) {
       console.error(e);
@@ -175,7 +189,16 @@ function Endpoints ({ className = '', offset, onClose }: Props): React.ReactElem
   };
 
   const _setApiUrl = useCallback(
-    (apiUrl: string) => setApiUrl(extractUrlState(apiUrl, groups)),
+    (network: string, apiUrl: string): void => {
+      setAffinities((affinities): Record<string, string> => {
+        const newValue = { ...affinities, [network]: apiUrl };
+
+        store.set(STORAGE_AFFINITIES, newValue);
+
+        return newValue;
+      });
+      setApiUrl(extractUrlState(apiUrl, groups));
+    },
     [groups]
   );
 
@@ -193,7 +216,9 @@ function Endpoints ({ className = '', offset, onClose }: Props): React.ReactElem
   const _onApply = useCallback(
     (): void => {
       uiSettings.set({ ...(uiSettings.get()), apiUrl });
-      window.location.reload();
+
+      window.location.assign(`${window.location.origin}${window.location.pathname}?rpc=${encodeURIComponent(apiUrl)}${window.location.hash}`);
+      // window.location.reload();
 
       onClose();
     },
@@ -217,6 +242,7 @@ function Endpoints ({ className = '', offset, onClose }: Props): React.ReactElem
     >
       {groups.map((group, index): React.ReactNode => (
         <GroupDisplay
+          affinities={affinities}
           apiUrl={apiUrl}
           index={index}
           isSelected={groupIndex === index}
@@ -256,7 +282,8 @@ function Endpoints ({ className = '', offset, onClose }: Props): React.ReactElem
   );
 }
 
-export default React.memo(styled(Endpoints)`
+export default React.memo(styled(Endpoints)(({ theme }: ThemeProps) => `
+  color: ${theme.color};
   padding-top: 3.5rem;
 
   .customButton {
@@ -274,4 +301,4 @@ export default React.memo(styled(Endpoints)`
   .endpointCustomWrapper {
     position: relative;
   }
-`);
+`));

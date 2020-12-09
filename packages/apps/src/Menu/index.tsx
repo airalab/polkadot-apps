@@ -1,16 +1,17 @@
 // Copyright 2017-2020 @polkadot/apps authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { Route, Routes } from '@polkadot/apps-routing/types';
-import { ApiProps } from '@polkadot/react-api/types';
-import { AccountId } from '@polkadot/types/interfaces';
-import { Group, Groups, ItemRoute } from './types';
+import type { TFunction } from 'i18next';
+import type { Route, Routes } from '@polkadot/apps-routing/types';
+import type { ApiProps } from '@polkadot/react-api/types';
+import type { ThemeProps } from '@polkadot/react-components/types';
+import type { AccountId } from '@polkadot/types/interfaces';
+import type { Group, Groups, ItemRoute } from './types';
 
-import { TFunction } from 'i18next';
 import React, { useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+
 import createRoutes from '@polkadot/apps-routing';
 import { Icon } from '@polkadot/react-components';
 import { useAccounts, useApi, useCall } from '@polkadot/react-hooks';
@@ -48,6 +49,8 @@ function checkVisible (name: string, { api, isApiConnected, isApiReady }: ApiPro
     return false;
   } else if (needsAccounts && !hasAccounts) {
     return false;
+  } else if (!needsApi) {
+    return true;
   } else if (!isApiReady || !isApiConnected) {
     return false;
   } else if (needsSudo && !hasSudo) {
@@ -122,7 +125,7 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
   const isLoading = !apiProps.isApiReady || !apiProps.isApiConnected;
 
   return (
-    <div className={`${className}${isLoading ? ' isLoading' : ''} menuBg ui--highlight--before ui--highlight--border`}>
+    <div className={`${className}${isLoading ? ' isLoading' : ''} highlight--bg`}>
       <div className='menuSection'>
         <ChainInfo />
         {activeRoute && (
@@ -141,11 +144,11 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
           ))}
         </ul>
       </div>
-      <div className='menuSection ui--media-1200'>
+      <div className='menuSection media--1200'>
         <ul className='menuItems'>
           {externalRef.current.map((route): React.ReactNode => (
             <Item
-              className='topLevel'
+              isToplevel
               key={route.name}
               route={route}
             />
@@ -157,51 +160,26 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
   );
 }
 
-export default React.memo(styled(Menu)`
+export default React.memo(styled(Menu)(({ theme }: ThemeProps) => `
   align-items: center;
-  border-top: 0.5rem solid transparent;
   display: flex;
   justify-content: space-between;
   padding: 0;
-  position: relative;
   z-index: 220;
 
-  &.menuBg,
-  .menuBg {
-    &:after {
-      background: #fff;
-      bottom: 0;
-      content: ' ';
-      left: 0;
-      position: absolute;
-      right: 0;
-      top: 0;
-      z-index: -2;
-    }
+  &.isLoading {
+    background: #999 !important;
 
-    &:before {
-      bottom: 0;
-      content: ' ';
-      left: 0;
-      opacity: 0.125;
-      position: absolute;
-      right: 0;
-      top: 0;
-      z-index: -1;
-    }
-  }
-
-  &.isLoading.menuBg {
-    &:after {
-      background: #eee;
+    .menuActive {
+      background: ${theme.bgPage};
     }
 
     &:before {
       filter: grayscale(1);
     }
 
-    .menuActive {
-      opacity: 0.66;
+    .menuItems {
+      filter: grayscale(1);
     }
   }
 
@@ -212,10 +190,13 @@ export default React.memo(styled(Menu)`
   }
 
   .menuActive {
-    background: #fefcfa;
+    background: ${theme.bgTabs};
+    border-bottom: none;
     border-radius: 0.25rem 0.25rem 0 0;
+    color: ${theme.color};
     padding: 1rem 1.5rem;
-    margin: 0 1rem;
+    margin: 0 1rem -1px;
+    z-index: 1;
 
     .ui--Icon {
       margin-right: 0.5rem;
@@ -232,4 +213,4 @@ export default React.memo(styled(Menu)`
       display: inline-block;
     }
   }
-`);
+`));

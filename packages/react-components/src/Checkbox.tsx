@@ -1,6 +1,7 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+
+import type { ThemeProps } from './types';
 
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
@@ -24,18 +25,23 @@ function Checkbox ({ className = '', isDisabled, label, onChange, value }: Props
   );
 
   return (
-    <div className={`ui--Checkbox${isDisabled ? ' isDisabled' : ''} ${className}`}>
+    <div
+      className={`ui--Checkbox${isDisabled ? ' isDisabled' : ''} ${className}`}
+      onClick={_onClick}
+    >
       <Icon
         color={value ? 'normal' : 'transparent'}
         icon='check'
-        onClick={_onClick}
       />
       {label && <label>{label}</label>}
     </div>
   );
 }
 
-export default React.memo(styled(Checkbox)`
+export default React.memo(styled(Checkbox)(({ theme }: ThemeProps) => `
+  display: inline-block;
+  cursor: pointer;
+
   &.isDisabled {
     opacity: 0.5;
   }
@@ -45,10 +51,12 @@ export default React.memo(styled(Checkbox)`
   }
 
   > label {
-    color: rgba(78, 78, 78, 0.75);
+    color: ${theme.color};
     display: inline-block;
     margin: 0 0.5rem;
     opacity: 1;
+    cursor: pointer;
+    user-select: none;
   }
 
   > label,
@@ -57,7 +65,7 @@ export default React.memo(styled(Checkbox)`
   }
 
   .ui--Icon {
-    border: 1px solid rgba(34, 36, 38, 0.15);
+    border: 1px solid ${theme.colorCheckbox};
     border-radius: 0.125rem;
   }
-`);
+`));

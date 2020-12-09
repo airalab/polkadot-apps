@@ -1,12 +1,12 @@
 // Copyright 2017-2020 @polkadot/react-params authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { Codec } from '@polkadot/types/types';
-import { RawParam } from '../types';
+import type { Codec } from '@polkadot/types/types';
+import type { RawParam } from '../types';
 
 import React from 'react';
 import styled from 'styled-components';
+
 import { Static } from '@polkadot/react-components';
 
 import { useTranslation } from '../translate';
@@ -23,7 +23,7 @@ interface Props {
 
 function StaticParam ({ asHex, children, className = '', defaultValue, label }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const value = defaultValue && defaultValue.value && (
+  const value = defaultValue && (defaultValue.value as string) && (
     asHex
       ? (defaultValue.value as Codec).toHex()
       : JSON.stringify(

@@ -1,10 +1,10 @@
 // Copyright 2017-2020 @polkadot/app-council authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { DeriveElectionsInfo } from '@polkadot/api-derive/types';
+import type { DeriveElectionsInfo } from '@polkadot/api-derive/types';
 
 import React, { useEffect, useState } from 'react';
+
 import { Button, InputAddress, InputAddressMulti, Modal, TxButton, VoteValue } from '@polkadot/react-components';
 import { useApi, useToggle } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';

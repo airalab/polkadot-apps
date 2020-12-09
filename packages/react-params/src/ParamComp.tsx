@@ -1,9 +1,8 @@
 // Copyright 2017-2020 @polkadot/react-params authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { TypeDef } from '@polkadot/types/types';
-import { ComponentMap, RawParam, RawParams, RawParamOnChangeValue } from './types';
+import type { Registry, TypeDef } from '@polkadot/types/types';
+import type { ComponentMap, RawParam, RawParamOnChangeValue, RawParams } from './types';
 
 import React, { useCallback } from 'react';
 
@@ -18,11 +17,12 @@ interface Props {
   onEnter?: () => void;
   onEscape?: () => void;
   overrides?: ComponentMap;
+  registry: Registry;
   type: TypeDef;
   values?: RawParams | null;
 }
 
-function ParamComp ({ defaultValue, index, isDisabled, name, onChange, onEnter, onEscape, overrides, type }: Props): React.ReactElement<Props> {
+function ParamComp ({ defaultValue, index, isDisabled, name, onChange, onEnter, onEscape, overrides, registry, type }: Props): React.ReactElement<Props> {
   const _onChange = useCallback(
     (value: RawParamOnChangeValue): void =>
       onChange(index, value),
@@ -40,6 +40,7 @@ function ParamComp ({ defaultValue, index, isDisabled, name, onChange, onEnter, 
         onEnter={onEnter}
         onEscape={onEscape}
         overrides={overrides}
+        registry={registry}
         type={type}
       />
     </div>

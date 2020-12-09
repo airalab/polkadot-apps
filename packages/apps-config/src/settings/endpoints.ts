@@ -1,17 +1,10 @@
 // Copyright 2017-2020 @polkadot/apps-config authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { TFunction } from 'i18next';
-import { Option } from './types';
+import type { TFunction } from 'i18next';
+import type { LinkOption } from './types';
 
 import { CUSTOM_ENDPOINT_KEY } from './constants';
-
-export interface LinkOption extends Option {
-  dnslink?: string;
-  isChild?: boolean;
-  isDevelopment?: boolean;
-}
 
 interface EnvWindow {
   // eslint-disable-next-line camelcase
@@ -20,6 +13,12 @@ interface EnvWindow {
   }
 }
 
+// The available endpoints that will show in the dropdown. For the most part (with the exception of
+// Polkadot) we try to keep this to live chains only, with RPCs hosted by the community/chain vendor
+//   info: The chain logo name as defined in ../ui/logos/index.ts in namedLogos (this also needs to align with @polkadot/networks)
+//   text: The text to display on the dropdown
+//   value: The actual hosted secure websocket endpoint
+
 function createOwn (t: TFunction): LinkOption[] {
   try {
     const storedItems = localStorage.getItem(CUSTOM_ENDPOINT_KEY);
@@ -27,10 +26,11 @@ function createOwn (t: TFunction): LinkOption[] {
     if (storedItems) {
       const items = JSON.parse(storedItems) as string[];
 
-      return items.map((item) => ({
+      return items.map((textBy) => ({
         info: 'local',
-        text: t<string>('rpc.custom.entry', 'Custom (custom, {{WS_URL}})', { ns: 'apps-config', replace: { WS_URL: item } }),
-        value: item
+        text: t('rpc.custom.entry', 'Custom', { ns: 'apps-config' }),
+        textBy,
+        value: textBy
       }));
     }
   } catch (e) {
@@ -45,43 +45,53 @@ function createDev (t: TFunction): LinkOption[] {
     {
       dnslink: 'local',
       info: 'local',
-      text: t<string>('rpc.local', 'Local Node (Own, 127.0.0.1:9944)', { ns: 'apps-config' }),
+      text: t('rpc.local', 'Local Node', { ns: 'apps-config' }),
+      textBy: '127.0.0.1:9944',
       value: 'ws://127.0.0.1:9944'
     }
   ];
 }
 
-function createLive (t: TFunction): LinkOption[] {
+function createLiveNetworks (t: TFunction): LinkOption[] {
   return [
-    // fixed, polkadot
     {
       dnslink: 'ipci',
       info: 'ipci',
-      text: t<string>('rpc.ipci', 'DAO IPCI Network (hosted by Airalab)', { ns: 'apps-config' }),
+      text: t<string>('rpc.ipci', 'DAO IPCI', { ns: 'apps-config' }),
+      textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'Airalab' } }),
       value: 'wss://substrate.ipci.io'
     },
     {
-      dnslink: 'kusama',
       info: 'kusama',
-      text: t<string>('rpc.kusama.parity', 'Kusama (Polkadot Canary, hosted by Parity)', { ns: 'apps-config' }),
-      value: 'wss://kusama-rpc.polkadot.io'
+      text: t('rpc.kusama.w3f', 'Kusama', { ns: 'apps-config' }),
+      textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'Web3 Foundation' } }),
+      value: 'wss://cc3-5.kusama.network'
+    },
+    {
+      info: 'kusama',
+      text: t('rpc.kusama.onfinality', 'Kusama', { ns: 'apps-config' }),
+      textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'OnFinality' } }),
+      value: 'wss://kusama.api.onfinality.io/public-ws'
     }
   ];
 }
 
-function createTest (t: TFunction): LinkOption[] {
+function createTestNetworks (t: TFunction): LinkOption[] {
   return [
+    // airalab test relays
     {
       dnslink: 'rococo',
       info: 'rococo',
-      text: t<string>('rpc.rococo', 'Rococo (Polkadot Testnet, hosted by Parity)', { ns: 'apps-config' }),
-      value: 'wss://rococo-rpc.polkadot.io'
+      text: t('rpc.rococo', 'Airalab Rococo', { ns: 'apps-config' }),
+      textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'Airalab' } }),
+      value: 'wss://local-rococo.parachain.robonomics.network'
     },
     {
-      info: 'rococoRobonomics',
+      info: 'rococoEarth',
       isChild: true,
-      text: t<string>('rpc.rococo.robonomics', 'Robonomics (Rococo parachain, hosted by Airalab)', { ns: 'apps-config' }),
-      value: 'wss://vladivostok-rpc.robonomics.network'
+      text: t('rpc.rococo.earth', 'Earth', { ns: 'apps-config' }),
+      textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'Airalab' } }),
+      value: 'wss://rpc.parachain.robonomics.network'
     }
   ];
 }
@@ -96,42 +106,42 @@ function createCustom (t: TFunction): LinkOption[] {
     ? [
       {
         isHeader: true,
-        text: t<string>('rpc.custom', 'Custom environment', { ns: 'apps-config' }),
+        text: t('rpc.custom', 'Custom environment', { ns: 'apps-config' }),
+        textBy: '',
         value: ''
       },
       {
         info: 'WS_URL',
-        text: t<string>('rpc.custom.entry', 'Custom {{WS_URL}}', { ns: 'apps-config', replace: { WS_URL } }),
+        text: t('rpc.custom.entry', 'Custom {{WS_URL}}', { ns: 'apps-config', replace: { WS_URL } }),
+        textBy: WS_URL,
         value: WS_URL
       }
     ]
     : [];
 }
 
-// The available endpoints that will show in the dropdown. For the most part (with the exception of
-// Polkadot) we try to keep this to live chains only, with RPCs hosted by the community/chain vendor
-//   info: The chain logo name as defined in ../logos, specifically in namedLogos
-//   text: The text to display on the dropdown
-//   value: The actual hosted secure websocket endpoint
-export default function create (t: TFunction): LinkOption[] {
+export function createWsEndpoints (t: TFunction): LinkOption[] {
   return [
     ...createCustom(t),
     {
       isHeader: true,
-      text: t<string>('rpc.header.live', 'Live networks', { ns: 'apps-config' }),
+      text: t('rpc.header.live', 'Live networks', { ns: 'apps-config' }),
+      textBy: '',
       value: ''
     },
-    ...createLive(t),
+    ...createLiveNetworks(t),
     {
       isHeader: true,
-      text: t<string>('rpc.header.test', 'Test networks', { ns: 'apps-config' }),
+      text: t('rpc.header.test', 'Test networks', { ns: 'apps-config' }),
+      textBy: '',
       value: ''
     },
-    ...createTest(t),
+    ...createTestNetworks(t),
     {
       isDevelopment: true,
       isHeader: true,
-      text: t<string>('rpc.header.dev', 'Development', { ns: 'apps-config' }),
+      text: t('rpc.header.dev', 'Development', { ns: 'apps-config' }),
+      textBy: '',
       value: ''
     },
     ...createDev(t),

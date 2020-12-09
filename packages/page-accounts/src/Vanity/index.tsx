@@ -1,21 +1,21 @@
 // Copyright 2017-2020 @polkadot/app-accounts authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { ActionStatus } from '@polkadot/react-components/Status/types';
-import { KeypairType } from '@polkadot/util-crypto/types';
-import { GeneratorMatches, GeneratorMatch, GeneratorResult } from '@polkadot/vanitygen/types';
+import type { ActionStatus } from '@polkadot/react-components/Status/types';
+import type { KeypairType } from '@polkadot/util-crypto/types';
+import type { GeneratorMatch, GeneratorMatches, GeneratorResult } from '@polkadot/vanitygen/types';
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
+
 import { Button, Dropdown, Input, Table } from '@polkadot/react-components';
-import { useIsMountedRef } from '@polkadot/react-hooks';
+import { useApi, useIsMountedRef } from '@polkadot/react-hooks';
 import uiSettings from '@polkadot/ui-settings';
 import generator from '@polkadot/vanitygen/generator';
 import matchRegex from '@polkadot/vanitygen/regex';
 import generatorSort from '@polkadot/vanitygen/sort';
 
-import CreateModal from '../Accounts/modals/Create';
+import CreateModal from '../modals/Create';
 import { useTranslation } from '../translate';
 import Match from './Match';
 
@@ -46,6 +46,7 @@ const BOOL_OPTIONS = [
 
 function VanityApp ({ className = '', onStatusChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
+  const { isEthereum } = useApi();
   const results = useRef<GeneratorResult[]>([]);
   const runningRef = useRef(false);
   const mountedRef = useIsMountedRef();
@@ -212,7 +213,7 @@ function VanityApp ({ className = '', onStatusChange }: Props): React.ReactEleme
           help={t<string>('Determines what cryptography will be used to create this account. Note that to validate on Polkadot, the session account must use "ed25519".')}
           label={t<string>('keypair crypto type')}
           onChange={setType}
-          options={uiSettings.availableCryptos}
+          options={isEthereum ? uiSettings.availableCryptosEth : uiSettings.availableCryptos}
         />
       </div>
       <Button.Group>
@@ -233,7 +234,7 @@ function VanityApp ({ className = '', onStatusChange }: Props): React.ReactEleme
       </Button.Group>
       {matches.length !== 0 && (
         <>
-          <article className='warning nomargin'>{t<string>('Ensure that you utilized the "Save" functionality before using a generated address to receive funds. Without saving the address any funds and the associated seed any funds sent to it will be lost.')}</article>
+          <article className='warning centered'>{t<string>('Ensure that you utilized the "Save" functionality before using a generated address to receive funds. Without saving the address any funds and the associated seed any funds sent to it will be lost.')}</article>
           <Table
             className='vanity--App-matches'
             empty={t<string>('No matches found')}

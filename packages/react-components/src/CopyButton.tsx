@@ -1,43 +1,45 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { IconName } from '@fortawesome/fontawesome-svg-core';
+import type { IconName } from '@fortawesome/fontawesome-svg-core';
 
 import React, { useCallback, useContext } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import styled from 'styled-components';
 
 import StatusContext from './Status/Context';
 import Button from './Button';
 import { useTranslation } from './translate';
-import styled from 'styled-components';
 
 interface Props {
   children?: React.ReactNode;
   className?: string;
   icon?: IconName;
-  isAddress?: boolean;
+  type?: string;
+  isMnemonic?: boolean;
   value: string;
 }
 
-function CopyButton ({ children, className, icon = 'copy', isAddress = false, value }: Props): React.ReactElement<Props> {
+const NOOP = () => undefined;
+
+function CopyButton ({ children, className = '', icon = 'copy', type, value }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { queueAction } = useContext(StatusContext);
 
   const _onCopy = useCallback(
     (): void => {
-      isAddress && queueAction && queueAction({
-        account: value,
+      (type !== 'other') && queueAction && queueAction({
+        account: type !== 'mnemonic' ? value : undefined,
         action: t<string>('clipboard'),
-        message: t<string>('address copied'),
+        message: t<string>('{{type}} copied', { replace: { type: type || t<string>('other') } }),
         status: 'queued'
       });
     },
-    [isAddress, queueAction, t, value]
+    [type, queueAction, t, value]
   );
 
   return (
-    <div className={className}>
+    <div className={`ui--CopyButton ${className}`}>
       <CopyToClipboard
         onCopy={_onCopy}
         text={value}
@@ -48,6 +50,7 @@ function CopyButton ({ children, className, icon = 'copy', isAddress = false, va
             <Button
               className='icon-button show-on-hover'
               icon={icon}
+              onClick={NOOP}
             />
           </span>
         </div>
@@ -57,12 +60,6 @@ function CopyButton ({ children, className, icon = 'copy', isAddress = false, va
 }
 
 export default React.memo(styled(CopyButton)`
-  cursor: copy;
-
-  button.u.ui--Icon.primary.button.icon-button {
-    cursor: copy;
-  }
-
   .copySpan {
     white-space: nowrap;
   }

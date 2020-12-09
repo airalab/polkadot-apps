@@ -1,8 +1,8 @@
 // Copyright 2017-2020 @polkadot/react-hooks authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import { useMemo, useState } from 'react';
+
 import { isUndefined } from '@polkadot/util';
 
 export type FormField<T> = [
@@ -11,7 +11,7 @@ export type FormField<T> = [
   (_?: T | null) => void
 ];
 
-export default function useFormField<T> (defaultValue: T | null, validate: (_: T) => boolean = (): boolean => true): FormField<T> {
+export function useFormField<T> (defaultValue: T | null, validate: (_: T) => boolean = (): boolean => true): FormField<T> {
   const [value, setValue] = useState<T | null>(defaultValue);
   const isValid = useMemo(
     (): boolean => !!value && validate(value),

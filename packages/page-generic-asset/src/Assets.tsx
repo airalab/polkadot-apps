@@ -1,22 +1,22 @@
 // Copyright 2019 @polkadot/app-generic-asset authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { I18nProps } from '@polkadot/react-components/types';
+import type { I18nProps } from '@polkadot/react-components/types';
 
 import BN from 'bn.js';
 import React, { useState } from 'react';
-import { Button, CardGrid } from '@polkadot/react-components';
-import { withMulti, withObservable } from '@polkadot/react-api/hoc';
 
-import assetRegistry, { AssetsSubjectInfo } from './assetsRegistry';
-import AssetCard from './AssetCard';
+import { withMulti, withObservable } from '@polkadot/react-api/hoc';
+import { Button, CardGrid } from '@polkadot/react-components';
+
 import CreateModal from './modals/Create';
+import AssetCard from './AssetCard';
+import assetRegistry, { AssetsSubjectInfo } from './assetsRegistry';
 import translate from './translate';
 
-type Props = I18nProps & {
+interface Props extends I18nProps {
   assets?: AssetsSubjectInfo;
-};
+}
 
 function Assets ({ assets, t }: Props): React.ReactElement<Props> {
   const [isCreateOpen, setIsCreateOpen] = useState(false);

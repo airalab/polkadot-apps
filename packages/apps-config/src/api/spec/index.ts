@@ -1,37 +1,62 @@
 // Copyright 2017-2020 @polkadot/apps-config authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import acala from './acala';
+import bifrost from './bifrost';
+import canvas from './canvas';
 import centrifugeChain from './centrifuge-chain';
 import crab from './crab';
+import crust from './crust';
 import testPara from './cumulus-test-parachain';
+import darwinia from './darwinia';
+import darwiniaParachain from './darwinia-parachain';
+import dock from './dock';
+import dusty from './dusty';
 import edgeware from './edgeware';
 import encointerNodeNotee from './encointer-node-notee';
 import encointerNodeTeeproxy from './encointer-node-teeproxy';
+import equilibrium from './equilibrium';
+import hanonycash from './hanonycash';
 import kilt from './kilt';
 import kulupu from './kulupu';
 import nodeTemplate from './node-template';
 import robonomics from './robonomics';
 import nodle from './nodle';
+import phala from './phala';
+import plasm from './plasm';
+import robonomics from './robonomics';
 import stablePoc from './stable-poc';
+import stafi from './stafi';
+import subsocial from './subsocial';
 
+// mapping from specName in state.getRuntimeVersion
 export default {
   Crab: crab,
-  'Nodle Chain Node': nodle,
-  acala,
+  Darwinia: darwinia,
+  Equilibrium: equilibrium,
+  bifrost: bifrost,
+  canvas,
   'centrifuge-chain': centrifugeChain,
+  crust,
   'cumulus-test-parachain': testPara,
+  'darwinia-parachain': darwiniaParachain,
+  'dock-main-runtime': dock,
+  'dock-testnet': dock,
+  dusty3: dusty,
   edgeware,
   'encointer-node': encointerNodeNotee,
   'encointer-node-notee': encointerNodeNotee,
   'encointer-node-teeproxy': encointerNodeTeeproxy,
+  hanonycash,
   ipci: robonomics,
   kulupu,
   'mashnet-node': kilt,
   'node-template': nodeTemplate,
-  'robonomics-parachain': robonomics,
+  'nodle-chain': nodle,
+  'phala-node': phala,
+  plasm,
   robonomics,
   'stable-poc': stablePoc,
-  stable_poc: stablePoc
+  stable_poc: stablePoc,
+  stafi,
+  subsocial
 };

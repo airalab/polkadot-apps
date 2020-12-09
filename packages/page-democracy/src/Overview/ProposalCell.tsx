@@ -1,13 +1,12 @@
 // Copyright 2017-2020 @polkadot/app-democracy authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { Hash, Proposal, ProposalIndex } from '@polkadot/types/interfaces';
+import type { Compact } from '@polkadot/types';
+import type { Hash, Proposal, ProposalIndex } from '@polkadot/types/interfaces';
 
 import React from 'react';
-import { registry } from '@polkadot/react-api';
+
 import { CallExpander } from '@polkadot/react-components';
-import { Compact } from '@polkadot/types';
 
 import { useTranslation } from '../translate';
 import ExternalCell from './ExternalCell';
@@ -35,7 +34,7 @@ function ProposalCell ({ className = '', imageHash, proposal }: Props): React.Re
     );
   }
 
-  const { method, section } = registry.findMetaCall(proposal.callIndex);
+  const { method, section } = proposal.registry.findMetaCall(proposal.callIndex);
   const isTreasury = section === 'treasury' && METHOD_TREA.includes(method);
   const isExternal = section === 'democracy' && METHOD_EXTE.includes(method);
 

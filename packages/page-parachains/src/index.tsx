@@ -1,12 +1,12 @@
 // Copyright 2017-2020 @polkadot/app-parachains authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { DeriveParachainInfo } from '@polkadot/api-derive/types';
+import type { DeriveParachainInfo } from '@polkadot/api-derive/types';
 
 import React, { useMemo, useRef } from 'react';
 import { matchPath, Route, Switch } from 'react-router';
 import { useLocation } from 'react-router-dom';
+
 import { Tabs } from '@polkadot/react-components';
 import { useApi, useSudo } from '@polkadot/react-hooks';
 

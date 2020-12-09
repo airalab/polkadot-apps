@@ -1,33 +1,33 @@
 // Copyright 2017-2020 @polkadot/react-signer authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { SubmittableExtrinsic } from '@polkadot/api/types';
-import { SignerOptions } from '@polkadot/api/submittable/types';
-import { KeyringPair } from '@polkadot/keyring/types';
-import { QueueTx, QueueTxMessageSetStatus } from '@polkadot/react-components/Status/types';
-import { Multisig, Timepoint } from '@polkadot/types/interfaces';
-import { AddressProxy, QrState } from './types';
+import type { SignerOptions } from '@polkadot/api/submittable/types';
+import type { SubmittableExtrinsic } from '@polkadot/api/types';
+import type { KeyringPair } from '@polkadot/keyring/types';
+import type { QueueTx, QueueTxMessageSetStatus } from '@polkadot/react-components/Status/types';
+import type { Option } from '@polkadot/types';
+import type { Multisig, Timepoint } from '@polkadot/types/interfaces';
+import type { AddressProxy, QrState } from './types';
 
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
+
 import { ApiPromise } from '@polkadot/api';
 import { web3FromSource } from '@polkadot/extension-dapp';
 import { registry } from '@polkadot/react-api';
 import { Button, ErrorBoundary, Modal, Output, StatusContext, Toggle } from '@polkadot/react-components';
 import { useApi, useToggle } from '@polkadot/react-hooks';
-import { Option } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
-import { BN_ZERO, assert } from '@polkadot/util';
+import { assert, BN_ZERO } from '@polkadot/util';
 
-import { LedgerSigner, QrSigner } from './signers';
-import { useTranslation } from './translate';
 import Address from './Address';
 import Qr from './Qr';
+import { AccountSigner, LedgerSigner, QrSigner } from './signers';
 import SignFields from './SignFields';
 import Tip from './Tip';
 import Transaction from './Transaction';
-import { extractExternal, handleTxResults } from './util';
+import { useTranslation } from './translate';
+import { cacheUnlock, extractExternal, handleTxResults } from './util';
 
 interface Props {
   className?: string;
@@ -39,7 +39,7 @@ const NOOP = () => undefined;
 
 let qrId = 0;
 
-function unlockAccount ({ signAddress, signPassword }: AddressProxy): string | null {
+function unlockAccount ({ isUnlockCached, signAddress, signPassword }: AddressProxy): string | null {
   let publicKey;
 
   try {
@@ -54,6 +54,7 @@ function unlockAccount ({ signAddress, signPassword }: AddressProxy): string | n
 
   try {
     pair.decodePkcs8(signPassword);
+    isUnlockCached && cacheUnlock(pair);
   } catch (error) {
     console.error(error);
 
@@ -68,6 +69,8 @@ async function signAndSend (queueSetTxStatus: QueueTxMessageSetStatus, currentIt
 
   try {
     await tx.signAsync(pairOrAddress, options);
+
+    console.info('sending', tx.toHex());
 
     queueSetTxStatus(currentItem.id, 'sending');
 
@@ -134,12 +137,12 @@ async function wrapTx (api: ApiPromise, currentItem: QueueTx, { isMultiCall, mul
   return tx;
 }
 
-async function extractParams (address: string, options: Partial<SignerOptions>, setQrState: (state: QrState) => void): Promise<['qr' | 'signing', KeyringPair | string, Partial<SignerOptions>]> {
+async function extractParams (address: string, options: Partial<SignerOptions>, setQrState: (state: QrState) => void): Promise<['qr' | 'signing', string, Partial<SignerOptions>]> {
   const pair = keyring.getPair(address);
-  const { meta: { isExternal, isHardware, isInjected, source } } = pair;
+  const { meta: { accountOffset, addressOffset, isExternal, isHardware, isInjected, source } } = pair;
 
   if (isHardware) {
-    return ['signing', address, { ...options, signer: new LedgerSigner() }];
+    return ['signing', address, { ...options, signer: new LedgerSigner(accountOffset as number || 0, addressOffset as number || 0) }];
   } else if (isExternal) {
     return ['qr', address, { ...options, signer: new QrSigner(setQrState) }];
   } else if (isInjected) {
@@ -150,7 +153,7 @@ async function extractParams (address: string, options: Partial<SignerOptions>, 
     return ['signing', address, { ...options, signer: injected.signer }];
   }
 
-  return ['signing', pair, options];
+  return ['signing', pair.address, { ...options, signer: new AccountSigner(pair) }];
 }
 
 function TxSigned ({ className, currentItem, requestAddress }: Props): React.ReactElement<Props> | null {
@@ -158,12 +161,13 @@ function TxSigned ({ className, currentItem, requestAddress }: Props): React.Rea
   const { t } = useTranslation();
   const { queueSetTxStatus } = useContext(StatusContext);
   const [flags, setFlags] = useState(extractExternal(requestAddress));
+  const [error, setError] = useState<Error | null>(null);
   const [{ isQrHashed, qrAddress, qrPayload, qrResolve }, setQrState] = useState<QrState>({ isQrHashed: false, qrAddress: '', qrPayload: new Uint8Array() });
   const [isBusy, setBusy] = useState(false);
   const [isRenderError, toggleRenderError] = useToggle();
   const [isSubmit, setIsSubmit] = useState(true);
   const [passwordError, setPasswordError] = useState<string | null>(null);
-  const [senderInfo, setSenderInfo] = useState<AddressProxy>({ isMultiCall: false, multiRoot: null, proxyRoot: null, signAddress: requestAddress, signPassword: '' });
+  const [senderInfo, setSenderInfo] = useState<AddressProxy>({ isMultiCall: false, isUnlockCached: false, multiRoot: null, proxyRoot: null, signAddress: requestAddress, signPassword: '' });
   const [signedOptions, setSignedOptions] = useState<Partial<SignerOptions>>({});
   const [signedTx, setSignedTx] = useState<string | null>(null);
   const [multiCall, setMultiCall] = useState<string | null>(null);
@@ -236,7 +240,7 @@ function TxSigned ({ className, currentItem, requestAddress }: Props): React.Rea
       if (senderInfo.signAddress) {
         const [tx, [status, pairOrAddress, options]] = await Promise.all([
           wrapTx(api, currentItem, senderInfo),
-          extractParams(senderInfo.signAddress, { tip }, setQrState)
+          extractParams(senderInfo.signAddress, { nonce: -1, tip }, setQrState)
         ]);
 
         queueSetTxStatus(currentItem.id, status);
@@ -264,15 +268,26 @@ function TxSigned ({ className, currentItem, requestAddress }: Props): React.Rea
   const _doStart = useCallback(
     (): void => {
       setBusy(true);
+
       setTimeout((): void => {
-        if (_unlock()) {
-          isSubmit
-            ? currentItem.payload
-              ? _onSendPayload(queueSetTxStatus, currentItem, senderInfo)
-              : _onSend(queueSetTxStatus, currentItem, senderInfo).catch(console.error)
-            : _onSign(queueSetTxStatus, currentItem, senderInfo).catch(console.error);
-        } else {
+        const errorHandler = (error: Error): void => {
+          console.error(error);
           setBusy(false);
+          setError(error);
+        };
+
+        try {
+          if (_unlock()) {
+            isSubmit
+              ? currentItem.payload
+                ? _onSendPayload(queueSetTxStatus, currentItem, senderInfo)
+                : _onSend(queueSetTxStatus, currentItem, senderInfo).catch(errorHandler)
+              : _onSign(queueSetTxStatus, currentItem, senderInfo).catch(errorHandler);
+          } else {
+            setBusy(false);
+          }
+        } catch (error) {
+          errorHandler(error as Error);
         }
       }, 0);
     },
@@ -282,7 +297,10 @@ function TxSigned ({ className, currentItem, requestAddress }: Props): React.Rea
   return (
     <>
       <Modal.Content className={className}>
-        <ErrorBoundary onError={toggleRenderError}>
+        <ErrorBoundary
+          error={error}
+          onError={toggleRenderError}
+        >
           {(isBusy && flags.isQr)
             ? (
               <Qr
@@ -302,6 +320,7 @@ function TxSigned ({ className, currentItem, requestAddress }: Props): React.Rea
                 <Address
                   currentItem={currentItem}
                   onChange={setSenderInfo}
+                  onEnter={_doStart}
                   passwordError={passwordError}
                   requestAddress={requestAddress}
                 />

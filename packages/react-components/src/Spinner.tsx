@@ -1,12 +1,11 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
 import styled from 'styled-components';
 
-import { useTranslation } from './translate';
 import spinnerSrc from './Spinner.png';
+import { useTranslation } from './translate';
 
 interface Props {
   className?: string;
@@ -25,7 +24,7 @@ function Spinner ({ className = '', label, variant = 'app' }: Props): React.Reac
   return (
     <div className={`${className} ui--Spinner${variant === 'cover' ? ' isCover' : ''}`}>
       <img
-        className={variant === 'push' ? '' : 'ui--highlight--bg ui--highlight--border'}
+        className={variant === 'push' ? '' : 'highlight--bg highlight--border'}
         src={spinnerSrc as string}
       />
       {variant === 'app' && <div className='text'>{label || t('Retrieving data')}</div>}
@@ -60,5 +59,9 @@ export default React.memo(styled(Spinner)`
     color: inherit !important;
     margin: 0.25rem auto 1.5rem auto;
     opacity: 0.6;
+
+    div+div {
+      margin-top: 0.25rem;
+    }
   }
 `);

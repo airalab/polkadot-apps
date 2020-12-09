@@ -1,17 +1,17 @@
 // Copyright 2017-2020 @polkadot/app-storage authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { QueryTypes, ParitalQueryTypes } from '../types';
+import type { ParitalQueryTypes, QueryTypes } from '../types';
 
 import React, { useCallback, useRef } from 'react';
 import { Route, Switch } from 'react-router';
+
 import { Tabs } from '@polkadot/react-components';
 
+import { useTranslation } from '../translate';
 import Consts from './Consts';
 import Modules from './Modules';
 import Raw from './Raw';
-import { useTranslation } from '../translate';
 
 interface Props {
   basePath: string;

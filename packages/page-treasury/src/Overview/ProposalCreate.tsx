@@ -1,9 +1,9 @@
 // Copyright 2017-2020 @polkadot/app-treasury authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import BN from 'bn.js';
 import React, { useMemo, useState } from 'react';
+
 import { Button, InputAddress, InputBalance, Modal, Static, TxButton } from '@polkadot/react-components';
 import { useApi, useToggle } from '@polkadot/react-hooks';
 
@@ -89,6 +89,9 @@ function Propose ({ className }: Props): React.ReactElement<Props> | null {
                 <p>{t<string>('Of the beneficiary amount, at least {{bondPercentage}} would need to be put up as collateral. The maximum of this and the minimum bond will be used to secure the proposal, refundable if it passes.', { replace: { bondPercentage } })}</p>
               </Modal.Column>
             </Modal.Columns>
+            <article className='warning'>
+              <p>{t<string>('Be aware that once submitted the proposal will be put to a council vote. If the proposal is rejected due to a lack of info, invalid requirements or non-benefit to the network as a whole, the full bond posted (as describe above) will be lost.')}</p>
+            </article>
           </Modal.Content>
           <Modal.Actions onCancel={toggleOpen}>
             <TxButton

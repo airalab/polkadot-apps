@@ -1,6 +1,7 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+
+import type { ThemeProps } from '../types';
 
 import React from 'react';
 import styled from 'styled-components';
@@ -23,11 +24,11 @@ function Foot ({ className = '', footer, isEmpty }: Props): React.ReactElement<P
   );
 }
 
-export default React.memo(styled(Foot)`
+export default React.memo(styled(Foot)(({ theme }: ThemeProps) => `
   td {
-    color: rgba(78, 78, 78, .66);
-    font-family: sans-serif;
-    font-weight: 100;
+    color: rgba(${theme.theme === 'dark' ? '254, 240, 240' : '78, 78, 78'}, 0.66);
+    font: ${theme.fontSans};
+    font-weight: 400;
     padding: 0.75rem 1rem 0.25rem;
     text-align: right;
     vertical-align: baseline;
@@ -35,6 +36,6 @@ export default React.memo(styled(Foot)`
   }
 
   tr {
-    background: transparent;
+    background: ${theme.bgPage};
   }
-`);
+`));

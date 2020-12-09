@@ -1,10 +1,10 @@
 // Copyright 2017-2020 @polkadot/apps authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import { chainLogos, emptyLogo, namedLogos, nodeLogos } from '@polkadot/apps-config/ui/logos';
+
+import { chainLogos, emptyLogos, namedLogos, nodeLogos } from '@polkadot/apps-config';
 import { useApi } from '@polkadot/react-hooks';
 
 interface Props {
@@ -19,14 +19,16 @@ function sanitize (value?: string): string {
 
 function ChainImg ({ className = '', logo, onClick }: Props): React.ReactElement<Props> {
   const { systemChain, systemName } = useApi();
-  const img = useMemo((): string => {
-    return (namedLogos[logo || ''] || chainLogos[sanitize(systemChain)] || nodeLogos[sanitize(systemName)] || emptyLogo) as string;
+  const [isEmpty, img] = useMemo((): [boolean, string] => {
+    const found: unknown = namedLogos[logo || ''] || chainLogos[sanitize(systemChain)] || nodeLogos[sanitize(systemName)];
+
+    return [!found || logo === 'empty', (found || emptyLogos.empty) as string];
   }, [logo, systemChain, systemName]);
 
   return (
     <img
       alt='chain logo'
-      className={className}
+      className={`${className}${isEmpty ? ' highlight--bg' : ''}`}
       onClick={onClick}
       src={img}
     />
@@ -34,6 +36,7 @@ function ChainImg ({ className = '', logo, onClick }: Props): React.ReactElement
 }
 
 export default React.memo(styled(ChainImg)`
+  background: white;
   border-radius: 50%;
   box-sizing: border-box;
 `);

@@ -1,8 +1,7 @@
 // Copyright 2017-2020 @polkadot/apps-config authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { ExternalDef } from './types';
+import type { ExternalDef } from './types';
 
 import Commonwealth from './commonwealth';
 import Polkascan from './polkascan';
@@ -10,12 +9,10 @@ import Polkassembly from './polkassembly';
 import Polkastats from './polkastats';
 import Subscan from './subscan';
 
-const externals: Record<string, ExternalDef> = {
+export const externalLinks: Record<string, ExternalDef> = {
   Commonwealth,
   Polkascan,
   Polkassembly,
   Polkastats,
   Subscan
 };
-
-export default externals;

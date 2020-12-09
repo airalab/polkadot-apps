@@ -1,8 +1,7 @@
 // Copyright 2017-2020 @polkadot/react-params authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { Props } from '../types';
+import type { Props } from '../types';
 
 import React from 'react';
 
@@ -22,6 +21,7 @@ function Hash512 ({ className = '', defaultValue, isDisabled, isError, label, na
       onEnter={onEnter}
       onEscape={onEscape}
       type={type}
+      withCopy={isDisabled}
       withLabel={withLabel}
     />
   );

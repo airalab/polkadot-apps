@@ -1,8 +1,8 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { AccountId, Balance, BlockNumber, Hash, SessionIndex } from '@polkadot/types/interfaces';
+import type { Inflation } from '@polkadot/react-hooks/types';
+import type { AccountId, Balance, BlockNumber, EraIndex, Exposure, Hash, SessionIndex, ValidatorPrefs, ValidatorPrefsTo196 } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
 
@@ -11,6 +11,12 @@ export type Nominators = Record<string, string[]>;
 export type AccountFilter = 'all' | 'controller' | 'session' | 'stash' | 'unbonded';
 
 export type ValidatorFilter = 'all' | 'hasNominators' | 'noNominators' | 'hasWarnings' | 'noWarnings' | 'iNominated' | 'nextSet';
+
+export interface NominatedBy {
+  index: number;
+  nominatorId: string;
+  submittedIn: EraIndex;
+}
 
 export interface Slash {
   accountId: AccountId;
@@ -32,10 +38,8 @@ interface ValidatorInfoRank {
   rankBondOther: number;
   rankBondOwn: number;
   rankBondTotal: number;
-  rankComm: number;
   rankNumNominators: number;
   rankOverall: number;
-  rankPayment: number;
   rankReward: number;
 }
 
@@ -46,28 +50,35 @@ export interface ValidatorInfo extends ValidatorInfoRank {
   bondShare: number;
   bondTotal: Balance;
   commissionPer: number;
-  hasIdentity: boolean;
+  exposure: Exposure;
+  isActive: boolean;
   isCommission: boolean;
   isElected: boolean;
   isFavorite: boolean;
   isNominating: boolean;
   key: string;
+  knownLength: BN;
+  lastPayout?: BN;
   numNominators: number;
-  rewardPayout: BN;
-  rewardSplit: BN;
-  validatorPayment: BN;
+  numRecentPayouts: number;
+  skipRewards: boolean;
+  stakedReturn: number;
+  stakedReturnCmp: number;
+  validatorPrefs?: ValidatorPrefs | ValidatorPrefsTo196;
 }
 
 export type TargetSortBy = keyof ValidatorInfoRank;
 
 export interface SortedTargets {
   avgStaked?: BN;
-  calcWith?: BN;
-  lastReward?: BN;
+  electedIds?: string[];
+  inflation: Inflation;
   lowStaked?: BN;
+  medianComm: number;
   nominators?: string[];
-  setCalcWith: (amount?: BN) => void;
   totalStaked?: BN;
+  totalIssuance?: BN;
   validators?: ValidatorInfo[];
   validatorIds?: string[];
+  waitingIds?: string[];
 }

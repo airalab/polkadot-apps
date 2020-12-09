@@ -1,13 +1,12 @@
 // Copyright 2017-2020 @polkadot/react-hooks authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import { useCallback, useState } from 'react';
 
-import useCacheKey from './useCacheKey';
+import { useCacheKey } from './useCacheKey';
 
 // hook for favorites with local storage
-export default function useFavorites (storageKeyBase: string): [string[], (address: string) => void] {
+export function useFavorites (storageKeyBase: string): [string[], (address: string) => void] {
   const [getCache, setCache] = useCacheKey<string[]>(storageKeyBase);
   const [favorites, setFavorites] = useState<string[]>(getCache() || []);
 

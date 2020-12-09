@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/apps authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable camelcase */
 
@@ -22,13 +21,18 @@ function createWebpack () {
       module: {
         rules: [
           {
+            include: /node_modules/,
+            test: /\.mjs$/,
+            type: 'javascript/auto'
+          },
+          {
             exclude: /(node_modules)/,
-            test: /\.(js|ts|tsx)$/,
+            test: /\.(js|mjs|ts|tsx)$/,
             use: [
               require.resolve('thread-loader'),
               {
                 loader: require.resolve('babel-loader'),
-                options: require('@polkadot/dev/config/babel')
+                options: require('@polkadot/dev/config/babel-config-cjs.cjs')
               }
             ]
           }
@@ -49,7 +53,7 @@ function createWebpack () {
         new CopyWebpackPlugin({ patterns: [{ from: 'assets' }] })
       ],
       resolve: {
-        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
+        extensions: ['.js', '.jsx', '.json', '.mjs', '.ts', '.tsx']
       },
       target: 'electron-main'
     }

@@ -1,11 +1,12 @@
 // Copyright 2017-2020 @polkadot/apps authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+
+import type { KeyringJson } from '@polkadot/ui-keyring/types';
 
 import { app } from 'electron';
-import { FileStore } from '@polkadot/ui-keyring/stores';
-import { KeyringJson } from '@polkadot/ui-keyring/types';
 import path from 'path';
+
+import { FileStore } from '@polkadot/ui-keyring/stores';
 
 import { IpcMainHandler } from './ipc-main-handler';
 import { registerIpcHandler } from './register-ipc-handler';
@@ -32,10 +33,10 @@ export const accountStoreIpcHandler = (fileStore: FileStore): IpcMainHandler => 
     }
   }),
   'account-store-remove': async (key: string) => new Promise((resolve) =>
-    fileStore.remove(key, resolve)
+    fileStore.remove(key, () => resolve(undefined))
   ),
   'account-store-set': async (key: string, value: KeyringJson) => new Promise((resolve) =>
-    fileStore.set(key, value, resolve)
+    fileStore.set(key, value, () => resolve(undefined))
   )
 });
 

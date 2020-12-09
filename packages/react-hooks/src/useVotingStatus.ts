@@ -1,15 +1,16 @@
 // Copyright 2017-2020 @polkadot/react-hooks authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { BlockNumber, Votes } from '@polkadot/types/interfaces';
+import type { BlockNumber, Votes } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
-import { useEffect, useState } from 'react';
-import { ApiPromise } from '@polkadot/api';
+import { useMemo } from 'react';
 
-import useApi from './useApi';
-import useCall from './useCall';
+import { ApiPromise } from '@polkadot/api';
+import { isFunction } from '@polkadot/util';
+
+import { useApi } from './useApi';
+import { useCall } from './useCall';
 
 interface State {
   hasFailed: boolean;
@@ -18,6 +19,8 @@ interface State {
   isVoteable: boolean;
   remainingBlocks: BN | null;
 }
+
+const DEFAULT_STATUS = { hasFailed: false, hasPassed: false, isCloseable: false, isVoteable: false, remainingBlocks: null };
 
 function getStatus (api: ApiPromise, bestNumber: BlockNumber, votes: Votes, numMembers: number, section: 'council' | 'technicalCommittee'): State {
   if (!votes.end) {
@@ -37,9 +40,11 @@ function getStatus (api: ApiPromise, bestNumber: BlockNumber, votes: Votes, numM
   return {
     hasFailed,
     hasPassed,
-    isCloseable: api.tx[section].close?.meta.args.length === 4 // current-generation
-      ? isEnd || hasPassed || hasFailed
-      : isEnd,
+    isCloseable: isFunction(api.tx[section].close)
+      ? api.tx[section].close.meta.args.length === 4 // current-generation
+        ? isEnd || hasPassed || hasFailed
+        : isEnd
+      : false,
     isVoteable: !isEnd,
     remainingBlocks: isEnd
       ? null
@@ -47,16 +52,14 @@ function getStatus (api: ApiPromise, bestNumber: BlockNumber, votes: Votes, numM
   };
 }
 
-export default function useVotingStatus (votes: Votes | null | undefined, numMembers: number, section: 'council' | 'technicalCommittee'): State {
+export function useVotingStatus (votes: Votes | null | undefined, numMembers: number, section: 'council' | 'technicalCommittee'): State {
   const { api } = useApi();
   const bestNumber = useCall<BlockNumber>(api.derive.chain.bestNumber);
-  const [state, setState] = useState<State>({ hasFailed: false, hasPassed: false, isCloseable: false, isVoteable: false, remainingBlocks: null });
 
-  useEffect((): void => {
-    bestNumber && votes && setState(
-      getStatus(api, bestNumber, votes, numMembers, section)
-    );
-  }, [api, bestNumber, numMembers, section, votes]);
-
-  return state;
+  return useMemo(
+    () => bestNumber && votes
+      ? getStatus(api, bestNumber, votes, numMembers, section)
+      : DEFAULT_STATUS,
+    [api, bestNumber, numMembers, section, votes]
+  );
 }

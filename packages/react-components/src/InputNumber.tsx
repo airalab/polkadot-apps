@@ -1,16 +1,16 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { SiDef } from '@polkadot/util/types';
-import { BitLength } from './types';
+import type { SiDef } from '@polkadot/util/types';
+import type { BitLength } from './types';
 
 import BN from 'bn.js';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { BN_ZERO, BN_TEN, formatBalance, isBn } from '@polkadot/util';
 
-import { classes } from './util';
+import { registry } from '@polkadot/react-api';
+import { BN_TEN, BN_ZERO, formatBalance, isBn } from '@polkadot/util';
+
 import { BitLengthOption } from './constants';
 import Dropdown from './Dropdown';
 import Input, { KEYS_PRE } from './Input';
@@ -120,7 +120,7 @@ function inputToBn (input: string, si: SiDef | null, bitLength: BitLength, isZer
     }
 
     const div = new BN(input.replace(/\.\d*$/, ''));
-    const modString = input.replace(/^\d+\./, '');
+    const modString = input.replace(/^\d+\./, '').substr(0, registry.chainDecimals);
     const mod = new BN(modString);
 
     result = div
@@ -243,12 +243,15 @@ function InputNumber ({ autoFocus, bitLength = DEFAULT_BITLENGTH, children, clas
     [_onChangeWithSi, value]
   );
 
-  const maxValueLength = getGlobalMaxValue(bitLength).toString().length - 1;
+  // Same as the number of digits, which means it can still overflow, i.e.
+  // for u8 we allow 3, which could be 999 (however 2 digits will limit to only 99,
+  // so this is more-or-less the lesser of evils without a max-value check)
+  const maxValueLength = getGlobalMaxValue(bitLength).toString().length;
 
   return (
     <Input
       autoFocus={autoFocus}
-      className={classes('ui--InputNumber', isDisabled && 'isDisabled', className)}
+      className={`ui--InputNumber${isDisabled ? ' isDisabled' : ''} ${className}`}
       help={help}
       isAction={isSi}
       isDisabled={isDisabled}

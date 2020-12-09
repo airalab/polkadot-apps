@@ -1,10 +1,12 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+
+import type { ThemeProps } from './types';
 
 import React from 'react';
 import ReactMd from 'react-markdown';
 import styled from 'styled-components';
+
 import { useToggle } from '@polkadot/react-hooks';
 
 import Icon from './Icon';
@@ -18,7 +20,7 @@ function HelpOverlay ({ className = '', md }: Props): React.ReactElement<Props> 
   const [isVisible, toggleVisible] = useToggle();
 
   return (
-    <div className={className}>
+    <div className={`ui--HelpOverlay ${className}`}>
       <div className='help-button'>
         <Icon
           icon='question-circle'
@@ -42,11 +44,12 @@ function HelpOverlay ({ className = '', md }: Props): React.ReactElement<Props> 
   );
 }
 
-export default React.memo(styled(HelpOverlay)`
+export default React.memo(styled(HelpOverlay)(({ theme }: ThemeProps) => `
   .help-button {
+    color: ${theme.color};
     cursor: pointer;
     font-size: 2rem;
-    padding: 1rem 2.5rem 0 0;
+    padding: 1rem 1.5rem 0 0;
   }
 
   > .help-button {
@@ -56,8 +59,8 @@ export default React.memo(styled(HelpOverlay)`
   }
 
   .help-slideout {
-    background: #eee;
-    border-left: 0.25rem solid #ddd;
+    background: ${theme.bgPage};
+    box-shadow: -6px 0px 20px 0px rgba(0, 0, 0, 0.3);
     bottom: 0;
     max-width: 50rem;
     overflow-y: scroll;
@@ -66,7 +69,7 @@ export default React.memo(styled(HelpOverlay)`
     top: 0;
     transition-duration: .5s;
     transition-property: all;
-    z-index: 10;
+    z-index: 225; // 5 more than menubar
 
     .help-button {
       text-align: right;
@@ -80,4 +83,4 @@ export default React.memo(styled(HelpOverlay)`
       right: 0;
     }
   }
-`);
+`));

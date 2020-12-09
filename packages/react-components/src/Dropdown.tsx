@@ -1,18 +1,18 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
 import SUIButton from 'semantic-ui-react/dist/commonjs/elements/Button/Button';
 import SUIDropdown, { DropdownProps } from 'semantic-ui-react/dist/commonjs/modules/Dropdown/Dropdown';
+import styled from 'styled-components';
+
 import { isUndefined } from '@polkadot/util';
 
-import { classes } from './util';
 import Labelled from './Labelled';
 
 interface Props<Option> {
   allowAdd?: boolean;
+  children?: React.ReactNode;
   className?: string;
   defaultValue?: any;
   dropdownClassName?: string;
@@ -33,6 +33,7 @@ interface Props<Option> {
   placeholder?: string;
   renderLabel?: (item: any) => any;
   searchInput?: { autoFocus: boolean };
+  tabIndex?: number;
   transform?: (value: any) => any;
   value?: any;
   withEllipsis?: boolean;
@@ -43,7 +44,7 @@ export type IDropdown<Option> = React.ComponentType<Props<Option>> & {
   Header: React.ComponentType<{ content: React.ReactNode }>;
 }
 
-function BaseDropdown<Option> ({ allowAdd = false, className = '', defaultValue, dropdownClassName, help, isButton, isDisabled, isError, isFull, isMultiple, label, labelExtra, onAdd, onBlur, onChange, onClose, onSearch, options, placeholder, renderLabel, searchInput, transform, value, withEllipsis, withLabel }: Props<Option>): React.ReactElement<Props<Option>> {
+function BaseDropdown<Option> ({ allowAdd = false, children, className = '', defaultValue, dropdownClassName, help, isButton, isDisabled, isError, isFull, isMultiple, label, labelExtra, onAdd, onBlur, onChange, onClose, onSearch, options, placeholder, renderLabel, searchInput, tabIndex, transform, value, withEllipsis, withLabel }: Props<Option>): React.ReactElement<Props<Option>> {
   const lastUpdate = useRef<string>('');
   const [stored, setStored] = useState<string | undefined>();
 
@@ -102,15 +103,16 @@ function BaseDropdown<Option> ({ allowAdd = false, className = '', defaultValue,
       search={onSearch || allowAdd}
       searchInput={searchInput}
       selection
+      tabIndex={tabIndex}
       value={stored}
     />
   );
 
   return isButton
-    ? <SUIButton.Group>{dropdown}</SUIButton.Group>
+    ? <SUIButton.Group>{dropdown}{children}</SUIButton.Group>
     : (
       <Labelled
-        className={classes('ui--Dropdown', className)}
+        className={`ui--Dropdown ${className}`}
         help={help}
         isFull={isFull}
         label={label}
@@ -119,6 +121,7 @@ function BaseDropdown<Option> ({ allowAdd = false, className = '', defaultValue,
         withLabel={withLabel}
       >
         {dropdown}
+        {children}
       </Labelled>
     );
 }
@@ -139,6 +142,10 @@ const Dropdown = React.memo(styled(BaseDropdown)`
       position: absolute;
       top: -9px;
       width: 32px;
+
+      &.opaque {
+        opacity: 0.5;
+      }
     }
 
     .ui--Dropdown-name {

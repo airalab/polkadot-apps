@@ -1,25 +1,28 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { Badge } from '@polkadot/react-components';
 
-import { MAX_PAYOUTS } from './constants';
+import { Badge } from '@polkadot/react-components';
+import { useApi } from '@polkadot/react-hooks';
 
 interface Props {
   numNominators?: number;
 }
 
 function MaxBadge ({ numNominators }: Props): React.ReactElement<Props> | null {
-  if (!numNominators || (numNominators < MAX_PAYOUTS)) {
+  const { api } = useApi();
+
+  const max = api.consts.staking?.maxNominatorRewardedPerValidator;
+
+  if (!numNominators || !max || max.gten(numNominators)) {
     return null;
   }
 
   return (
     <Badge
       color='red'
-      info='64+'
+      icon='balance-scale-right'
     />
   );
 }

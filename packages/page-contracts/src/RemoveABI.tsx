@@ -1,10 +1,10 @@
 // Copyright 2017-2020 @polkadot/app-accounts authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { CodeStored } from '@polkadot/app-contracts/types';
+import type { CodeStored } from './types';
 
 import React, { useCallback } from 'react';
+
 import { Button, Modal } from '@polkadot/react-components';
 
 import CodeRow from './shared/CodeRow';
