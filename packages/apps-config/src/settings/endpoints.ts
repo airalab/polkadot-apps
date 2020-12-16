@@ -66,12 +66,6 @@ function createLiveNetworks (t: TFunction): LinkOption[] {
       text: t('rpc.kusama.w3f', 'Kusama', { ns: 'apps-config' }),
       textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'Web3 Foundation' } }),
       value: 'wss://cc3-5.kusama.network'
-    },
-    {
-      info: 'kusama',
-      text: t('rpc.kusama.onfinality', 'Kusama', { ns: 'apps-config' }),
-      textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'OnFinality' } }),
-      value: 'wss://kusama.api.onfinality.io/public-ws'
     }
   ];
 }
