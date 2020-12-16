@@ -6,6 +6,8 @@
 export default {
   RefCount: 'u8',
   Record: 'Vec<u8>',
+  Address: 'MultiAddress',
+  LookupSource: 'MultiAddress',
   TechnicalParam: 'Vec<u8>',
   TechnicalReport: 'Vec<u8>',
   EconomicalParam: '{}',
