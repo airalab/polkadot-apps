@@ -31,4 +31,16 @@ export default {
       persistent: 'PersistedValidationData',
       transient: 'TransientValidationData',
   },
+  InboundHrmpMessage: {
+      send_at: 'u32',
+      data: 'Vec<u8>',
+  },
+  InboundDownwardMessage: {
+      send_at: 'u32',
+      msg: 'Vec<u8>',
+  },
+  MessageIngestionType: {
+      downward_messages: 'Vec<InboundDownwardMessage>',
+      horizontal_messages: 'Vec<InboundHrmpMessage>',
+  },
 };
