@@ -1,8 +1,12 @@
-// Copyright 2017-2020 @polkadot/apps-config authors & contributors
+// Copyright 2017-2021 @polkadot/apps-config authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { TFunction } from 'i18next';
 import type { LinkOption } from '../settings/types';
+
+import { expandEndpoints } from './util';
+
+/* eslint-disable sort-keys */
 
 // The available endpoints that will show in the dropdown. For the most part (with the exception of
 // Polkadot) we try to keep this to live chains only, with RPCs hosted by the community/chain vendor
@@ -11,26 +15,27 @@ import type { LinkOption } from '../settings/types';
 //   value: The actual hosted secure websocket endpoint
 
 export function createProduction (t: TFunction): LinkOption[] {
-  return [
+  return expandEndpoints(t, [
+    // fixed, polkadot
+    {
+      dnslink: 'polkadot',
+      info: 'polkadot',
+      text: t('rpc.polkadot.parity', 'Polkadot', { ns: 'apps-config' }),
+      providers: {
+        Parity: 'wss://rpc.polkadot.io',
+        OnFinality: 'wss://polkadot.api.onfinality.io/public-ws',
+        'Patract Elara': 'wss://polkadot.elara.patract.io'
+      }
+    },
     {
       dnslink: 'kusama',
       info: 'kusama',
       text: t('rpc.kusama.parity', 'Kusama', { ns: 'apps-config' }),
-      textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'Parity' } }),
-      value: 'wss://kusama-rpc.polkadot.io'
+      providers: {
+        Parity: 'wss://kusama-rpc.polkadot.io',
+        OnFinality: 'wss://kusama.api.onfinality.io/public-ws',
+        'Patract Elara': 'wss://kusama.elara.patract.io'
+      }
     },
-    {
-      info: 'kusama',
-      text: t('rpc.kusama.w3f', 'Kusama', { ns: 'apps-config' }),
-      textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'Web3 Foundation' } }),
-      value: 'wss://cc3-5.kusama.network'
-    },
-    {
-      dnslink: 'ipci',
-      info: 'ipci',
-      text: t<string>('rpc.ipci', 'DAO IPCI', { ns: 'apps-config' }),
-      textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'Airalab' } }),
-      value: 'wss://substrate.ipci.io'
-    }
-  ];
+  ]);
 }

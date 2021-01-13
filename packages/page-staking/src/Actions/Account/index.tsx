@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
@@ -277,7 +277,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                 vertical
               >
                 <Menu.Item
-                  disabled={!isOwnStash && !balancesAll?.freeBalance.gtn(0)}
+                  disabled={!isOwnStash || !balancesAll?.freeBalance.gtn(0)}
                   onClick={toggleBondExtra}
                 >
                   {t<string>('Bond more funds')}
