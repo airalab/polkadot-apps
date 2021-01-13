@@ -7,8 +7,8 @@
 // anything for a specific chain, most would probably fit into the node category (but allow for chain-specific)
 // alphabetical
 import chainDusty from './chains/dusty.png';
-import chainKusama from './chains/kusama-128.gif';
 import chainDaoIpci from './chains/ipci.svg';
+import chainKusama from './chains/kusama-128.gif';
 import chainRococo from './chains/rococo.svg';
 import chainRococoTick from './chains/rococo-tick.svg';
 import chainRococoTrack from './chains/rococo-track.svg';

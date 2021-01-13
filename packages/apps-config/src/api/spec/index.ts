@@ -49,7 +49,6 @@ export default {
   galois: galois,
   hanonycash,
   ipci: robonomics,
-  kulupu,
   jupiter,
   'mashnet-node': kilt,
   'node-polkadex': polkadex,

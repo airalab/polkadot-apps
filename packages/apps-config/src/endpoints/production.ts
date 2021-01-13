@@ -36,6 +36,6 @@ export function createProduction (t: TFunction): LinkOption[] {
         OnFinality: 'wss://kusama.api.onfinality.io/public-ws',
         'Patract Elara': 'wss://kusama.elara.patract.io'
       }
-    },
+    }
   ]);
 }

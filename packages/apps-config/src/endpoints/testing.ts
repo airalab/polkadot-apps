@@ -26,7 +26,7 @@ export function createTesting (t: TFunction): LinkOption[] {
       text: t('rpc.rococo', 'Airalab Rococo', { ns: 'apps-config' }),
       providers: {
         Airalab: 'wss://rococo-local.rpc.robonomics.network'
-      },
+      }
     },
     {
       info: 'airaRococoEarth',
@@ -34,7 +34,7 @@ export function createTesting (t: TFunction): LinkOption[] {
       text: t('rpc.rococo.earth', 'Earth', { ns: 'apps-config' }),
       providers: {
         Airalab: 'wss://earth.rpc.robonomics.network'
-      },
+      }
     },
     {
       info: 'airaRococoMars',
@@ -42,7 +42,7 @@ export function createTesting (t: TFunction): LinkOption[] {
       text: t('rpc.rococo.mars', 'Mars', { ns: 'apps-config' }),
       providers: {
         Airalab: 'wss://mars.rpc.robonomics.network'
-      },
+      }
     }
   ]);
 }
