@@ -21,7 +21,7 @@ export function createTesting (t: TFunction): LinkOption[] {
     createRococo(t),
     // airalab test relays
     {
-      dnslink: 'airaRococo',
+      dnslink: 'rococo',
       info: 'rococo',
       text: t('rpc.rococo', 'Airalab Rococo', { ns: 'apps-config' }),
       providers: {
@@ -29,7 +29,7 @@ export function createTesting (t: TFunction): LinkOption[] {
       }
     },
     {
-      info: 'airaRococoEarth',
+      info: 'rococoRobonomics',
       isChild: true,
       text: t('rpc.rococo.earth', 'Earth', { ns: 'apps-config' }),
       providers: {
@@ -37,7 +37,7 @@ export function createTesting (t: TFunction): LinkOption[] {
       }
     },
     {
-      info: 'airaRococoMars',
+      info: 'rococoRobonomics',
       isChild: true,
       text: t('rpc.rococo.mars', 'Mars', { ns: 'apps-config' }),
       providers: {
