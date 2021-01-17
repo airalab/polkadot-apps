@@ -31,6 +31,7 @@ const chainWestend = '#da68a7';
 const chainGalois = '#000000';
 const chainZero = '#000000';
 const chainJupiter = '#7143ff';
+const chainUniarts = '#b39ef7';
 
 // based on node name
 // alphabetical
@@ -57,6 +58,7 @@ export { emptyColor };
 // NOTE: This is as retrieved via the system.chain RPC
 export const chainColors: Record<string, any> = [
   ['acala mandala pc1', chainRoccoAcala],
+  ['acala mandala pc2', chainRoccoAcala],
   ['Darwinia Crab', chainCrab],
   ['crust maxwell cc2', chainCrust],
   ['darwinia cc1', chainDarwinia],
@@ -83,7 +85,8 @@ export const chainColors: Record<string, any> = [
   ['Trick', chainRoccoTrick],
   ['Westend', chainWestend],
   ['Galois', chainGalois],
-  ['ZΞRO Alphaville', chainZero]
+  ['ZΞRO Alphaville', chainZero],
+  ['Uniarts', chainUniarts]
 ].reduce((colors, [chain, color]): Record<string, any> => ({
   ...colors,
   [chain.toLowerCase()]: color

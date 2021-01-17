@@ -18,16 +18,6 @@ export function createProduction (t: TFunction): LinkOption[] {
   return expandEndpoints(t, [
     // fixed, polkadot
     {
-      dnslink: 'polkadot',
-      info: 'polkadot',
-      text: t('rpc.polkadot.parity', 'Polkadot', { ns: 'apps-config' }),
-      providers: {
-        Parity: 'wss://rpc.polkadot.io',
-        OnFinality: 'wss://polkadot.api.onfinality.io/public-ws',
-        'Patract Elara': 'wss://polkadot.elara.patract.io'
-      }
-    },
-    {
       dnslink: 'kusama',
       info: 'kusama',
       text: t('rpc.kusama.parity', 'Kusama', { ns: 'apps-config' }),

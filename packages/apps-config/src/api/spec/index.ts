@@ -13,8 +13,8 @@ import dock from './dock';
 import dusty from './dusty';
 import encointerNodeNotee from './encointer-node-notee';
 import encointerNodeTeeproxy from './encointer-node-teeproxy';
+import encointerPara from './encointer-para';
 import equilibrium from './equilibrium';
-import galois from './galois';
 import hanonycash from './hanonycash';
 import jupiter from './jupiter';
 import kilt from './kilt';
@@ -27,6 +27,7 @@ import robonomics from './robonomics';
 import stablePoc from './stable-poc';
 import stafi from './stafi';
 import subsocial from './subsocial';
+import uniarts from './uniarts';
 import zero from './zero';
 
 // mapping from specName in state.getRuntimeVersion
@@ -43,10 +44,9 @@ export default {
   'dock-main-runtime': dock,
   'dock-testnet': dock,
   dusty3: dusty,
-  'encointer-node': encointerNodeNotee,
   'encointer-node-notee': encointerNodeNotee,
   'encointer-node-teeproxy': encointerNodeTeeproxy,
-  galois: galois,
+  'encointer-parachain': encointerPara,
   hanonycash,
   ipci: robonomics,
   jupiter,
@@ -61,5 +61,6 @@ export default {
   stable_poc: stablePoc,
   stafi,
   subsocial,
-  subzero: zero
+  subzero: zero,
+  uniarts: uniarts
 };
