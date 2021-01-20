@@ -27,6 +27,63 @@ export function createRococo (t: TFunction): EndpointOption {
     linked: [
       // these are the base chains
       {
+        info: 'rococoTick',
+        paraId: 100,
+        text: t('rpc.rococo.tick', 'Tick', { ns: 'apps-config' }),
+        providers: {
+          Parity: 'wss://tick-rpc.polkadot.io'
+        }
+      },
+      {
+        info: 'rococoTrick',
+        paraId: 110,
+        text: t('rpc.rococo.trick', 'Trick', { ns: 'apps-config' }),
+        providers: {
+          Parity: 'wss://trick-rpc.polkadot.io'
+        }
+      },
+      {
+        info: 'rococoTrack',
+        paraId: 120,
+        text: t('rpc.rococo.track', 'Track', { ns: 'apps-config' }),
+        providers: {
+          Parity: 'wss://track-rpc.polkadot.io'
+        }
+      },
+      // add any additional parachains here, alphabetical
+      {
+        info: 'rococoBifrost',
+        paraId: 107,
+        text: t('rpc.rococo.bifrost', 'Bifrost PC1', { ns: 'apps-config' }),
+        providers: {
+          Bifrost: 'wss://rococo-1.testnet.liebi.com'
+        }
+      },
+      {
+        info: 'rococoAcala',
+        paraId: 666,
+        text: t('rpc.rococo.acala', 'Mandala PC2', { ns: 'apps-config' }),
+        providers: {
+          Acala: 'wss://rococo-1.acala.laminar.one/ws'
+        }
+      },
+      {
+        info: 'rococoKilt',
+        paraId: 12623,
+        text: t('rpc.rococo.kilt', 'KILT PC1', { ns: 'apps-config' }),
+        providers: {
+          'KILT Protocol': 'wss://para.rococo-v1.kilt.io'
+        }
+      },
+      {
+        info: 'rococoPlasm',
+        paraId: 5000,
+        text: t('rpc.rococo.plasm', 'Plasm PC2', { ns: 'apps-config' }),
+        providers: {
+          PlasmNetwork: 'wss://rpc.rococo.plasmnet.io'
+        }
+      },
+      {
         info: 'rococoRobonomics',
         paraId: 3000,
         text: t('rpc.rococo.robonomics', 'Robonomics PC2', { ns: 'apps-config' }),
