@@ -5,8 +5,9 @@
 
 export default {
   Record: 'Vec<u8>',
-  Address: 'MultiAddress',
-  LookupSource: 'MultiAddress',
+  Parameter: 'bool',
+  Address: 'AccountId',
+  LookupSource: 'AccountId',
   TechnicalParam: 'Vec<u8>',
   TechnicalReport: 'Vec<u8>',
   EconomicalParam: '{}',
