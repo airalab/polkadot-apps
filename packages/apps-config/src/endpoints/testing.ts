@@ -22,27 +22,30 @@ export function createTesting (t: TFunction): LinkOption[] {
     // airalab test relays
     {
       dnslink: 'rococo',
+      genesisHash: '0x2f13fafb92f84ae79d928179c83899453ad38a528a43edeada157068ad5a5d33',
       info: 'rococo',
       text: t('rpc.rococo', 'Airalab Rococo', { ns: 'apps-config' }),
       providers: {
         Airalab: 'wss://rococo-local.rpc.robonomics.network'
-      }
-    },
-    {
-      info: 'rococoRobonomics',
-      isChild: true,
-      text: t('rpc.rococo.earth', 'Earth', { ns: 'apps-config' }),
-      providers: {
-        Airalab: 'wss://earth.rpc.robonomics.network'
-      }
-    },
-    {
-      info: 'rococoRobonomics',
-      isChild: true,
-      text: t('rpc.rococo.mars', 'Mars', { ns: 'apps-config' }),
-      providers: {
-        Airalab: 'wss://mars.rpc.robonomics.network'
-      }
+      },
+      linked: [
+        {
+          info: 'rococoEarth',
+          paraId: 1000,
+          text: t('rpc.rococo.earth', 'Earth', { ns: 'apps-config' }),
+          providers: {
+            Airalab: 'wss://earth.rpc.robonomics.network'
+          }
+        },
+        {
+          info: 'rococoMars',
+          paraId: 2000,
+          text: t('rpc.rococo.mars', 'Mars', { ns: 'apps-config' }),
+          providers: {
+            Airalab: 'wss://mars.rpc.robonomics.network'
+          }
+        }
+      ]
     }
   ]);
 }
