@@ -6,8 +6,9 @@ import type { AccountId, BountyIndex } from '@polkadot/types/interfaces';
 import React, { useMemo } from 'react';
 
 import { TxButton } from '@polkadot/react-components';
-import { useAccounts, useApi } from '@polkadot/react-hooks';
+import { useAccounts } from '@polkadot/react-hooks';
 
+import { useBounties } from './hooks';
 import { useTranslation } from './translate';
 
 interface Props {
@@ -15,33 +16,26 @@ interface Props {
   index: BountyIndex;
 }
 
-function BountyCuratorProposedActions ({ curatorId, index }: Props) {
+function BountyAcceptCurator ({ curatorId, index }: Props) {
   const { t } = useTranslation();
-  const { api } = useApi();
+  const { acceptCurator } = useBounties();
   const { allAccounts } = useAccounts();
 
   const isCurator = useMemo(() => allAccounts.includes(curatorId.toString()), [allAccounts, curatorId]);
 
-  return isCurator
-    ? (
-      <>
+  return (
+    <>
+      {isCurator &&
         <TxButton
           accountId={curatorId}
           icon='check'
           label={t<string>('Accept')}
           params={[index]}
-          tx={(api.tx.bounties || api.tx.treasury).acceptCurator}
+          tx={acceptCurator}
         />
-        <TxButton
-          accountId={curatorId}
-          icon='times'
-          label={t<string>('Reject')}
-          params={[index]}
-          tx={(api.tx.bounties || api.tx.treasury).unassignCurator}
-        />
-      </>
-    )
-    : null;
+      }
+    </>
+  );
 }
 
-export default React.memo(BountyCuratorProposedActions);
+export default React.memo(BountyAcceptCurator);

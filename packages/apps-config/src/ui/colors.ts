@@ -9,10 +9,12 @@ const emptyColor = '#99999';
 
 // based on chain name
 // alphabetical
+const chainBitCountry = '#191a2e';
 const chainCrab = '#7C30DD';
 const chainCrust = '#ff8812';
 const chainDarwinia = 'linear-gradient(-45deg, #FE3876 0%, #7C30DD 71%, #3A30DD 100%)';
 const chainHanonycash = '#0099CC';
+const chainHydrate = '#000000';
 const chainKulupu = '#003366';
 const chainPhala = '#a7e300';
 const chainPlasm = '#2096F3';
@@ -23,7 +25,7 @@ const chainKusama = '#000000';
 const chainRocco = '#6f36dc';
 const chainRoccoAcala = '#173DC9';
 const chainRoccoBifrost = '#002cc3';
-const chainRoccoDarwinia = '#7C30DD';
+const chainRoccoDarwinia = 'linear-gradient(-45deg, #FE3876 0%, #7C30DD 71%, #3A30DD 100%)';
 const chainRococoLaminar = '#004FFF';
 const chainRoccoTick = '#22bb22';
 const chainRoccoTrack = '#bb2222';
@@ -36,6 +38,7 @@ const chainUniarts = '#b39ef7';
 
 // based on node name
 // alphabetical
+const nodeBitCountry = '#191a2e';
 const nodeBifrost = '#002cc3';
 const nodeCanvas = '#c77cff';
 const nodeCentrifuge = '#fcc367';
@@ -60,12 +63,16 @@ export { emptyColor };
 export const chainColors: Record<string, any> = [
   ['acala mandala pc1', chainRoccoAcala],
   ['acala mandala pc2', chainRoccoAcala],
+  ['Bit.Country Tewai Chain', chainBitCountry],
   ['Bifrost PC1', chainRoccoBifrost],
   ['Darwinia Crab', chainCrab],
-  ['crust maxwell cc2', chainCrust],
+  ['crust maxwell', chainCrust],
+  ['Crust PC1', chainCrust],
   ['darwinia cc1', chainDarwinia],
-  ['darwinia parachain', chainRoccoDarwinia],
+  ['Darwinia PC2', chainRoccoDarwinia],
+  ['Encointer PC1', nodeEncointerNotee],
   ['hanonycash', chainHanonycash],
+  ['HydraDX Hydrate', chainHydrate],
   ['Jupiter Testnet', chainJupiter],
   ['Kulupu', chainKulupu],
   ['Kusama', chainKusama],
@@ -75,6 +82,7 @@ export const chainColors: Record<string, any> = [
   ['laminar turbulence pc1', chainRococoLaminar],
   ['Moonbase Alpha', nodeMoonbeam],
   ['Phala poc 3', chainPhala],
+  ['Phala PC1', chainPhala],
   ['Plasm', chainPlasm],
   ['Plasm PC2', chainPlasm],
   ['PolkaBTC', chainPolkabtc],
@@ -97,6 +105,7 @@ export const chainColors: Record<string, any> = [
 // Alphabetical overrides based on the actual software node type
 // NOTE: This is as retrieved via the system.name RPC
 export const nodeColors: Record<string, any> = [
+  ['Bit.Country Node', nodeBitCountry],
   ['Bifrost Node', nodeBifrost],
   ['Canvas Node', nodeCanvas],
   ['centrifuge chain', nodeCentrifuge],
