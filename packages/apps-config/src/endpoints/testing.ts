@@ -4,7 +4,6 @@
 import type { TFunction } from 'i18next';
 import type { LinkOption } from '../settings/types';
 
-import { createRococo } from './testingRococo';
 import { expandEndpoints } from './util';
 
 /* eslint-disable sort-keys */
@@ -17,12 +16,10 @@ import { expandEndpoints } from './util';
 
 export function createTesting (t: TFunction): LinkOption[] {
   return expandEndpoints(t, [
-    // polkadot test relays
-    createRococo(t),
-    // airalab test relays
+    // airalab test relay
     {
       dnslink: 'rococo',
-      genesisHash: '0x2f13fafb92f84ae79d928179c83899453ad38a528a43edeada157068ad5a5d33',
+      genesisHash: '0x0abc3fb13c592a87c6136f25a865025a039637f68503cda01a08a06d748a65da',
       info: 'rococo',
       text: t('rpc.rococo', 'Airalab Rococo', { ns: 'apps-config' }),
       providers: {

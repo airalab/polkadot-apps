@@ -62,34 +62,24 @@ export default React.memo(styled(BountiesApp)(({ theme }: ThemeProps) => `
     vertical-align: baseline;
     font-size: 1rem;
     line-height: 1.7rem;
-    color: ${theme.theme === 'dark' ? '#eeeeee' : '#1a1b20'}
-    border-bottom: 1px solid ${theme.theme === 'dark' ? '#2f313c' : '#dfdfdf'};
-
-    &:first-child {
-      border-left: 1px solid  ${theme.theme === 'dark' ? '#2f313c' : '#dfdfdf'};
-    }
-
-    &:last-child {
-      border-right: 1px solid  ${theme.theme === 'dark' ? '#2f313c' : '#dfdfdf'};
-    }
   }
 
   tbody tr {
-    &:nth-child(odd) {
-      background: ${theme.theme === 'dark' ? '#111218' : '#fff'};
+    &.noBorder td {
+      border-bottom: 1px solid transparent;
+    }
+
+    &:nth-child(even) td {
+      padding: 0 1rem 1.4rem;
     }
 
     &:nth-child(odd) td {
       vertical-align: middle;
     }
 
-    &:nth-child(even) {
-      background: ${theme.bgPage};
-    }
-
     &:first-child {
       td {
-        border-top: 1px solid  ${theme.theme === 'dark' ? '#2f313c' : '#dfdfdf'};
+        border-top: 1px solid  ${theme.borderTable};
       }
 
       td:first-child {
@@ -103,7 +93,7 @@ export default React.memo(styled(BountiesApp)(({ theme }: ThemeProps) => `
 
     &:last-child {
       td {
-        border-bottom: 1px solid  ${theme.theme === 'dark' ? '#2f313c' : '#dfdfdf'};
+        border-bottom: 1px solid ${theme.borderTable};
       }
 
       td:first-child {

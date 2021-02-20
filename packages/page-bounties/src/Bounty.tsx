@@ -4,24 +4,25 @@
 import type { DeriveCollectiveProposal } from '@polkadot/api-derive/types';
 import type { BlockNumber, Bounty as BountyType, BountyIndex } from '@polkadot/types/interfaces';
 
-import BN from 'bn.js';
 import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import { AddressSmall, Icon, LinkExternal } from '@polkadot/react-components';
 import { ThemeProps } from '@polkadot/react-components/types';
-import { BlockToTime, FormatBalance } from '@polkadot/react-query';
-import { formatNumber } from '@polkadot/util';
+import { FormatBalance } from '@polkadot/react-query';
 
+import BountyActionMessage from './BountyNextActionInfo/BountyActionMessage';
 import { getProposalToDisplay } from './helpers/extendedStatuses';
-import VotingResultsColumn from './Voting/VotersColumn';
 import { BountyActions } from './BountyActions';
 import BountyExtraActions from './BountyExtraActions';
 import BountyInfos from './BountyInfos';
 import BountyStatusView from './BountyStatusView';
 import Curator from './Curator';
+import DueBlocks from './DueBlocks';
 import { useBountyStatus } from './hooks';
+import { bountyLabelColor } from './theme';
 import { useTranslation } from './translate';
+import VotersColumn from './VotersColumn';
 
 interface Props {
   bestNumber: BlockNumber;
@@ -30,11 +31,6 @@ interface Props {
   description: string;
   index: BountyIndex;
   proposals?: DeriveCollectiveProposal[];
-}
-
-interface DueProps {
-  dueBlocks: BN | undefined;
-  until: 'update' | 'payout';
 }
 
 const EMPTY_CELL = '-';
@@ -68,14 +64,9 @@ function Bounty ({ bestNumber, bounty, className = '', description, index, propo
 
   return (
     <>
-      <tr className={className}>
+      <tr className={`${className}${isExpanded ? ' noBorder' : ''} isOdd`}>
         <td>
-          <BountyStatusView
-            blocksUntilPayout={blocksUntilPayout}
-            bountyStatus={bountyStatus}
-            proposals={proposals}
-            status={status}
-          />
+          <BountyStatusView bountyStatus={bountyStatus}/>
         </td>
         <td
           className='description-column'
@@ -96,20 +87,27 @@ function Bounty ({ bestNumber, bounty, className = '', description, index, propo
           )}
         </td>
         <td>
-          {blocksUntilPayout
-            ? <DueBlocks
+          {blocksUntilPayout && unlockAt && (
+            <DueBlocks
               dueBlocks={blocksUntilPayout}
-              until={'payout'}
+              endBlock={unlockAt}
+              label={t<string>('payout')}
             />
-            : ''}
-          {blocksUntilUpdate
-            ? <DueBlocks
+          )}
+          {blocksUntilUpdate && updateDue && (
+            <DueBlocks
               dueBlocks={blocksUntilUpdate}
-              until={'update'}
+              endBlock={updateDue}
+              label={t<string>('update')}
             />
-            : ''}
+          )}
+          <BountyActionMessage
+            bestNumber={bestNumber}
+            blocksUntilUpdate={blocksUntilUpdate}
+            status={status}
+          />
         </td>
-        <td>
+        <td className='td-info-action-row'>
           <div className='td-row'>
             <BountyInfos
               beneficiary={beneficiary}
@@ -120,6 +118,7 @@ function Bounty ({ bestNumber, bounty, className = '', description, index, propo
               <BountyActions
                 bestNumber={bestNumber}
                 description={description}
+                fee={fee}
                 index={index}
                 proposals={proposals}
                 status={status}
@@ -154,26 +153,27 @@ function Bounty ({ bestNumber, bounty, className = '', description, index, propo
           </div>
         </td>
       </tr>
-      <tr className={className}
-        style={{ visibility: isExpanded ? 'visible' : 'collapse' }}>
-        <td className='proposer'
-          colSpan={2}>
-          <div className='proposer-row'>
+      <tr className={`${className} ${isExpanded ? 'isExpanded' : 'isCollapsed'} isOdd`}>
+        <td colSpan={2}>
+          <div className='label-column-left'>
             <div className='label'>{t('Proposer')}</div>
             <AddressSmall value={proposer} />
           </div>
+          <div className='label-column-left'>
+            <div className='label'>{t('Id')}</div>
+            {index.toString()}
+          </div>
         </td>
-        <td className='column-with-label'
-          colSpan={2}>
-          <div className='column-with-label-row'>
+        <td colSpan={2}>
+          <div className='label-column-right'>
             <div className='label'>{t('Bond')}</div>
             <div className='inline-balance'><FormatBalance value={bond} /></div>
           </div>
-          <div className='column-with-label-row'>
+          <div className='label-column-right'>
             <div className='label'>{t("Curator's fee")}</div>
             <div className='inline-balance'>{curator ? <FormatBalance value={fee} /> : EMPTY_CELL}</div>
           </div>
-          <div className='column-with-label-row'>
+          <div className='label-column-right'>
             <div className='label'>{t("Curator's deposit")}</div>
             <div className='inline-balance'>{curator ? <FormatBalance value={curatorDeposit} /> : EMPTY_CELL}</div>
           </div>
@@ -183,12 +183,12 @@ function Bounty ({ bestNumber, bounty, className = '', description, index, propo
         <td>
           {proposals && (
             <div className='votes-table'>
-              <VotingResultsColumn
+              <VotersColumn
                 option={'ayes'}
                 proposals={proposals}
                 status={status}
               />
-              <VotingResultsColumn
+              <VotersColumn
                 option={'nays'}
                 proposals={proposals}
                 status={status}
@@ -202,23 +202,15 @@ function Bounty ({ bestNumber, bounty, className = '', description, index, propo
   );
 }
 
-function DueBlocks ({ dueBlocks, until }: DueProps): React.ReactElement<DueProps> {
-  const { t } = useTranslation();
-
-  return (
-    <>
-      {dueBlocks && dueBlocks.gtn(0) && (
-        <>
-          {t<string>('{{blocks}} blocks', { replace: { blocks: formatNumber(dueBlocks) } })}
-          <BlockToTime blocks={dueBlocks}
-            className='block-to-time'> until {until}</BlockToTime>
-        </>
-      )}
-    </>
-  );
-}
-
 export default React.memo(styled(Bounty)(({ theme }: ThemeProps) => `
+  &.isCollapsed {
+    visibility: collapse;
+  }
+
+  &.isExpanded {
+    visibility: visible;
+  }
+
   .description-column {
     max-width: 200px;
 
@@ -233,7 +225,10 @@ export default React.memo(styled(Bounty)(({ theme }: ThemeProps) => `
     display: inline-flex;
   }
 
-  & .fast-actions {
+  & td.fast-actions {
+    padding-left: 0.2rem;
+    width: 1%;
+
     .fast-actions-row {
       display: flex;
       align-items: center;
@@ -250,7 +245,7 @@ export default React.memo(styled(Bounty)(({ theme }: ThemeProps) => `
       justify-content: center;
       width: 1.7rem;
       height: 1.7rem;
-      border: 1px solid ${theme.theme === 'dark' ? '#2f313c' : '#dfdfdf'};
+      border: 1px solid ${theme.borderTable};
       border-radius: 4px;
       cursor: pointer;
     }
@@ -268,36 +263,45 @@ export default React.memo(styled(Bounty)(({ theme }: ThemeProps) => `
     font-weight: 500;
     font-size: 0.7rem;
     line-height: normal;
-    color: ${theme.theme === 'dark' ? '#757575' : '#8B8B8B'};
+    color: ${bountyLabelColor[theme.theme]};
     text-transform: uppercase;
   }
 
-  & .column-with-label-row {
-    display: flex;
+  .label-column-right, .label-column-left{
+   display: flex;
     align-items: center;
-    padding: 0 0 1.7rem;
 
     .label {
       width: 50%;
     }
   }
 
-  .proposer-row {
-    display: flex;
-    align-items: center;
+  .label-column-right {
+    padding: 0 0 0.75rem;
+  }
+
+  .label-column-left {
+    padding: 0 0 0.75rem;
+  }
+
+  & .td-info-action-row {
+    padding-right: 0;
   }
 
   .td-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    & :only-child {
+      margin-left: auto;
+    }
   }
 
   .bounty-action-row {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-left: auto;
 
     & > * + * {
       margin-left: 0.6rem;
@@ -305,19 +309,13 @@ export default React.memo(styled(Bounty)(({ theme }: ThemeProps) => `
   }
 
   .block-to-time {
-    margin-top: 0.28rem;
     font-size: 0.7rem;
-    line-height: 0.85rem;
-    color: ${theme.theme === 'dark' ? '#757575' : '#8B8B8B'};
+    line-height: 1.5rem;
+    color: ${bountyLabelColor[theme.theme]};
   }
 
   & .votes-table {
     display: flex;
     justify-content: space-between;
-  }
-
-  & .ui--FormatBalance {
-    font-size: 0.85rem;
-    line-height: 1.4rem;
   }
 `));
