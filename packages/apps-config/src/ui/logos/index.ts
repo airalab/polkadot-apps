@@ -7,8 +7,8 @@
 // anything for a specific chain, most would probably fit into the node category (but allow for chain-specific)
 // alphabetical
 import chainDusty from './chains/dusty.png';
-import chainDaoIpci from './chains/ipci.svg';
 import chainHydrate from './chains/hydrate.png';
+import chainDaoIpci from './chains/ipci.svg';
 import chainKusama from './chains/kusama-128.gif';
 import chainPolkaBTC from './chains/polkabtc.png';
 import chainRococo from './chains/rococo.svg';
