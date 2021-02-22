@@ -12,6 +12,8 @@ const definitions: OverrideBundleDefinition = {
       // on all versions
       minmax: [0, undefined],
       types: {
+        Address: 'AccountId',
+        LookupSource: 'AccountId',
         Record: 'Vec<u8>',
         TechnicalParam: 'Vec<u8>',
         TechnicalReport: 'Vec<u8>',
