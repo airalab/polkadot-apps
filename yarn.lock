@@ -2275,6 +2275,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@polkadot/app-lighthouse@workspace:packages/page-lighthouse":
+  version: 0.0.0-use.local
+  resolution: "@polkadot/app-lighthouse@workspace:packages/page-lighthouse"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@polkadot/app-explorer": ^0.85.1
+    "@polkadot/react-components": ^0.85.1
+    "@polkadot/react-query": ^0.85.1
+  languageName: unknown
+  linkType: soft
+
 "@polkadot/app-parachains@workspace:packages/page-parachains":
   version: 0.0.0-use.local
   resolution: "@polkadot/app-parachains@workspace:packages/page-parachains"
