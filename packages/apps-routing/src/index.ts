@@ -6,6 +6,7 @@ import type { Routes } from './types';
 
 import accounts from './accounts';
 import addresses from './addresses';
+import assets from './assets';
 import bounties from './bounties';
 import calendar from './calendar';
 import claims from './claims';
@@ -47,6 +48,7 @@ export default function create (t: TFunction): Routes {
     lighthouse(t),
     parachains(t),
     gilt(t),
+    assets(t),
     society(t),
     calendar(t),
     contracts(t),

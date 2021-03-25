@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { Option, Vec } from '@polkadot/types';
-import type { AccountId, BlockNumber, CandidatePendingAvailability, HeadData, Header, ParaId, ParaLifecycle } from '@polkadot/types/interfaces';
+import type { AccountId, BlockNumber, CandidatePendingAvailability, HeadData, Header, ParaId, ParaInfo, ParaLifecycle } from '@polkadot/types/interfaces';
 import type { Codec } from '@polkadot/types/types';
 import type { EventMapInfo, QueuedAction } from './types';
 
 import BN from 'bn.js';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { AddressMini, Badge, Expander, ParaLink } from '@polkadot/react-components';
+import { AddressMini, Expander, ParaLink } from '@polkadot/react-components';
 import { useApi, useCall, useCallMulti, useParaApi } from '@polkadot/react-hooks';
 import { BlockToTime } from '@polkadot/react-query';
 import { formatNumber } from '@polkadot/util';
@@ -31,11 +31,12 @@ interface Props {
   validators?: AccountId[];
 }
 
-type QueryResult = [Option<HeadData>, Option<BlockNumber>, Option<ParaLifecycle>, Vec<Codec>, Vec<Codec>, Vec<Codec>, Vec<Codec>, Option<BlockNumber>, Option<CandidatePendingAvailability>];
+type QueryResult = [Option<HeadData>, Option<BlockNumber>, Option<ParaLifecycle>, Vec<Codec>, Vec<Codec>, Vec<Codec>, Vec<Codec>, Option<BlockNumber>, Option<CandidatePendingAvailability>, Option<ParaInfo>];
 
 interface QueryState {
   headHex: string | null;
   lifecycle: ParaLifecycle | null;
+  paraInfo: ParaInfo | null;
   pendingAvail: CandidatePendingAvailability | null;
   updateAt: BlockNumber | null;
   qDmp: number;
@@ -53,6 +54,7 @@ const optionsMulti = {
   defaultValue: {
     headHex: null,
     lifecycle: null,
+    paraInfo: null,
     pendingAvail: null,
     qDmp: 0,
     qHrmpE: 0,
@@ -61,11 +63,12 @@ const optionsMulti = {
     updateAt: null,
     watermark: null
   },
-  transform: ([headData, optUp, optLifecycle, dmp, ump, hrmpE, hrmpI, optWm, optPending]: QueryResult): QueryState => ({
+  transform: ([headData, optUp, optLifecycle, dmp, ump, hrmpE, hrmpI, optWm, optPending, optInfo]: QueryResult): QueryState => ({
     headHex: headData.isSome
       ? sliceHex(headData.unwrap())
       : null,
     lifecycle: optLifecycle.unwrapOr(null),
+    paraInfo: optInfo.unwrapOr(null),
     pendingAvail: optPending.unwrapOr(null),
     qDmp: dmp.length,
     qHrmpE: hrmpE.length,
@@ -85,7 +88,7 @@ function renderAddresses (list?: AccountId[]): JSX.Element[] | undefined {
   ));
 }
 
-function Parachain ({ bestNumber, className = '', id, isScheduled, lastBacked, lastInclusion, lastTimeout, nextAction, sessionValidators, validators }: Props): React.ReactElement<Props> {
+function Parachain ({ bestNumber, className = '', id, lastBacked, lastInclusion, lastTimeout, nextAction, sessionValidators, validators }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const { api: paraApi } = useParaApi(id);
@@ -99,7 +102,8 @@ function Parachain ({ bestNumber, className = '', id, isScheduled, lastBacked, l
     [api.query.hrmp.hrmpEgressChannelsIndex, id],
     [api.query.hrmp.hrmpIngressChannelsIndex, id],
     [api.query.hrmp.hrmpWatermarks, id],
-    [api.query.inclusion.pendingAvailability, id]
+    [api.query.inclusion.pendingAvailability, id],
+    [api.query.registrar.paras, id]
   ], optionsMulti);
   const [nonBacked, setNonBacked] = useState<AccountId[]>([]);
 
@@ -144,14 +148,6 @@ function Parachain ({ bestNumber, className = '', id, isScheduled, lastBacked, l
   return (
     <tr className={className}>
       <td className='number'><h1>{formatNumber(id)}</h1></td>
-      <td className='badge'>
-        {isScheduled && (
-          <Badge
-            color='green'
-            icon='clock'
-          />
-        )}
-      </td>
       <td className='badge together'><ParaLink id={id} /></td>
       <td className='number media--1500'>
         {validators && validators.length !== 0 && (

@@ -384,6 +384,7 @@
   "Override the default ss58 prefix for address generation": "주소 생성하기 위해 디폴트ss58 프리픽스를 중단하다.",
   "Oversubscribed": "신청이 초과되었습니다",
   "Oversubscribed nominations ({{count}})": "신청이 초과된 지명",
+  "Overview": "개요",
   "Owned": "보유중",
   "Parachains": "파라체인",
   "Parachains overview": "파라체인 개요",

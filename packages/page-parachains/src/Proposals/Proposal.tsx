@@ -13,7 +13,7 @@ import { formatNumber } from '@polkadot/util';
 
 import { useTranslation } from '../translate';
 import { sliceHex } from '../util';
-import { useProposal } from './useProposals';
+import useProposal from './useProposal';
 
 interface Props {
   approvedIds: ParaId[];
