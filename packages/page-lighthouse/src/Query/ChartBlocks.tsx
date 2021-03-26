@@ -41,7 +41,7 @@ function ChartBlocks ({ lighthouseId, fromBlock = 0 }: Props): React.ReactElemen
   const { api, isApiReady } = useApi();
   const [chart, setChart] = useState<ChartInfo | undefined>();
 
-  useEffect(async (): Promise<void> => {
+  useEffect(async (): void => {
     const bestNumber = (await api.rpc.chain.getHeader()).number.toNumber();
 
     let blocks = [];

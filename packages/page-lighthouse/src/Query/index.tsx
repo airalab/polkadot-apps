@@ -15,9 +15,9 @@ interface Props {
 
 function Query ({ className }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { lighthouseP, fromBlockP } = useParams<{ lighthouseP?: string, fromBlockP?: number }>();
+  const { lighthouseP, fromBlockP } = useParams<{ lighthouseP?: string, fromBlockP?: string }>();
   const [lighthouseId, setLighthouseId] = useState<string | null>(lighthouseP || null);
-  const [fromBlock, setFromBlock] = useState<number | null>(fromBlockP || 0);
+  const [fromBlock, setFromBlock] = useState<number | null>((fromBlockP && fromBlockP.parseInt()) || 0);
 
   const _onQuery = useCallback(
     (): void => {
