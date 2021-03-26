@@ -1,6 +1,7 @@
 {
   "nav.accounts": "Accounts",
   "nav.addresses": "Address book",
+  "nav.assets": "Assets",
   "nav.auctions": "Auctions",
   "nav.bounties": "Bounties",
   "nav.calendar": "Event calendar",
@@ -14,6 +15,7 @@
   "nav.generic-asset": "Generic asset",
   "nav.gilt": "Gilt",
   "nav.js": "JavaScript",
+  "nav.lighthouse": "Lighthouse",
   "nav.parachains": "Parachains",
   "nav.poll": "Token poll",
   "nav.rpc": "RPC calls",

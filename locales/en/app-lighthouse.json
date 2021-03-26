@@ -1,0 +1,23 @@
+{
+  "Display overview information for the selected lighthouse, including blocks produced.": "Display overview information for the selected lighthouse, including blocks produced.",
+  "Display statistics from block.": "Display statistics from block.",
+  "Lighthouse overview": "Lighthouse overview",
+  "Lighthouse stats": "Lighthouse stats",
+  "Overview": "Overview",
+  "Statistics": "Statistics",
+  "average": "average",
+  "best block": "best block",
+  "checkin block": "checkin block",
+  "checkout block": "checkout block",
+  "checkpoint block": "checkpoint block",
+  "current block": "current block",
+  "estimated rewards": "estimated rewards",
+  "expected rewards": "expected rewards",
+  "last one": "last one",
+  "lighthouse to query": "lighthouse to query",
+  "lighthouses": "lighthouses",
+  "points": "points",
+  "produced blocks": "produced blocks",
+  "query from block": "query from block",
+  "top block producers": "top block producers"
+}
