@@ -11,14 +11,14 @@ import { Columar } from '@polkadot/react-components';
 import ChartBlocks from './ChartBlocks';
 import ChartRewards from './ChartRewards';
 
-function Lighthouse({ className = '', lighthouseId }: Props): React.ReactElement<Props> {
+function Lighthouse({ className = '', lighthouseId, fromBlock = 0 }: Props): React.ReactElement<Props> {
   return (
     <Columar className={className}>
       <Columar.Column>
-        <ChartBlocks lighthouseId={lighthouseId} />
+        <ChartBlocks lighthouseId={lighthouseId} fromBlock={fromBlock} />
       </Columar.Column>
       <Columar.Column>
-        <ChartRewards lighthouseId={lighthouseId} />
+        <ChartRewards lighthouseId={lighthouseId} fromBlock={fromBlock} />
       </Columar.Column>
     </Columar>
   );

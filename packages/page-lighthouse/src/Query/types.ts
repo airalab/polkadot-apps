@@ -6,6 +6,7 @@ import BN from 'bn.js';
 export interface Props {
   className?: string;
   lighthouseId: string;
+  fromBlock?: number;
 }
 
 export type LineDataEntry = (BN | number)[];
@@ -16,5 +17,3 @@ export interface ChartInfo {
   chart: LineData;
   labels: string[];
 }
-
-export type LighthouseBlocks = (BN | number)[];

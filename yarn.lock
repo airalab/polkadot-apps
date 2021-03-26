@@ -2253,7 +2253,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@polkadot/app-explorer@^0.85.2-26, @polkadot/app-explorer@workspace:packages/page-explorer":
+"@polkadot/app-explorer@^0.85.2-15, @polkadot/app-explorer@^0.85.2-26, @polkadot/app-explorer@workspace:packages/page-explorer":
   version: 0.0.0-use.local
   resolution: "@polkadot/app-explorer@workspace:packages/page-explorer"
   dependencies:
@@ -2296,9 +2296,12 @@ __metadata:
   resolution: "@polkadot/app-lighthouse@workspace:packages/page-lighthouse"
   dependencies:
     "@babel/runtime": ^7.13.10
-    "@polkadot/app-explorer": ^0.85.1
-    "@polkadot/react-components": ^0.85.1
-    "@polkadot/react-query": ^0.85.1
+    "@polkadot/app-explorer": ^0.85.2-15
+    "@polkadot/react-components": ^0.85.2-15
+    "@polkadot/react-query": ^0.85.2-15
+    eth-icon: ^1.0
+    randomcolor: ^0.6
+    react-hint: ^3.2
   languageName: unknown
   linkType: soft
 
@@ -2703,7 +2706,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@polkadot/react-components@^0.85.2-26, @polkadot/react-components@workspace:packages/react-components":
+"@polkadot/react-components@^0.85.2-15, @polkadot/react-components@^0.85.2-26, @polkadot/react-components@workspace:packages/react-components":
   version: 0.0.0-use.local
   resolution: "@polkadot/react-components@workspace:packages/react-components"
   dependencies:
@@ -2810,7 +2813,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot/react-query@^0.85.2-26, @polkadot/react-query@workspace:packages/react-query":
+"@polkadot/react-query@^0.85.2-15, @polkadot/react-query@^0.85.2-26, @polkadot/react-query@workspace:packages/react-query":
   version: 0.0.0-use.local
   resolution: "@polkadot/react-query@workspace:packages/react-query"
   dependencies:
@@ -8653,6 +8656,13 @@ __metadata:
   version: 1.8.1
   resolution: "etag@npm:1.8.1"
   checksum: f18341a3c12a554ec46c0d4756bc9cae177e92f25a4ebd9ceefebf0ee448b675972fc110879f22b1bf514174713921ae5de9ff77af2062d422b1085588465a57
+  languageName: node
+  linkType: hard
+
+"eth-icon@npm:^1.0":
+  version: 1.0.1
+  resolution: "eth-icon@npm:1.0.1"
+  checksum: 65184c0f8a6baf62943191c8df23b429c98d351e3d114b16aea171ab22b076061cd0cebf762d4a57dd1b3a312a9c64397f85df5d81c1e29c66bfef99cc651d91
   languageName: node
   linkType: hard
 
@@ -15229,6 +15239,13 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"randomcolor@npm:^0.6":
+  version: 0.6.2
+  resolution: "randomcolor@npm:0.6.2"
+  checksum: 23758ada0bdd47277b4b2551ddd98d6cffd0653287d5c0adaccee6157ac50b09cdcf8f307aae715a6e96e89f0e6862eb81608b583f00d0211202d711ec65debb
+  languageName: node
+  linkType: hard
+
 "randomfill@npm:^1.0.3":
   version: 1.0.4
   resolution: "randomfill@npm:1.0.4"
@@ -15339,6 +15356,13 @@ fsevents@~2.1.2:
   peerDependencies:
     react: ">= 16.8"
   checksum: d06329eb316461f1e55f150652d905c052e31d371a1cf36afd2a1c02670fff63c9c852f94be3f3142b763640b6d7b90bb25cf9faa0772fb3d709c67f6acb71dd
+  languageName: node
+  linkType: hard
+
+"react-hint@npm:^3.2":
+  version: 3.2.0
+  resolution: "react-hint@npm:3.2.0"
+  checksum: 701a9f5201230a85ca8e456b4bd2d13054e16c325a21bc08af7225279e041b6a2324145cc68aaaa6b9fafd8ec1b9c9ac08ccd70c7a87d86ba5436e35f6c4b111
   languageName: node
   linkType: hard
 

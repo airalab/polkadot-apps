@@ -4,7 +4,7 @@
 import React, { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Button, Input } from '@polkadot/react-components';
+import { Button, Input, InputNumber } from '@polkadot/react-components';
 
 import { useTranslation } from '../translate';
 import Lighthouse from './Lighthouse';
@@ -15,26 +15,37 @@ interface Props {
 
 function Query ({ className }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { value } = useParams<{ value: string }>();
-  const [lighthouseId, setLighthouseId] = useState<string | null>(value || null);
+  const { lighthouseP, fromBlockP } = useParams<{ lighthouseP?: string, fromBlockP?: number }>();
+  const [lighthouseId, setLighthouseId] = useState<string | null>(lighthouseP || null);
+  const [fromBlock, setFromBlock] = useState<number | null>(fromBlockP || 0);
 
   const _onQuery = useCallback(
     (): void => {
-      if (lighthouseId) {
-        window.location.hash = `/lighthouse/query/${lighthouseId}`;
+      if (lighthouseId && fromBlock) {
+        window.location.hash = `/lighthouse/query/${lighthouseId}/${fromBlock}`;
+        window.location.reload(false);
       }
     },
-    [lighthouseId]
+    [lighthouseId, fromBlock]
   );
 
   return (
     <div className={className}>
       <Input
         className='lighthouse--queryInput'
-        defaultValue={value}
+        defaultValue={lighthouseP}
         help={t<string>('Display overview information for the selected lighthouse, including blocks produced.')}
         label={t<string>('lighthouse to query')}
         onChange={setLighthouseId}
+        onEnter={_onQuery}
+      >
+      </Input>
+      <InputNumber
+        className='lighthouse--queryInput'
+        defaultValue={fromBlockP}
+        help={t<string>('Display statistics from block.')}
+        label={t<string>('query from block')}
+        onChange={setFromBlock}
         onEnter={_onQuery}
       >
         <Button
@@ -42,9 +53,9 @@ function Query ({ className }: Props): React.ReactElement<Props> {
           isDisabled={!lighthouseId}
           onClick={_onQuery}
         />
-      </Input>
-      {value && (
-        <Lighthouse lighthouseId={value} />
+      </InputNumber>
+      {lighthouseId && (
+        <Lighthouse lighthouseId={lighthouseId} fromBlock={fromBlock} />
       )}
     </div>
   );

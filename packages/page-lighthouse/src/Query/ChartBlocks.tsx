@@ -3,18 +3,17 @@
 
 import type { ChartInfo, LineDataEntry, Props } from './types';
 
-import React, { useMemo, useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 import { Chart, Spinner } from '@polkadot/react-components';
-import { useApi, useCall } from '@polkadot/react-hooks';
+import { useApi } from '@polkadot/react-hooks';
 
-import type { LighthouseBlocks } from './types';
 import { useTranslation } from '../translate';
 
 const COLORS_POINTS = [undefined, '#acacac'];
+const PERIOD = 50;
 
-function extractPoints (blocks: LighthouseBlocks[] = []): ChartInfo {
-  const labels: string[] = [];
+function extractPoints (blocks: number[], labels: string[]): ChartInfo {
   const avgSet: LineDataEntry = [];
   const idxSet: LineDataEntry = [];
   let avgCount = 0;
@@ -22,9 +21,8 @@ function extractPoints (blocks: LighthouseBlocks[] = []): ChartInfo {
 
   blocks.forEach((blocks, index): void => {
     total += blocks;
-    labels.push(index);
 
-    if (blocks.gtn(0)) {
+    if (blocks > 0) {
       avgCount++;
     }
 
@@ -38,16 +36,33 @@ function extractPoints (blocks: LighthouseBlocks[] = []): ChartInfo {
   };
 }
 
-function ChartBlocks ({ lighthouseId }: Props): React.ReactElement<Props> {
+function ChartBlocks ({ lighthouseId, fromBlock = 0 }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { api } = useApi();
-  const params = useMemo(() => [lighthouseId, false], [lighthouseId]);
-  const lighthouseBlocks = [42, 41, 21];
+  const { api, isApiReady } = useApi();
+  const [chart, setChart] = useState<ChartInfo | undefined>();
 
-  const { chart, labels } = useMemo(
-    () => extractPoints(lighthouseBlocks),
-    [lighthouseBlocks]
-  );
+  useEffect(async (): Promise<void> => {
+    const bestNumber = (await api.rpc.chain.getHeader()).number.toNumber();
+
+    let blocks = [];
+    let labels = [];
+    let counter = 0;
+    for (let i = fromBlock; i < bestNumber; ++i) {
+      const block_hash = await api.rpc.chain.getBlockHash(i);
+      const address = await api.query.lighthouse.lighthouse.at(block_hash).toString();
+
+      if (address == lighthouseId) {
+        ++counter;
+      }
+
+      if (i % PERIOD == 0) {
+        blocks.push(counter);
+        labels.push(i.toString());
+        counter = 0;
+        setChart(extractPoints(blocks, labels));
+      }
+    }
+  }, [api, isApiReady]);
 
   const legendsRef = useRef([
     t<string>('points'),
@@ -57,13 +72,13 @@ function ChartBlocks ({ lighthouseId }: Props): React.ReactElement<Props> {
   return (
     <div className='lighthouse--Chart'>
       <h1>{t<string>('produced blocks')}</h1>
-      {labels.length
+      {chart
         ? (
           <Chart.Line
             colors={COLORS_POINTS}
-            labels={labels}
+            labels={chart.labels}
             legends={legendsRef.current}
-            values={chart}
+            values={chart.chart}
           />
         )
         : <Spinner />

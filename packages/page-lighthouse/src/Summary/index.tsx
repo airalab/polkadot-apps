@@ -1,11 +1,12 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useCallback, useState } from 'react';
-import { Columar } from '@polkadot/react-components';
+import React  from 'react';
+import { Columar, SummaryBox, CardSummary, Digits } from '@polkadot/react-components';
+import { formatNumber } from '@polkadot/util';
 import styled from 'styled-components';
 
-import { useTranslation } from '../translate';
+import CurrentLighthouse from './CurrentLighthouse';
 import ChartBlocks from './ChartBlocks';
 
 interface Props {
@@ -13,23 +14,47 @@ interface Props {
   isVisible: boolean;
 }
 
-function Summary({ className = '', isVisible }: Props): React.ReactElement<Props> {
-  const { t } = useTranslation();
+const CHECKIN_BLOCK = 50000;
+const CHECKOUT_BLOCK = 200000;
 
+function Summary({ className = '', isVisible }: Props): React.ReactElement<Props> {
   return (
-    <Columar className={`${className}${!isVisible ? ' lighthouse--hidden' : ''}`}>
-      <Columar.Column>
-        <ChartBlocks />
-      </Columar.Column>
-    </Columar>
+    <div className={`${className}${!isVisible ? ' lighthouse--hidden' : ''}`}>
+      <SummaryBox>
+        <section>
+          <CardSummary label={t<string>('last one')}>
+            <CurrentLighthouse />
+          </CardSummary>
+        </section>
+        <section>
+          <CardSummary label={t<string>('best block')}>
+            <BestNumber />
+          </CardSummary>
+          <CardSummary label={t<string>('checkin block')}>
+            <Digits value={formatNumber(CHECKIN_BLOCK)} />
+          </CardSummary>
+          <CardSummary label={t<string>('checkout block')}>
+            <Digits value={formatNumber(CHECKOUT_BLOCK)} />
+          </CardSummary>
+        </section>
+      </SummaryBox>
+      <Columar>
+        <Columar.Column>
+          <ChartBlocks history_depth={5}/>
+        </Columar.Column>
+        <Columar.Column>
+          <ChartBlocks history_depth={50}/>
+        </Columar.Column>
+      </Columar>
+    </div>
   );
 }
 
 export default React.memo(styled(Summary)`
   .lighthouse--Chart {
-    background: white;
-    border: 1px solid #eeecea;
-    border-radius: 0.25rem;
     padding: 1rem 1.5rem;
+  }
+  .ui--Chart {
+    width: 100%;
   }
 `);

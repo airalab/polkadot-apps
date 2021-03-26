@@ -1,19 +1,15 @@
 // Copyright 2017-2021 @polkadot/app-lighthouse authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { DeriveStakingOverview } from '@polkadot/api-derive/types';
 import type { AppProps as Props, ThemeProps } from '@polkadot/react-components/types';
-import type { ElectionStatus } from '@polkadot/types/interfaces';
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Route, Switch } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { HelpOverlay } from '@polkadot/react-components';
 import Tabs from '@polkadot/react-components/Tabs';
-import { useAccounts, useApi, useAvailableSlashes, useCall, useFavorites, useOwnStashInfos } from '@polkadot/react-hooks';
-import { isFunction } from '@polkadot/util';
 
 import basicMd from './md/basic.md';
 import Query from './Query';
@@ -22,21 +18,20 @@ import { useTranslation } from './translate';
 
 function LigthouseApp ({ basePath, className = '' }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { api } = useApi();
   const { pathname } = useLocation();
 
   const items = useMemo(() => [
     {
       isRoot: true,
       name: 'overview',
-      text: t<string>('Lighthouse overview')
+      text: t<string>('Overview')
     },
     {
       hasParams: true,
       name: 'query',
-      text: t<string>('Lighthouse stats')
+      text: t<string>('Statistics')
     }
-  ]);
+  ], []);
 
   return (
     <main className={`lighthouse--App ${className}`}>
@@ -49,7 +44,7 @@ function LigthouseApp ({ basePath, className = '' }: Props): React.ReactElement<
         isVisible={pathname === basePath}
       />
       <Switch>
-        <Route path={[`${basePath}/query/:value`, `${basePath}/query`]}>
+        <Route path={[`${basePath}/query/:lighthouseP/:fromBlockP`, `${basePath}/query`]}>
           <Query />
         </Route>
       </Switch>
