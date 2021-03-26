@@ -1,7 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-parachains authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { LeasePeriod } from './types';
+import type { LeasePeriod } from '../types';
 
 import React from 'react';
 
@@ -53,7 +53,7 @@ function Summary ({ leasePeriod, parachainCount, proposalCount, upcomingCount }:
             label={t<string>('lease period')}
             progress={{
               total: leasePeriod.length,
-              value: leasePeriod.remainder,
+              value: leasePeriod.progress,
               withTime: true
             }}
           />
