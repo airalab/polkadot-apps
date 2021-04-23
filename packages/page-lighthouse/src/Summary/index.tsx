@@ -16,7 +16,7 @@ interface Props {
   isVisible: boolean;
 }
 
-const CHECKIN_BLOCK = 12000;
+const CHECKIN_BLOCK = 5000;
 const CHECKOUT_BLOCK = 200000;
 
 function Summary({ className = '', isVisible }: Props): React.ReactElement<Props> {
