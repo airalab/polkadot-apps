@@ -8,22 +8,24 @@ import React, { useState } from 'react';
 
 import { Button, InputBalance, InputNumber, Modal, TxButton } from '@polkadot/react-components';
 import { useApi, useToggle } from '@polkadot/react-hooks';
-import { BN_ONE, BN_THREE, BN_ZERO } from '@polkadot/util';
+import { BN_ONE, BN_ZERO } from '@polkadot/util';
 
 import InputOwner from '../InputOwner';
 import { useTranslation } from '../translate';
+import useRanges from '../useRanges';
 
 interface Props {
-  auctionInfo: AuctionInfo;
+  auctionInfo?: AuctionInfo;
   bestNumber?: BN;
   className?: string;
-  leasePeriod: LeasePeriod | null;
+  leasePeriod?: LeasePeriod;
   ownedIds: OwnedId[];
 }
 
 function FundAdd ({ auctionInfo, bestNumber, className, leasePeriod, ownedIds }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
+  const ranges = useRanges();
   const [{ accountId, paraId }, setOwnerInfo] = useState<OwnerInfo>({ accountId: null, paraId: 0 });
   const [cap, setCap] = useState<BN | undefined>();
   const [endBlock, setEndBlock] = useState<BN | undefined>();
@@ -31,10 +33,11 @@ function FundAdd ({ auctionInfo, bestNumber, className, leasePeriod, ownedIds }:
   const [lastSlot, setLastSlot] = useState<BN | undefined>();
   const [isOpen, toggleOpen] = useToggle();
 
+  const maxPeriods = ranges[ranges.length - 1][1] - ranges[0][0];
   const isEndError = !bestNumber || !endBlock || endBlock.lt(bestNumber);
-  const isFirstError = !firstSlot || (!!leasePeriod && firstSlot.lte(leasePeriod.currentPeriod));
-  const isLastError = !lastSlot || !firstSlot || lastSlot.lt(firstSlot) || lastSlot.gt(firstSlot.add(BN_THREE));
-  const defaultSlot = (auctionInfo.leasePeriod || leasePeriod?.currentPeriod.add(BN_ONE) || 1).toString();
+  const isFirstError = !firstSlot || (!!leasePeriod && firstSlot.lt(leasePeriod.currentPeriod));
+  const isLastError = !lastSlot || !firstSlot || lastSlot.lt(firstSlot) || lastSlot.gt(firstSlot.addn(maxPeriods));
+  const defaultSlot = (auctionInfo?.leasePeriod || leasePeriod?.currentPeriod.add(BN_ONE) || 1).toString();
 
   // TODO Add verifier
 
@@ -74,7 +77,7 @@ function FundAdd ({ auctionInfo, bestNumber, className, leasePeriod, ownedIds }:
             <Modal.Columns hint={
               <>
                 <p>{t<string>('The first and last lease periods for this funding campaign.')}</p>
-                <p>{t<string>('The ending lease period should be after the first and a maximum of 3 periods more than the first')}</p>
+                <p>{t<string>('The ending lease period should be after the first and a maximum of {{maxPeriods}} periods more than the first', { replace: { maxPeriods } })}</p>
               </>
             }>
               <InputNumber
@@ -95,7 +98,7 @@ function FundAdd ({ auctionInfo, bestNumber, className, leasePeriod, ownedIds }:
             <TxButton
               accountId={accountId}
               icon='plus'
-              isDisabled={!paraId || !cap?.gt(BN_ZERO) || !firstSlot?.gte(BN_ZERO) || isEndError || isFirstError || isLastError}
+              isDisabled={!paraId || !cap?.gt(BN_ZERO) || isEndError || isFirstError || isLastError}
               label={t<string>('Add')}
               onStart={toggleOpen}
               params={[paraId, cap, firstSlot, lastSlot, endBlock, null]}

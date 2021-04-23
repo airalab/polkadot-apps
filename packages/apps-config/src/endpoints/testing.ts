@@ -19,7 +19,7 @@ export function createTesting (t: TFunction): LinkOption[] {
     // airalab test relay
     {
       dnslink: 'rococo',
-      genesisHash: '0x93567083a44881c85d95604e70e94002f6a41ae6a3ad29013ce246387896312a',
+      genesisHash: '0xce26f2d5ab5d79c6a2ddd39608331d03f8a096c03c03d4c084579925df8c9929',
       info: 'rococo',
       text: t('rpc.rococo', 'Airalab Rococo', { ns: 'apps-config' }),
       providers: {
