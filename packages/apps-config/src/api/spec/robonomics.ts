@@ -15,6 +15,8 @@ const definitions: OverrideBundleDefinition = {
         Address: 'AccountId',
         LookupSource: 'AccountId',
         Lighthouse: 'H160',
+        Parameter: 'bool',
+        LaunchParameter: 'bool',
         Record: 'Vec<u8>',
         Technics: 'Vec<u8>',
         Economics: '{}',
