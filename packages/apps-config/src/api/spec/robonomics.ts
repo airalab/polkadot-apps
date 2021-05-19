@@ -27,6 +27,11 @@ const definitions: OverrideBundleDefinition = {
           signature: 'MultiSignature'
         },
         ReportFor: 'Report',
+        RingBufferIndex: {
+          start: 'u64',
+          end: 'u64',
+        },
+        RingBufferItem: '(Compact<Moment>,Record)',
         Agreement: {
           technics: 'Technics',
           economics: 'Economics',
