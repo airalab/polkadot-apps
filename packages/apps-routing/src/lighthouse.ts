@@ -11,7 +11,7 @@ export default function create (t: TFunction): Route {
     Component,
     display: {
       needsApi: [
-        ['tx.lighthouse.setLighthouse']
+        ['tx.lighthouse.set']
       ]
     },
     group: 'network',

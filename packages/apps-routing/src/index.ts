@@ -18,6 +18,7 @@ import extrinsics from './extrinsics';
 import gilt from './gilt';
 import js from './js';
 import lighthouse from './lighthouse';
+import membership from './membership';
 import parachains from './parachains';
 import poll from './poll';
 import rpc from './rpc';
@@ -46,6 +47,7 @@ export default function create (t: TFunction): Routes {
     bounties(t),
     techcomm(t),
     lighthouse(t),
+    membership(t),
     parachains(t),
     gilt(t),
     assets(t),

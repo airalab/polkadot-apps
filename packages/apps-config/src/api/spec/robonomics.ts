@@ -29,7 +29,7 @@ const definitions: OverrideBundleDefinition = {
         ReportFor: 'Report',
         RingBufferIndex: {
           start: 'u64',
-          end: 'u64',
+          end: 'u64'
         },
         RingBufferItem: '(Compact<Moment>,Record)',
         Agreement: {

@@ -1,25 +1,26 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import React  from 'react';
-import { Columar, SummaryBox, CardSummary, Digits } from '@polkadot/react-components';
-import { BestNumber } from '@polkadot/react-query';
-import { formatNumber } from '@polkadot/util';
+import React from 'react';
 import styled from 'styled-components';
 
-import CurrentLighthouse from './CurrentLighthouse';
-import ChartBlocks from './ChartBlocks';
+import { CardSummary, Columar, Digits, SummaryBox } from '@polkadot/react-components';
+import { BestNumber } from '@polkadot/react-query';
+import { formatNumber } from '@polkadot/util';
+
 import { useTranslation } from '../translate';
+import ChartBlocks from './ChartBlocks';
+import CurrentLighthouse from './CurrentLighthouse';
 
 interface Props {
   className?: string;
   isVisible: boolean;
 }
 
-const CHECKIN_BLOCK = 5000;
+const CHECKIN_BLOCK = 10000;
 const CHECKOUT_BLOCK = 200000;
 
-function Summary({ className = '', isVisible }: Props): React.ReactElement<Props> {
+function Summary ({ className = '', isVisible }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
 
   return (

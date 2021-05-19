@@ -1,11 +1,11 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useState, useEffect } from 'react';
+import randomColor from 'randomcolor';
+import React, { useEffect, useState } from 'react';
 
 import { Chart, Spinner } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
-import randomColor from 'randomcolor';
 
 import { useTranslation } from '../translate';
 
@@ -23,8 +23,10 @@ function ChartBlocks ({ history_depth }: Props): React.ReactElement<Props> {
   const bestNumber = useCall<BlockNumber>(isApiReady && api.derive.chain.bestNumber);
 
   useEffect(async (): void => {
-    if (!bestNumber) { return }
-    let state = {};
+    if (!bestNumber) { return; }
+
+    const state = {};
+
     for (let i = bestNumber - history_depth; i < bestNumber; ++i) {
       const block_hash = await api.rpc.chain.getBlockHash(i);
       const address = (await api.query.lighthouse.lighthouse.at(block_hash)).toString();
@@ -35,13 +37,15 @@ function ChartBlocks ({ history_depth }: Props): React.ReactElement<Props> {
         state[address] = 1;
       }
     }
+
     setLighthouses(state);
   }, [api, bestNumber]);
 
   useEffect((): void => {
-    setValues(Object.keys(lighthouses).map(a => {
-        const colors = [ randomColor(), randomColor() ];
-        return { colors: colors, label: a, value: lighthouses[a] };
+    setValues(Object.keys(lighthouses).map((a) => {
+      const colors = [randomColor(), randomColor()];
+
+      return { colors: colors, label: a, value: lighthouses[a] };
     }));
   }, [lighthouses]);
 
@@ -49,7 +53,8 @@ function ChartBlocks ({ history_depth }: Props): React.ReactElement<Props> {
     <div className='lighthouse--Chart'>
       <h1>{t<string>(`recent ${history_depth} blocks`)}</h1>
       {values.length > 0
-        ? <Chart.Doughnut values={values} size={500} />
+        ? <Chart.Doughnut size={500}
+          values={values} />
         : <Spinner />
       }
     </div>
