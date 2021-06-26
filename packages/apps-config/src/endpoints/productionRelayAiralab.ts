@@ -19,6 +19,7 @@ export function createAiralab (t: TFunction): EndpointOption {
     text: t('rpc.airalab.relay', 'Airalab Relay', { ns: 'apps-config' }),
     providers: {
       Airalab: 'wss://rococo-local.rpc.robonomics.network',
+      Airalab096: 'wss://rpc.rococo-096.robonomics.network',
     },
     teleport: [],
     linked: [
