@@ -14,12 +14,11 @@ import type { EndpointOption } from './types';
 export function createAiralab (t: TFunction): EndpointOption {
   return {
     dnslink: 'airalab',
-    genesisHash: '',
+    genesisHash: '0x37fcba4947ea14ab6fd48fb1ce8cffc80c2684961534b050b10b3c29758a3708',
     info: 'airalab',
     text: t('rpc.airalab.relay', 'Airalab Relay', { ns: 'apps-config' }),
     providers: {
-      Airalab: 'wss://rococo-local.rpc.robonomics.network',
-      Airalab096: 'wss://rpc.rococo-096.robonomics.network',
+      Airalab: 'wss://rpc.rococo-096.robonomics.network',
     },
     teleport: [],
     linked: [
