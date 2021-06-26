@@ -29,6 +29,7 @@ import staking from './staking';
 import storage from './storage';
 import sudo from './sudo';
 import techcomm from './techcomm';
+import teleport from './teleport';
 import transfer from './transfer';
 import treasury from './treasury';
 
@@ -40,6 +41,7 @@ export default function create (t: TFunction): Routes {
     claims(t),
     poll(t),
     transfer(t),
+    teleport(t),
     staking(t),
     democracy(t),
     council(t),

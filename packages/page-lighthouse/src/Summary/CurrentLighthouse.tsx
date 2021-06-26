@@ -1,7 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import EthIcon from 'eth-icon';
+import { AddressSmall } from '@polkadot/react-components';
 import React from 'react';
 
 import { Spinner } from '@polkadot/react-components';
@@ -18,8 +18,7 @@ function CurrentLighthouse ({ className = '' }: Props): React.ReactElement<Props
   return (
     <div className={`${className}`}>
       { current
-        ? <EthIcon address={current.toString()}
-          scale={32} />
+        ? <AddressSmall value={current.toString()} />
         : <Spinner noLabel />
       }
     </div>

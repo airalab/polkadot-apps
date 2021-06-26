@@ -2,15 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { TFunction } from 'i18next';
-import type { LinkOption } from '../settings/types';
+import type { LinkOption } from './types';
 
 import { createKusama } from './productionRelayKusama';
 import { createPolkadot } from './productionRelayPolkadot';
+import { createAiralab } from './productionRelayAiralab';
 import { expandEndpoints } from './util';
 
-export function createProductionRelays (t: TFunction): LinkOption[] {
-  return expandEndpoints(t, [
-    createPolkadot(t),
-    createKusama(t)
-  ]);
+export function createKusamaRelay (t: TFunction, firstOnly?: boolean): LinkOption[] {
+  return expandEndpoints(t, [createKusama(t)], firstOnly);
+}
+
+export function createPolkadotRelay (t: TFunction, firstOnly?: boolean): LinkOption[] {
+  return expandEndpoints(t, [createPolkadot(t)], firstOnly);
+}
+
+export function createAiralabRelay (t: TFunction, firstOnly?: boolean): LinkOption[] {
+  return expandEndpoints(t, [createAiralab(t)], firstOnly);
 }

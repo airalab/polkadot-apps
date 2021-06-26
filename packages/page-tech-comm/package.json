@@ -1,11 +1,12 @@
 {
   "name": "@polkadot/app-tech-comm",
   "private": true,
-  "version": "0.91.3-7",
+  "type": "module",
+  "version": "0.93.2-54",
   "license": "Apache-2.0",
   "dependencies": {
-    "@babel/runtime": "^7.14.0",
-    "@polkadot/react-components": "^0.91.3-7",
-    "@polkadot/react-query": "^0.91.3-7"
+    "@babel/runtime": "^7.14.6",
+    "@polkadot/react-components": "^0.93.2-54",
+    "@polkadot/react-query": "^0.93.2-54"
   }
 }

@@ -5,10 +5,9 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@babel/runtime": "^7.13.10",
-    "@polkadot/app-explorer": "^0.91.3-7",
-    "@polkadot/react-components": "^0.91.3-7",
-    "@polkadot/react-query": "^0.91.3-7",
-    "eth-icon": "^1.0",
+    "@polkadot/app-explorer": "^0.93.2-54",
+    "@polkadot/react-components": "^0.93.2-54",
+    "@polkadot/react-query": "^0.93.2-54",
     "randomcolor": "^0.6"
   }
 }
