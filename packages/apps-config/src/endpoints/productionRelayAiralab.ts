@@ -41,12 +41,39 @@ export function createAiralab (t: TFunction): EndpointOption {
         teleport: []
       },
       {
+        info: 'airalab2077',
+        paraId: 2077,
+        text: t('rpc.airalab.2077', '2077', { ns: 'apps-config' }),
+        providers: {
+          Airalab: 'wss://2077.parachain.robonomics.network',
+        },
+        teleport: []
+      },
+      {
         info: 'ipci',
         paraId: 3000,
         text: t('rpc.airalab.ipci', 'IPCI', { ns: 'apps-config' }),
         providers: {
           IPCI: 'wss://rpc.ipci.io',
           Airalab: 'wss://ipci.rpc.robonomics.network',
+        },
+        teleport: []
+      },
+      {
+        info: 'airalabUranus',
+        paraId: 4000,
+        text: t('rpc.airalab.uranus', 'Uranus', { ns: 'apps-config' }),
+        providers: {
+          Airalab: 'wss://Uranus.rpc.robonomics.network',
+        },
+        teleport: []
+      },
+      {
+        info: 'airalabMercury',
+        paraId: 5000,
+        text: t('rpc.airalab.mercury', 'Mercury', { ns: 'apps-config' }),
+        providers: {
+          Airalab: 'wss://mercury.rpc.robonomics.network',
         },
         teleport: []
       },
