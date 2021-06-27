@@ -32,15 +32,6 @@ export function createAiralab (t: TFunction): EndpointOption {
         teleport: []
       },
       {
-        info: 'airalabMars',
-        paraId: 2000,
-        text: t('rpc.airalab.mars', 'Mars', { ns: 'apps-config' }),
-        providers: {
-          Airalab: 'wss://mars.rpc.robonomics.network',
-        },
-        teleport: []
-      },
-      {
         info: 'airalab2077',
         paraId: 2077,
         text: t('rpc.airalab.2077', '2077', { ns: 'apps-config' }),
@@ -60,11 +51,11 @@ export function createAiralab (t: TFunction): EndpointOption {
         teleport: []
       },
       {
-        info: 'airalabUranus',
-        paraId: 4000,
-        text: t('rpc.airalab.uranus', 'Uranus', { ns: 'apps-config' }),
+        info: 'airalabMars',
+        paraId: 2000,
+        text: t('rpc.airalab.mars', 'Mars', { ns: 'apps-config' }),
         providers: {
-          Airalab: 'wss://Uranus.rpc.robonomics.network',
+          Airalab: 'wss://mars.rpc.robonomics.network',
         },
         teleport: []
       },
@@ -74,6 +65,15 @@ export function createAiralab (t: TFunction): EndpointOption {
         text: t('rpc.airalab.mercury', 'Mercury', { ns: 'apps-config' }),
         providers: {
           Airalab: 'wss://mercury.rpc.robonomics.network',
+        },
+        teleport: []
+      },
+      {
+        info: 'airalabUranus',
+        paraId: 4000,
+        text: t('rpc.airalab.uranus', 'Uranus', { ns: 'apps-config' }),
+        providers: {
+          Airalab: 'wss://Uranus.rpc.robonomics.network',
         },
         teleport: []
       },
