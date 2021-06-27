@@ -1,10 +1,13 @@
 {
   "lng.detect": "Default browser language (auto-detect)",
   "rpc.KlugDossier": "Klug Dossier",
+  "rpc.airalab.2077": "2077",
   "rpc.airalab.earth": "Earth",
   "rpc.airalab.ipci": "IPCI",
   "rpc.airalab.mars": "Mars",
+  "rpc.airalab.mercury": "Mercury",
   "rpc.airalab.relay": "Airalab Relay",
+  "rpc.airalab.uranus": "Uranus",
   "rpc.dev.custom": "Custom environment",
   "rpc.dev.custom.entry": "Custom {{WS_URL}}",
   "rpc.dev.custom.own": "Custom",
