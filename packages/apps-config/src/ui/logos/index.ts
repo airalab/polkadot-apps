@@ -157,6 +157,7 @@ export const chainLogos = Object.entries({
   Idavoll: nodeIdavoll,
   'IntegriTEE Network': nodeIntegritee,
   'IntegriTEE PC1': nodeIntegritee,
+  IPCI: chainDaoIpci,
   IpseTestnet: nodeIpse,
   'Jupiter A1': nodeJupiter,
   'Jupiter PC1': nodeJupiter,
