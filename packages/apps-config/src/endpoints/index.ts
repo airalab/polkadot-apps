@@ -14,7 +14,7 @@ export function createWsEndpoints (t: TFunction, firstOnly?: boolean): LinkOptio
     {
       isDisabled: false,
       isHeader: true,
-      text: t('rpc.header.kusama.relay', 'Kusama & parachains', { ns: 'apps-config' }),
+      text: t('rpc.header.airalab.relay', 'Airalab Relay & parachains', { ns: 'apps-config' }),
       textBy: '',
       value: ''
     },
@@ -24,7 +24,7 @@ export function createWsEndpoints (t: TFunction, firstOnly?: boolean): LinkOptio
       isDisabled: false,
       isHeader: true,
       isSpaced: true,
-      text: t('rpc.header.dev', 'Development', { ns: 'apps-config' }),
+      text: t('rpc.header.kusama.relay', 'Kusama & parachains', { ns: 'apps-config' }),
       textBy: '',
       value: ''
     },
@@ -33,7 +33,7 @@ export function createWsEndpoints (t: TFunction, firstOnly?: boolean): LinkOptio
       isDisabled: false,
       isHeader: true,
       isSpaced: true,
-      text: t('rpc.header.airalab.relay', 'Airalab Relay & parachains', { ns: 'apps-config' }),
+      text: t('rpc.header.dev', 'Development', { ns: 'apps-config' }),
       textBy: '',
       value: ''
     },
