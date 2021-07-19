@@ -57,6 +57,15 @@ export function createKusama (t: TFunction): EndpointOption {
           'Polkawallet 0': 'wss://karura.polkawallet.io',
           OnFinality: 'wss://karura.api.onfinality.io/public-ws'
         }
+      },
+      {
+        info: 'robonomics',
+        homepage: 'http://robonomics.network/',
+        paraId: 2077,
+        text: t('rpc.kusama.robonomics', 'Robonomics', { ns: 'apps-config' }),
+        providers: {
+          Airalab: 'wss://kusama.rpc.robonomics.network/'
+        }
       }
     ]
   };
