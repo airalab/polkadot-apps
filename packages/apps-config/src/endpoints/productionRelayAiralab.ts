@@ -24,15 +24,6 @@ export function createAiralab (t: TFunction): EndpointOption {
     teleport: [],
     linked: [
       {
-        info: 'airalabEarth',
-        paraId: 1000,
-        text: t('rpc.airalab.earth', 'Earth', { ns: 'apps-config' }),
-        providers: {
-          Airalab: 'wss://earth.rpc.robonomics.network',
-        },
-        teleport: []
-      },
-      {
         info: 'airalab2077',
         paraId: 2077,
         text: t('rpc.airalab.2077', '2077', { ns: 'apps-config' }),
