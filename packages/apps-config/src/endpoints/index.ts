@@ -5,7 +5,7 @@ import type { TFunction } from 'i18next';
 import type { LinkOption } from './types';
 
 import { createDev, createOwn } from './development';
-import { createKusamaRelay, createAiralabRelay } from './productionRelays';
+import { createAiralabRelay } from './productionRelays';
 
 export { CUSTOM_ENDPOINT_KEY } from './development';
 
@@ -14,21 +14,11 @@ export function createWsEndpoints (t: TFunction, firstOnly?: boolean): LinkOptio
     {
       isDisabled: false,
       isHeader: true,
-      text: t('rpc.header.airalab.relay', 'Airalab Relay & parachains', { ns: 'apps-config' }),
+      text: t('rpc.header.airalab.relay', 'Airalab Frontier Relay', { ns: 'apps-config' }),
       textBy: '',
       value: ''
     },
     ...createAiralabRelay(t, firstOnly),
-    {
-      isDevelopment: true,
-      isDisabled: false,
-      isHeader: true,
-      isSpaced: true,
-      text: t('rpc.header.kusama.relay', 'Kusama & parachains', { ns: 'apps-config' }),
-      textBy: '',
-      value: ''
-    },
-    ...createKusamaRelay(t, firstOnly),
     {
       isDisabled: false,
       isHeader: true,

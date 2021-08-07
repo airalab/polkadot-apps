@@ -45,20 +45,6 @@ export function createKusama (t: TFunction): EndpointOption {
       //
       // NOTE: Added alphabetical based on chain name
       {
-        info: 'karura',
-        homepage: 'https://acala.network/karura/join-karura',
-        paraId: 2000,
-        text: t('rpc.kusama.karura', 'Karura', { ns: 'apps-config' }),
-        providers: {
-          'Acala Foundation 0': 'wss://karura-rpc-0.aca-api.network',
-          'Acala Foundation 1': 'wss://karura-rpc-1.aca-api.network',
-          'Acala Foundation 2': 'wss://karura-rpc-2.aca-api.network/ws',
-          'Acala Foundation 3': 'wss://karura-rpc-3.aca-api.network/ws',
-          'Polkawallet 0': 'wss://karura.polkawallet.io',
-          OnFinality: 'wss://karura.api.onfinality.io/public-ws'
-        }
-      },
-      {
         info: 'robonomics',
         homepage: 'http://robonomics.network/',
         paraId: 2077,

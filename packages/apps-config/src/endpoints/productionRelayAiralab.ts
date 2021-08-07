@@ -14,23 +14,22 @@ import type { EndpointOption } from './types';
 export function createAiralab (t: TFunction): EndpointOption {
   return {
     dnslink: 'airalab',
-    genesisHash: '0x37fcba4947ea14ab6fd48fb1ce8cffc80c2684961534b050b10b3c29758a3708',
+    genesisHash: '0xa2e33832b2e533360afc084d47275240c38b5f014bf0386aa0b3b582b182feee',
     info: 'airalab',
-    text: t('rpc.airalab.relay', 'Airalab Relay', { ns: 'apps-config' }),
+    text: t('rpc.airalab.relay', 'Frontier Relay', { ns: 'apps-config' }),
     providers: {
-      "Airalab-v096": 'wss://rpc.rococo-096.robonomics.network',
-      "Airalab-v098": 'wss://rococo-098.rpc.robonomics.network',
+      "Airalab": 'wss://rococo-098.rpc.robonomics.network',
     },
     teleport: [],
     linked: [
       {
-        info: 'airalab2077',
+        info: 'robonomics',
+        homepage: 'http://robonomics.network/',
         paraId: 2077,
-        text: t('rpc.airalab.2077', '2077', { ns: 'apps-config' }),
+        text: t('rpc.kusama.robonomics', 'Robonomics', { ns: 'apps-config' }),
         providers: {
-          Airalab: 'wss://2077.parachain.robonomics.network',
-        },
-        teleport: []
+          Airalab: 'wss://kusama.rpc.robonomics.network/'
+        }
       },
       {
         info: 'ipci',
