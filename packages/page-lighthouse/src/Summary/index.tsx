@@ -17,9 +17,6 @@ interface Props {
   isVisible: boolean;
 }
 
-const CHECKIN_BLOCK = 10000;
-const CHECKOUT_BLOCK = 200000;
-
 function Summary ({ className = '', isVisible }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
 
@@ -34,12 +31,6 @@ function Summary ({ className = '', isVisible }: Props): React.ReactElement<Prop
         <section>
           <CardSummary label={t<string>('best block')}>
             <BestNumber />
-          </CardSummary>
-          <CardSummary label={t<string>('checkin block')}>
-            <Digits value={formatNumber(CHECKIN_BLOCK)} />
-          </CardSummary>
-          <CardSummary label={t<string>('checkout block')}>
-            <Digits value={formatNumber(CHECKOUT_BLOCK)} />
           </CardSummary>
         </section>
       </SummaryBox>
