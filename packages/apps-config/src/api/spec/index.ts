@@ -194,6 +194,7 @@ const spec: Record<string, OverrideBundleDefinition> = {
   'riochain-runtime': riochain,
   robonomics,
   'robonomics-alpha': robonomics,
+  'robonomics-local': robonomics,
   snowbridge,
   'sora-substrate': soraSubstrate,
   stafi,
