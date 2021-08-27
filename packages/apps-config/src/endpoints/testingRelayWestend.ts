@@ -33,7 +33,7 @@ export function createWestend (t: TFunction): EndpointOption {
       // (1) system parachains (none available yet)
       // ...
       // (2) common good, leave as second group
-      {
+/*      {
         info: 'westmint',
         paraId: 1000,
         text: t('rpc.westend.shell', 'Westmint', { ns: 'apps-config' }),
@@ -102,6 +102,15 @@ export function createWestend (t: TFunction): EndpointOption {
         text: t('rpc.westend.kilt', 'WILT', { ns: 'apps-config' }),
         providers: {
           'KILT Protocol': 'wss://westend.kilt.io:9977'
+        }
+      } */
+      {
+        info: 'robonomics',
+        homepage: 'http://robonomics.network/',
+        paraId: 2090,
+        text: t('rpc.westend.robonomics', 'Robonomics', { ns: 'apps-config' }),
+        providers: {
+          Airalab: 'wss://westend.rpc.robonomics.network/'
         }
       }
     ]

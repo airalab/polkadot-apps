@@ -6,6 +6,8 @@ import type { LinkOption } from './types';
 
 import { createDev, createOwn } from './development';
 import { createAiralabRelay } from './productionRelays';
+import { createKusamaRelay } from './productionRelays';
+import { createWestendRelay } from './testingRelays';
 
 export { CUSTOM_ENDPOINT_KEY } from './development';
 
@@ -19,6 +21,23 @@ export function createWsEndpoints (t: TFunction, firstOnly?: boolean): LinkOptio
       value: ''
     },
     ...createAiralabRelay(t, firstOnly),
+    {
+      isDisabled: false,
+      isHeader: true,
+      text: t('rpc.header.kusama.relay', 'Kusama & parachains', { ns: 'apps-config' }),
+      textBy: '',
+      value: ''
+    },
+    ...createKusamaRelay(t, firstOnly),
+    {
+      isDisabled: false,
+      isHeader: true,
+      isSpaced: true,
+      text: t('rpc.header.westend.relay', 'Test Westend & parachains', { ns: 'apps-config' }),
+      textBy: '',
+      value: ''
+    },
+    ...createWestendRelay(t, firstOnly),
     {
       isDisabled: false,
       isHeader: true,

@@ -30,7 +30,7 @@ export function createKusama (t: TFunction): EndpointOption {
       // (1) all system parachains (none available yet)
       // ...
       // (2) all common good parachains
-      {
+/*      {
         info: 'statemine',
         paraId: 1000,
         text: t('rpc.kusama.statemine', 'Statemine', { ns: 'apps-config' }),
@@ -40,7 +40,7 @@ export function createKusama (t: TFunction): EndpointOption {
           'Patract Elara': 'wss://statemine.kusama.elara.patract.io'
         },
         teleport: [-1]
-      },
+      },  */
       /// (3) parachains with id, see Rococo (info here maps to the actual "named icon")
       //
       // NOTE: Added alphabetical based on chain name
