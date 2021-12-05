@@ -39,6 +39,23 @@ const definitions: OverrideBundleDefinition = {
           promisor_signature: 'MultiSignature'
         },
         LiabilityIndex: 'u32',
+        Subscription: {
+          _enum: {
+            Lifetime: 'Compact<u32>',
+            Daily: 'Compact<u32>'
+          }
+        },
+        AuctionLedger: {
+          winner: 'Option<AccountId>',
+          best_price: 'Compact<Balance>',
+          kind: 'Subscription'
+        },
+        SubscriptionLedger: {
+          free_weight: 'Compact<Weight>',
+          issue_time: 'Compact<Moment>',
+          last_update: 'Compact<Moment>',
+          kind: 'Subscription'
+        }
       }
     }
   ]
