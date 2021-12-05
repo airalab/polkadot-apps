@@ -14,11 +14,11 @@ import type { EndpointOption } from './types';
 export function createAiralab (t: TFunction): EndpointOption {
   return {
     dnslink: 'airalab',
-    genesisHash: '0xa2e33832b2e533360afc084d47275240c38b5f014bf0386aa0b3b582b182feee',
+    genesisHash: '0xe431f1e432434368f22fd7a162ea0ece3b3df16e48807e94cc07fef14cedcf05',
     info: 'airalab',
     text: t('rpc.airalab.relay', 'Frontier Relay', { ns: 'apps-config' }),
     providers: {
-      "Airalab": 'wss://rococo-098.rpc.robonomics.network',
+      "Airalab": 'wss://frontier.rpc.robonomics.network',
     },
     teleport: [],
     linked: [
@@ -26,9 +26,9 @@ export function createAiralab (t: TFunction): EndpointOption {
         info: 'robonomics',
         homepage: 'http://robonomics.network/',
         paraId: 2077,
-        text: t('rpc.kusama.robonomics', 'Robonomics', { ns: 'apps-config' }),
+        text: t('rpc.airalab.robonomics', 'Robonomics', { ns: 'apps-config' }),
         providers: {
-          Airalab: 'wss://kusama.rpc.robonomics.network/'
+          Airalab: 'wss://main.frontier.rpc.robonomics.network/'
         }
       },
       {
@@ -37,16 +37,7 @@ export function createAiralab (t: TFunction): EndpointOption {
         text: t('rpc.airalab.ipci', 'IPCI', { ns: 'apps-config' }),
         providers: {
           IPCI: 'wss://rpc.ipci.io',
-          Airalab: 'wss://ipci.rpc.robonomics.network',
-        },
-        teleport: []
-      },
-      {
-        info: 'airalabMars',
-        paraId: 2000,
-        text: t('rpc.airalab.mars', 'Mars', { ns: 'apps-config' }),
-        providers: {
-          Airalab: 'wss://mars.rpc.robonomics.network',
+          Airalab: 'wss://ipci.frontier.rpc.robonomics.network',
         },
         teleport: []
       },
@@ -55,16 +46,7 @@ export function createAiralab (t: TFunction): EndpointOption {
         paraId: 5000,
         text: t('rpc.airalab.mercury', 'Mercury', { ns: 'apps-config' }),
         providers: {
-          Airalab: 'wss://mercury.rpc.robonomics.network',
-        },
-        teleport: []
-      },
-      {
-        info: 'airalabUranus',
-        paraId: 4000,
-        text: t('rpc.airalab.uranus', 'Uranus', { ns: 'apps-config' }),
-        providers: {
-          Airalab: 'wss://Uranus.rpc.robonomics.network',
+          Airalab: 'wss://mercury.frontier.rpc.robonomics.network',
         },
         teleport: []
       },

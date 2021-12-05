@@ -23,14 +23,15 @@ export function createKusama (t: TFunction): EndpointOption {
       Parity: 'wss://kusama-rpc.polkadot.io',
       OnFinality: 'wss://kusama.api.onfinality.io/public-ws',
       'Patract Elara': 'wss://kusama.elara.patract.io',
-      Pinknode: 'wss://rpc.pinknode.io/kusama/explorer'
+      'light client': 'light://substrate-connect/kusama'
+      // Pinknode: 'wss://rpc.pinknode.io/kusama/explorer' // https://github.com/polkadot-js/apps/issues/5721
     },
     teleport: [1000],
     linked: [
       // (1) all system parachains (none available yet)
       // ...
       // (2) all common good parachains
-      {
+/*      {
         info: 'statemine',
         paraId: 1000,
         text: t('rpc.kusama.statemine', 'Statemine', { ns: 'apps-config' }),
@@ -40,7 +41,7 @@ export function createKusama (t: TFunction): EndpointOption {
           'Patract Elara': 'wss://statemine.kusama.elara.patract.io'
         },
         teleport: [-1]
-      },
+      },  */
       /// (3) parachains with id, see Rococo (info here maps to the actual "named icon")
       //
       // NOTE: Added alphabetical based on chain name

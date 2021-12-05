@@ -23,17 +23,18 @@ export function createWestend (t: TFunction): EndpointOption {
     text: t('rpc.westend', 'Westend', { ns: 'apps-config' }),
     providers: {
       Parity: 'wss://westend-rpc.polkadot.io',
-      // 'NodeFactory(Vedran)': 'wss://westend.vedran.nodefactory.io/ws', // https://github.com/polkadot-js/apps/issues/5580
       'Patract Elara': 'wss://westend.elara.patract.io',
       OnFinality: 'wss://westend.api.onfinality.io/public-ws',
-      Pinknode: 'wss://rpc.pinknode.io/westend/explorer'
+      'light client': 'light://substrate-connect/westend'
+      // 'NodeFactory(Vedran)': 'wss://westend.vedran.nodefactory.io/ws', // https://github.com/polkadot-js/apps/issues/5580
+      // Pinknode: 'wss://rpc.pinknode.io/westend/explorer' // https://github.com/polkadot-js/apps/issues/5721
     },
     teleport: [1000],
     linked: [
       // (1) system parachains (none available yet)
       // ...
       // (2) common good, leave as second group
-      {
+/*      {
         info: 'westmint',
         paraId: 1000,
         text: t('rpc.westend.shell', 'Westmint', { ns: 'apps-config' }),
@@ -48,7 +49,7 @@ export function createWestend (t: TFunction): EndpointOption {
       // NOTE: Added alphabetical based on chain name
       {
         info: 'basilisk',
-        paraId: 2012,
+        paraId: 2083,
         text: t('rpc.westend.basilisk', 'Basilisk Egg', { ns: 'apps-config' }),
         providers: {
           HydraDX: 'wss://rpc-01.basilisk-testnet.hydradx.io'
@@ -56,10 +57,18 @@ export function createWestend (t: TFunction): EndpointOption {
       },
       {
         info: 'charcoal',
-        paraId: 2010,
+        paraId: 2086,
         text: t('rpc.westend.charcoal', 'Charcoal', { ns: 'apps-config' }),
         providers: {
           Centrifuge: 'wss://fullnode-collator.charcoal.centrifuge.io'
+        }
+      },
+      {
+        info: 'integritee',
+        paraId: 2081,
+        text: t('rpc.westend.integritee', 'Integritee Network', { ns: 'apps-config' }),
+        providers: {
+          Integritee: 'wss://teerw1.integritee.network'
         }
       },
       {
@@ -67,20 +76,12 @@ export function createWestend (t: TFunction): EndpointOption {
         paraId: 2002,
         text: t('rpc.westend.moonshadow', 'Moonshadow', { ns: 'apps-config' }),
         providers: {
-          Purestake: 'wss://wss.moonshadow.testnet.moonbeam.network'
-        }
-      },
-      {
-        info: 'shibuya',
-        isUnreachable: true, // https://github.com/polkadot-js/apps/issues/5489
-        paraId: 2007,
-        text: t('rpc.westend.shibuya', 'Shibuya', { ns: 'apps-config' }),
-        providers: {
-          StakeTechnologies: 'wss://rpc.shibuya.plasmnet.io'
+          PureStake: 'wss://wss.moonshadow.testnet.moonbeam.network'
         }
       },
       {
         info: 'karura',
+        isUnreachable: true, // https://github.com/polkadot-js/apps/issues/5830
         paraId: 2005,
         text: t('rpc.westend.wendala', 'Wendala', { ns: 'apps-config' }),
         providers: {
@@ -98,10 +99,19 @@ export function createWestend (t: TFunction): EndpointOption {
       {
         info: 'kilt',
         homepage: 'https://www.kilt.io/',
-        paraId: 2009,
+        paraId: 2085,
         text: t('rpc.westend.kilt', 'WILT', { ns: 'apps-config' }),
         providers: {
           'KILT Protocol': 'wss://westend.kilt.io:9977'
+        }
+      } */
+      {
+        info: 'robonomics',
+        homepage: 'http://robonomics.network/',
+        paraId: 2090,
+        text: t('rpc.westend.robonomics', 'Robonomics', { ns: 'apps-config' }),
+        providers: {
+          Airalab: 'wss://westend.rpc.robonomics.network/'
         }
       }
     ]
