@@ -15,7 +15,7 @@ import type { Option } from '@polkadot/types';
 import type { Multisig, Timepoint } from '@polkadot/types/interfaces';
 import type { BN } from '@polkadot/util';
 import type { HexString } from '@polkadot/util/types';
-import type { AddressFlags, AddressProxy, ExtendedSignerOptions, QrState } from './types.js';
+import type { AddressFlags, AddressProxy, ExtendedSignerOptions, QrState, RobonomicsPayment } from './types.js';
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -29,6 +29,7 @@ import { addressEq } from '@polkadot/util-crypto';
 
 import { AccountSigner, LedgerSigner, QrSigner } from './signers/index.js';
 import Address from './Address.js';
+import Payment from './Payment.js';
 import PayWithAsset from './PayWithAsset.js';
 import Qr from './Qr.js';
 import SignFields from './SignFields.js';
@@ -200,7 +201,7 @@ async function wrapTx (api: ApiPromise, currentItem: QueueTx, { isMultiCall, mul
   return tx;
 }
 
-async function extractParams (api: ApiPromise, address: string, options: Partial<SignerOptions>, getLedger: () => LedgerGeneric | Ledger, setQrState: (state: QrState) => void): Promise<['qr' | 'signing', string, Partial<SignerOptions>, boolean]> {
+async function extractParams (api: ApiPromise, address: string, options: Partial<SignerOptions> & { payment?: RobonomicsPayment }, getLedger: () => LedgerGeneric | Ledger, setQrState: (state: QrState) => void): Promise<['qr' | 'signing', string, Partial<SignerOptions>, boolean]> {
   const pair = keyring.getPair(address);
   const { meta: { accountOffset, addressOffset, isExternal, isHardware, isInjected, isLocal, isProxied, source } } = pair;
 
@@ -252,7 +253,13 @@ function TxSigned ({ className, currentItem, isQueueSubmit, queueSize, requestAd
   const [signedTx, setSignedTx] = useState<string | null>(null);
   const [{ innerHash, innerTx }, setCallInfo] = useState<InnerTx>(EMPTY_INNER);
   const [tip, setTip] = useState<BN | undefined>();
+  const [payment, setPayment] = useState<RobonomicsPayment | undefined>();
   const [initialIsQueueSubmit] = useState(isQueueSubmit);
+  const hasPaymentChoice = api.registry.signedExtensions.includes('ChargeTransaction');
+  const paymentOptions = useMemo(
+    (): ExtendedSignerOptions => hasPaymentChoice ? { ...signedOptions, payment } : signedOptions,
+    [hasPaymentChoice, payment, signedOptions]
+  );
 
   useEffect((): void => {
     setFlags(tryExtract(senderInfo.signAddress));
@@ -344,7 +351,7 @@ function TxSigned ({ className, currentItem, isQueueSubmit, queueSize, requestAd
       if (senderInfo.signAddress) {
         const [tx, [status, pairOrAddress, options, isMockSign]] = await Promise.all([
           wrapTx(api, currentItem, senderInfo),
-          extractParams(api, senderInfo.signAddress, { nonce: -1, tip, withSignedTransaction: true, ...signedOptions }, getLedger, setQrState)
+          extractParams(api, senderInfo.signAddress, { nonce: -1, payment, tip, withSignedTransaction: true, ...signedOptions }, getLedger, setQrState)
         ]);
 
         queueSetTxStatus(currentItem.id, status);
@@ -352,7 +359,7 @@ function TxSigned ({ className, currentItem, isQueueSubmit, queueSize, requestAd
         await signAndSend(queueSetTxStatus, currentItem, tx, pairOrAddress, options, api, isMockSign);
       }
     },
-    [api, getLedger, signedOptions, tip]
+    [api, getLedger, payment, signedOptions, tip]
   );
 
   const _onSign = useCallback(
@@ -360,13 +367,13 @@ function TxSigned ({ className, currentItem, isQueueSubmit, queueSize, requestAd
       if (senderInfo.signAddress) {
         const [tx, [, pairOrAddress, options, isMockSign]] = await Promise.all([
           wrapTx(api, currentItem, senderInfo),
-          extractParams(api, senderInfo.signAddress, { ...signedOptions, tip, withSignedTransaction: true }, getLedger, setQrState)
+          extractParams(api, senderInfo.signAddress, { ...signedOptions, payment, tip, withSignedTransaction: true }, getLedger, setQrState)
         ]);
 
         setSignedTx(await signAsync(queueSetTxStatus, currentItem, tx, pairOrAddress, options, api, isMockSign));
       }
     },
-    [api, getLedger, signedOptions, tip]
+    [api, getLedger, payment, signedOptions, tip]
   );
 
   const _doStart = useCallback(
@@ -451,7 +458,7 @@ function TxSigned ({ className, currentItem, isQueueSubmit, queueSize, requestAd
                   accountId={senderInfo.signAddress}
                   currentItem={currentItem}
                   onError={toggleRenderError}
-                  signerOptions={signedOptions}
+                  signerOptions={paymentOptions}
                 />
                 <Address
                   currentItem={currentItem}
@@ -463,7 +470,15 @@ function TxSigned ({ className, currentItem, isQueueSubmit, queueSize, requestAd
                 {!currentItem.payload && (
                   <>
                     <PayWithAsset onChangeFeeAsset={setSignedOptions} />
-                    <Tip onChange={setTip} />
+                    {hasPaymentChoice
+                      ? (
+                        <Payment
+                          accountId={senderInfo.signAddress}
+                          onChange={setPayment}
+                        />
+                      )
+                      : <Tip onChange={setTip} />
+                    }
                   </>
                 )}
                 {!isSubmit && (

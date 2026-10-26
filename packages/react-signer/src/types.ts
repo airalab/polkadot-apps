@@ -4,6 +4,7 @@
 import type { SignerOptions } from '@polkadot/api/submittable/types';
 import type { SignerResult } from '@polkadot/api/types';
 import type { AssetInfoComplete } from '@polkadot/react-hooks/types';
+import type { BN } from '@polkadot/util';
 
 export interface AddressFlags {
   accountOffset: number;
@@ -42,4 +43,8 @@ export interface Signed {
   signature: Uint8Array;
 }
 
-export type ExtendedSignerOptions = (Partial<SignerOptions & { feeAsset: AssetInfoComplete | null }>) | undefined;
+export type RobonomicsPayment =
+  | { Fee: { tip: BN } }
+  | { Subscription: { context: Record<string, unknown>, generation: BN } };
+
+export type ExtendedSignerOptions = (Partial<SignerOptions & { feeAsset: AssetInfoComplete | null, payment: RobonomicsPayment }>) | undefined;

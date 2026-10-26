@@ -67,6 +67,16 @@ function PaymentInfo ({ accountId, className = '', extrinsic, isHeader, signerOp
     return null;
   }
 
+  if (signerOptions?.payment && 'Subscription' in signerOptions.payment) {
+    return (
+      <Expander
+        className={className}
+        isHeader={isHeader}
+        summary={t('The submission is paid with a subscription, no fee is withdrawn from the account')}
+      />
+    );
+  }
+
   const isFeeError = api.consts.balances && !(api.tx.balances?.transferAllowDeath?.is(extrinsic) || api.tx.balances?.transfer?.is(extrinsic)) && balances?.accountId.eq(accountId) && (
     (balances.transferable || balances.availableBalance).lte(dispatchInfo.partialFee) ||
     balances.freeBalance.sub(dispatchInfo.partialFee).lte(api.consts.balances.existentialDeposit)

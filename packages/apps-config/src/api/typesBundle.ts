@@ -93811,10 +93811,38 @@ export const typesBundle = {
               "promisee_signature": "MultiSignature",
               "promisor_signature": "MultiSignature"
             },
-            "LiabilityIndex": "u32"
+            "LiabilityIndex": "u32",
+            "RobonomicsAuthorizationContext": {
+              "_enum": {
+                "Account": "AccountId",
+                "Node": "u64",
+                "NodeIdentity": "AccountId"
+              }
+            },
+            "RobonomicsFee": {
+              "tip": "Compact<Balance>"
+            },
+            "RobonomicsSubscription": {
+              "context": "RobonomicsAuthorizationContext",
+              "generation": "u64"
+            },
+            "RobonomicsPayment": {
+              "_enum": {
+                "Fee": "RobonomicsFee",
+                "Subscription": "RobonomicsSubscription"
+              }
+            }
           }
         }
-      ]
+      ],
+      "signedExtensions": {
+        "ChargeTransaction": {
+          "extrinsic": {
+            "payment": "RobonomicsPayment"
+          },
+          "payload": {}
+        }
+      }
     },
     "root": {
       "types": [

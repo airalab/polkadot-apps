@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from 'react';
 import store from 'store';
 
 import { createNamedHook, useApi } from '@polkadot/react-hooks';
+import { getSpecExtensions } from '@polkadot/types-known';
 
 interface ExtensionKnown {
   extension: InjectedExtension;
@@ -26,6 +27,7 @@ interface Extensions {
 
 interface ExtensionProperties {
   extensionVersion: string;
+  userExtensions?: string;
   tokenDecimals: number;
   tokenSymbol: string;
   ss58Format?: number;
@@ -42,6 +44,15 @@ function triggerAll (): void {
   [...triggers.values()].forEach((trigger) => trigger(Date.now()));
 }
 
+// the custom signed extensions are part of the signed payload, a stale set results in bad signatures
+function getUserExtensions (api: ApiPromise): string {
+  const userExtensions = getSpecExtensions(api.registry, api.runtimeChain, api.runtimeVersion.specName);
+
+  return Object.keys(userExtensions).length
+    ? JSON.stringify(userExtensions)
+    : '';
+}
+
 // save the properties for a specific extension
 function saveProperties (api: ApiPromise, { name, version }: InjectedExtension): void {
   const storeKey = `properties:${api.genesisHash.toHex()}`;
@@ -51,7 +62,8 @@ function saveProperties (api: ApiPromise, { name, version }: InjectedExtension):
     extensionVersion: version,
     ss58Format: api.registry.chainSS58,
     tokenDecimals: api.registry.chainDecimals[0],
-    tokenSymbol: api.registry.chainTokens[0]
+    tokenSymbol: api.registry.chainTokens[0],
+    userExtensions: getUserExtensions(api)
   };
 
   store.set(storeKey, allProperties);
@@ -61,18 +73,26 @@ function saveProperties (api: ApiPromise, { name, version }: InjectedExtension):
 function hasCurrentProperties (api: ApiPromise, { extension }: ExtensionKnown): boolean {
   const allProperties = store.get(`properties:${api.genesisHash.toHex()}`, {}) as SavedProperties;
 
-  // when we don't have properties yet, assume nothing has changed and store
+  const userExtensions = getUserExtensions(api);
+
+  // when we don't have properties yet, assume nothing has changed and store, unless the
+  // chain has custom signed extensions that the extension cannot have received before
   if (!allProperties[extension.name]) {
+    if (userExtensions) {
+      return false;
+    }
+
     saveProperties(api, extension);
 
     return true;
   }
 
-  const { ss58Format, tokenDecimals, tokenSymbol } = allProperties[extension.name];
+  const { ss58Format, tokenDecimals, tokenSymbol, userExtensions: savedExtensions = '' } = allProperties[extension.name];
 
   return ss58Format === api.registry.chainSS58 &&
     tokenDecimals === api.registry.chainDecimals[0] &&
-    tokenSymbol === api.registry.chainTokens[0];
+    tokenSymbol === api.registry.chainTokens[0] &&
+    savedExtensions === userExtensions;
 }
 
 // filter extensions based on the properties we have available
